@@ -30,3 +30,13 @@ body {
 .generation-wording {
     font-size: 64px;
 }
+
+#main-title{
+    font-size: 64px;
+}
+.paragraph-one{
+    border: 2px solid lightgrey;
+}
+.paragraph-two{
+    background-color: lightgrey;
+}

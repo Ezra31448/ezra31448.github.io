@@ -1,0 +1,30 @@
+body {
+    background-image: url("https://wallpapercave.com/wp/wp5167012.jpg");
+    background-size: cover;
+
+}
+
+.nav-menu {
+position: sticky;
+  top: 0;
+  background-color: antiquewhite;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px;
+}
+.image-photo{
+    width: fit-content;
+    object-fit: cover;
+    max-width: 50%;
+    height: auto;
+}
+#image-profile {
+    width: fit-content;
+    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+}
+  
+  

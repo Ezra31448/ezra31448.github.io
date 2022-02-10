@@ -11,7 +11,9 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <!-- Font install -->
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@300&display=swap" rel="stylesheet">
     <!-- Main css load -->
     <link rel="stylesheet" href="css/main.css" />
     <title>Ezra's resume</title>
@@ -19,7 +21,8 @@
 
 
 <body>
-    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light" >
+    <!-- nav bar -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Ezra Piyachanokwong</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -33,9 +36,12 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="#profile">Profile</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#working-exp">Working Experience</a>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Dropdown
@@ -48,7 +54,7 @@
                             </li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                     </li>
@@ -60,19 +66,19 @@
             </div>
         </div>
     </nav>
-    
+
     <main>
         <div class="container py-4 ">
             <div class="row align-items-md-stretch">
                 <div class="p-1 mb-1 rounded-3">
-                    <div class="container-fluid py-5" >
+                    <div class="container-fluid py-5">
                         <img src="./image/profile.JPG" id="image-profile">
                     </div>
 
                 </div>
                 <!-- Profile -->
                 <div class="p-5 mb-4 bg-light rounded-3">
-                    <div class="container-fluid py-5 row-cols-1">
+                    <div class="container-fluid py-5 row-cols-1" id="profile">
                         <div>
                             <h1 class="display-5 fw-bold">Profile</h1>
                             <p class="col-md-12 fs-3">
@@ -82,15 +88,15 @@
                                 สามารถทำงานภายใต้ความกดดันได้
                             </p>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
-            
-            
+
+
             <div class="row align-items-md-stretch p-4">
                 <!-- Working Experience -->
-                <div class="col-md-6">
+                <div class="col-md-6" id="working-exp">
                     <div class="h-100 p-5 bg-light border rounded-3">
                         <h2>Work Experience</h2>
                         <div class="row d-flex align-items-start">
@@ -109,7 +115,7 @@
                                 Dec 2019 - Mar 2020
                             </div>
                             <div class=" col-md-4">
-                                Duis nulla magna in anim ad proident velit do. 
+                                Duis nulla magna in anim ad proident velit do.
                             </div>
                             <div class=" col-md-4">
                                 Ex nisi incididunt est ipsum occaecat et incididunt.
@@ -120,7 +126,7 @@
                                 Dec 2019 - Mar 2020
                             </div>
                             <div class=" col-md-4">
-                                Duis nulla magna in anim ad proident velit do. 
+                                Duis nulla magna in anim ad proident velit do.
                             </div>
                             <div class=" col-md-4">
                                 Ex nisi incididunt est ipsum occaecat et incididunt.
@@ -137,7 +143,7 @@
                                 Dec 2019 - Mar 2020
                             </div>
                             <div class=" col-md-4">
-                                Duis nulla magna in anim ad proident velit do. 
+                                Duis nulla magna in anim ad proident velit do.
                             </div>
                             <div class=" col-md-4">
                                 Ex nisi incididunt est ipsum occaecat et incididunt.
@@ -148,7 +154,7 @@
                                 Dec 2019 - Mar 2020
                             </div>
                             <div class=" col-md-4">
-                                Duis nulla magna in anim ad proident velit do. 
+                                Duis nulla magna in anim ad proident velit do.
                             </div>
                             <div class=" col-md-4">
                                 Ex nisi incididunt est ipsum occaecat et incididunt.
@@ -157,40 +163,31 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row align-items-md-stretch p-4">
                 <!-- Contact info -->
                 <div class="col-md-6">
                     <div class="h-100 p-5 bg-light border rounded-3">
                         <h2>Contact info</h2>
-                        <div class="row align-items-md-center">
+                        <div class="row align-items-md-start">
                             <div class=" col-md-4">
                                 Mobile :
                             </div>
-                            <div class=" col-md-4">
-                                0888888888
-                            </div>
-                            <div class=" col-md-4">
-                                (08.00 - 16.00)
+                            <div class=" col-md-8">
+                                088-888-8888
                             </div>
                         </div>
-                        <div class="row align-items-md-center">
+                        <div class="row align-items-md-start">
                             <div class=" col-md-4">
                                 Social media :
                             </div>
                             <div class=" col-md-4">
-                                Facebook -
-                            </div>
-                            <div class=" col-md-4">
-                                <a href="https://fb.me/EzraKanoon/" >Click me!</a>
+                                Facebook - <a href="https://fb.me/EzraKanoon/">Click me!</a>
                             </div>
                         </div>
-                        <div class="row align-items-md-center">
+                        <div class="row align-items-md-start">
                             <div class=" col-md-4">
-                                
-                            </div>
-                            <div class=" col-md-4">
-                                Line id -
+                                Line id :
                             </div>
                             <div class=" col-md-4">
                                 k.kanoonn
@@ -198,10 +195,7 @@
                         </div>
                         <div class="row align-items-md-center">
                             <div class=" col-md-4">
-                                
-                            </div>
-                            <div class=" col-md-4">
-                                Instagram -
+                                Instagram :
                             </div>
                             <div class=" col-md-4">
                                 ezra31448

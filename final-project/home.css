@@ -1,0 +1,427 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+/* modified scroll bar  */
+
+::-webkit-scrollbar {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #1a1a40;
+  border-radius: 0.3rem;
+}
+
+/* nav section */
+#navbar {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.navbar-main {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3rem;
+  padding: 0 1rem;
+  background: snow;
+}
+
+.user-img {
+  width: 2.5rem;
+  height: auto;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 1.3rem;
+  height: auto;
+}
+
+.logo-link p {
+  padding: 0 0 0 0.5rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #1a1a40;
+  padding: 1rem 1rem;
+}
+
+.nav-link:hover {
+  background: #270082;
+  color: white;
+}
+
+/* user proflie */
+.user-profile {
+  opacity: 0;
+  width: 300px;
+  height: 300px;
+  z-index: 4;
+  padding: 1rem;
+  position: fixed;
+  left: 2.5rem;
+  top: 2.5rem;
+  background-color: snow;
+  border-radius: 1rem;
+  border: 0.5rem solid #1a1a40;
+  transition: opacity 0.618s ease-in-out;
+}
+
+/* show user profile */
+.user-img:hover + .user-profile {
+  opacity: 1;
+}
+
+/* main section */
+
+.home-main {
+  background: linear-gradient(
+      135deg,
+      rgb(26, 26, 64, 0.55) 0%,
+      rgb(39, 0, 130, 0.55) 30%,
+      rgb(122, 11, 192, 0.55) 60%,
+      rgb(250, 88, 182, 0.55) 95%
+    ),
+    url(./img/anastase-maragos-FP7cfYPPUKM-unsplash.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* upper section */
+
+.act-upper-section {
+  padding: 4rem 3rem;
+  display: flex;
+}
+
+/* act-program */
+.act-program {
+  width: 30%;
+  margin: 0 1rem 0 0;
+}
+
+/* program todo list */
+
+.program-todolist {
+  width: 100%;
+  background: snow;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+/* show-logo andlogo at todo  */
+
+.show-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+  margin: 0 0 1rem 0;
+}
+
+.show-logo h2 {
+  width: 50%;
+  padding: 0.5rem;
+}
+
+.hr-color {
+  color: #ff1700;
+}
+
+.logo-at-todo {
+  display: block;
+  width: 100px;
+  height: auto;
+}
+
+/* todo program */
+
+.todo-program {
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 70%;
+  text-align: center;
+  color: white;
+  background: linear-gradient(90deg, #270082 0%, #7a0bc0 50%, #fa58b6 95%);
+}
+
+/* dothis-program */
+
+.dothis-program {
+  width: 100%;
+  display: flex;
+  background: rgb(235, 235, 235);
+  margin: 0 0 1rem 0;
+  border-radius: 0.5rem;
+}
+
+.dothis-program img {
+  width: 120px;
+  height: auto;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.program-text {
+  padding: 0.5rem;
+}
+
+.next-program {
+  width: 70%;
+}
+
+/* activity program main */
+
+.act-program-main {
+  background: snow;
+  width: 70%;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.healthy-b,
+.act-rec,
+.act-log {
+  margin: 0 0 1rem 0;
+}
+
+/* healthy-blog */
+
+.healthy-b {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+.healthy-title {
+  width: 25%;
+  background: rgb(233, 233, 233);
+  margin: 0 1rem 0 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 5px solid #d53a9d;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+.healthy-title h2,
+.healthy-title p {
+  color: #270082;
+}
+
+.healthy-title a {
+  text-decoration: none;
+  color: #7a0bc0;
+  align-self: flex-end;
+}
+
+.healthy-cont {
+  width: 75%;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.act-card {
+  width: 300px;
+  z-index: 1;
+  background: snow;
+  margin: 1rem -2rem 1rem 0;
+  border-radius: 0.5rem;
+  box-shadow: -20px 0 20px -15px black;
+  transition: all 0.236s ease-in-out;
+  transition-property: transform, margin-right;
+}
+
+.pg-card-one {
+  margin: 1rem -2rem 1rem 2rem;
+}
+
+.act-card:hover {
+  transform: rotate(5deg);
+  margin-right: 2rem;
+}
+
+.act-card img {
+  width: 300px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.pg-card-text {
+  padding: 0.5rem;
+}
+
+/* act-card */
+
+.act-cont {
+  display: flex;
+  overflow-x: scroll;
+  /* margin: 0 1rem; */
+}
+
+.act-title h2 {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: linear-gradient(90deg, #270082 0%, #7a0bc0 50%, #fa58b6 95%);
+  color: white;
+  border-radius: 1rem;
+}
+
+/* activity lower section  */
+.act-lower-section {
+  padding: 1rem 3rem 3rem 3rem;
+}
+
+.workout-title {
+  width: 45%;
+  margin: 0 0 1rem 0;
+  padding: 1rem;
+  background: linear-gradient(90deg, #270082 0%, #7a0bc0 50%, #fa58b6 95%);
+  border-radius: 1rem;
+  text-align: center;
+  color: white;
+}
+
+/* add button */
+
+.add-button {
+  position: sticky;
+  z-index: 2;
+  bottom: 2rem;
+  margin-top: 3rem;
+  text-align: right;
+}
+
+.add-act {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: linear-gradient(90deg, #270082 0%, #7a0bc0 95%);
+  text-decoration: none;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.add-act:hover {
+  background: linear-gradient(
+    135deg,
+    #1a1a40 0%,
+    #270082 30%,
+    #7a0bc0 60%,
+    #fa58b6 95%
+  );
+}
+
+iframe.map {
+  border-radius: 1rem;
+}
+
+/* responsive for moblie  */
+
+@media only screen and (max-width: 576px) {
+  /* navbar - moblie */
+  .user-img,
+  .user-profile {
+    display: none;
+  }
+
+  .navbar-main {
+    justify-content: center;
+  }
+
+  .link-item {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .nav-link {
+    font-size: 1.25rem;
+  }
+
+  /* main section - moblie */
+  .act-upper-section {
+    display: block;
+    padding: 2rem 1rem;
+  }
+
+  .act-program {
+    width: 100%;
+  }
+
+  .program-todolist {
+    margin: 0 0 1rem 0;
+  }
+
+  .act-program-main {
+    width: 100%;
+  }
+
+  .healthy-b {
+    display: block;
+  }
+
+  .healthy-title {
+    width: 100%;
+  }
+
+  .healthy-cont {
+    width: 100%;
+  }
+
+  .act-card {
+    width: 200px;
+  }
+
+  .act-card img {
+    width: 200px;
+  }
+
+  .act-title h2 {
+    text-align: center;
+  }
+
+  .add-button {
+    position: static;
+    text-align: center;
+  }
+
+  /* activity lower section  */
+  .act-lower-section {
+    padding: 1rem;
+  }
+
+  .workout-title {
+    width: 100%;
+  }
+}

@@ -5,8 +5,10 @@
     list-style: none;
 }
 body {
+    font-family: 'Raleway', sans-serif;
     background-image: url("https://wallpapercave.com/wp/wp5167012.jpg");
     background-size: cover;
+    transition: all .4s ease-in-out;
 }
   
   

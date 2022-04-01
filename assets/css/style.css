@@ -7,7 +7,7 @@
   
     /*========== Colors ==========*/
     /*Color mode HSL(hue, saturation, lightness)*/
-    --primary-color-hue:352;
+    --primary-color-hue:283;
     --dark-color-lightness:17%;
     --light-color-lightness:92%;
     --white-color-lightness:100%;
@@ -466,8 +466,8 @@
     /*========== Services ==========*/
     .services .service-item
     {
-      flex: 0 0 33.33%;
-      max-width: 33.33%;
+      /* flex: 0 0 33.33%; */
+      /* max-width: 33.33%; */
       display: flex;
     }
     .services .service-item .service-item-inner
@@ -729,6 +729,12 @@
     .portfolio-item-inner:hover .mask
     {
       opacity: 0.9;
+    }
+    .portfolio-item-thumbnail 
+    {
+      padding: 5px;
+      max-width: 100%;
+      height: auto;
     }
     .portfolio-item .term 
     {

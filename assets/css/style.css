@@ -463,10 +463,11 @@ h3 {
   font-size: var(--h2-font-size);
   color: var(--color-gray);
 }
+
 .about-img img {
-  border: 5px solid #fff; 
+  border: 5px solid #fff;
   border-radius: var(--border-radius);
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 /*========== Services ==========*/
@@ -578,17 +579,20 @@ gap: 20px; / ปรับระยะห่างระหว่างการ�
 }
 
 .skills-column {
-    flex: 0 0 50%; /* กำหนดให้แต่ละคอลัมน์มีขนาด 50% ของความกว้าง */
-    max-width: 50%;
+  flex: 0 0 50%;
+  /* กำหนดให้แต่ละคอลัมน์มีขนาด 50% ของความกว้าง */
+  max-width: 50%;
 }
 
 /* หากต้องการให้มี margin ระหว่าง column บนหน้าจอใหญ่ */
 .skills-column:nth-child(odd) {
-    padding-right: 15px; /* หรือค่าอื่น ๆ ที่ทำให้ดูดี */
+  padding-right: 15px;
+  /* หรือค่าอื่น ๆ ที่ทำให้ดูดี */
 }
 
 .skills-column:nth-child(even) {
-    padding-left: 15px; /* หรือค่าอื่น ๆ ที่ทำให้ดูดี */
+  padding-left: 15px;
+  /* หรือค่าอื่น ๆ ที่ทำให้ดูดี */
 }
 
 /*========== Experience ==========*/
@@ -1330,6 +1334,20 @@ gap: 20px; / ปรับระยะห่างระหว่างการ�
   .customize-theme .card {
     width: 58vw;
   }
+
+  .skills-column {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: var(--m-2-5);
+    /* เพิ่มระยะห่างด้านล่างระหว่างคอลัมน์ */
+  }
+
+  /* ลบ padding ที่เพิ่มมาเมื่อเป็นคอลัมน์เดียว */
+  .skills-column:nth-child(odd),
+  .skills-column:nth-child(even) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 @media only screen and (max-width:768px) {
@@ -1411,31 +1429,39 @@ gap: 20px; / ปรับระยะห่างระหว่างการ�
   .customize-theme .card {
     width: 75vw;
   }
-      /* Make sure skills grid adapts to a single column */
-    .skills-grid {
-        grid-template-columns: 1fr; /* Force a single column layout */
-        gap: 15px; /* Adjust gap for smaller screens if needed */
-    }
 
-    .skill-card {
-        flex: 0 0 100%; /* Ensure each card takes full width of its parent flex container (if .row is still flex) */
-        max-width: 100%; /* Ensure max-width is 100% for mobile */
-        margin-bottom: var(--m-1-5); /* Add some bottom margin between cards */
-        border-radius: var(--border-radius)
-    }
+  /* Make sure skills grid adapts to a single column */
+  .skills-grid {
+    grid-template-columns: 1fr;
+    /* Force a single column layout */
+    gap: 15px;
+    /* Adjust gap for smaller screens if needed */
+  }
 
-    .skill-card-inner {
-        /* อาจจะปรับ padding ในการ์ดให้กระชับขึ้นสำหรับมือถือ */
-        padding: 18px;
-    }
+  .skill-card {
+    flex: 0 0 100%;
+    /* Ensure each card takes full width of its parent flex container (if .row is still flex) */
+    max-width: 100%;
+    /* Ensure max-width is 100% for mobile */
+    margin-bottom: var(--m-1-5);
+    /* Add some bottom margin between cards */
+    border-radius: var(--border-radius)
+  }
 
-    .skill-card h3 {
-        font-size: var(--h3-font-size); /* Use defined h3 font size */
-    }
+  .skill-card-inner {
+    /* อาจจะปรับ padding ในการ์ดให้กระชับขึ้นสำหรับมือถือ */
+    padding: 18px;
+  }
 
-    .skill-card ul li {
-        font-size: var(--small-font-size); /* Use defined small font size */
-    }
+  .skill-card h3 {
+    font-size: var(--h3-font-size);
+    /* Use defined h3 font size */
+  }
+
+  .skill-card ul li {
+    font-size: var(--small-font-size);
+    /* Use defined small font size */
+  }
 }
 
 @media only screen and (max-width:576px) {
@@ -1470,20 +1496,26 @@ gap: 20px; / ปรับระยะห่างระหว่างการ�
     width: 96vw;
     padding: 1rem;
   }
-  .skills-grid {
-        gap: 15px; /* Ensure gap is consistent or adjusted for very small screens */
-    }
 
-    .skill-card {
-        max-width: 90%; /* สามารถจำกัดความกว้างของการ์ดให้มีขอบจากด้านข้างเล็กน้อย */
-        margin-left: auto; /* จัดกึ่งกลาง */
-        margin-right: auto; /* จัดกึ่งกลาง */
-        border-radius: var(--border-radius)
-    }
-    
-    .skill-card-inner {
-        padding: 15px; /* ลด padding ลงอีกถ้าจำเป็น */
-    }
+  .skills-grid {
+    gap: 15px;
+    /* Ensure gap is consistent or adjusted for very small screens */
+  }
+
+  .skill-card {
+    max-width: 90%;
+    /* สามารถจำกัดความกว้างของการ์ดให้มีขอบจากด้านข้างเล็กน้อย */
+    margin-left: auto;
+    /* จัดกึ่งกลาง */
+    margin-right: auto;
+    /* จัดกึ่งกลาง */
+    border-radius: var(--border-radius)
+  }
+
+  .skill-card-inner {
+    padding: 15px;
+    /* ลด padding ลงอีกถ้าจำเป็น */
+  }
 }
 
 @media only screen and (max-width:320px) {

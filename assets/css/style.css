@@ -470,6 +470,10 @@ h3 {
   box-sizing: border-box;
 }
 
+.cv-button-wrapper {
+    margin-top: 25px; /* ปรับค่าตามความเหมาะสม เช่น 20px, 30px */
+}
+
 /*========== Services ==========*/
 .services {
   /* background-color: var(--color-white); */

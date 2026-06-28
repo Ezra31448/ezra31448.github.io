@@ -546,6 +546,28 @@
         align-items: center;
         justify-content: center;
       }
+      .menu-icon {
+        position: relative;
+        width: 18px;
+        height: 14px;
+      }
+      .menu-icon::before,
+      .menu-icon::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        border-radius: 1px;
+        background: var(--fg);
+      }
+      .menu-icon::before { top: 0; }
+      .menu-icon::after { bottom: 0; }
+      .menu-icon {
+        background: var(--fg);
+        background-clip: content-box;
+        padding-block: 6px;
+      }
       .hero-grid, .split, .contact-grid, .learning-strip { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .case-grid { grid-template-columns: 1fr; }
@@ -578,7 +600,9 @@
         <span class="brand-mark">EP</span>
         <span>Ezra Piyachanokwong</span>
       </a>
-      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">☰</button>
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="menu-icon"></span>
+      </button>
       <div class="nav-links" id="nav-links">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>

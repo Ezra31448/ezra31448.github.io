@@ -1,578 +1,813 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--=============== LINE ICONS ===============-->
-    <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/lineicons.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ezra Piyachanokwong — AI-Driven Software QA Engineer</title>
+  <meta name="description" content="Portfolio for Ezra Piyachanokwong, an AI-Driven Software QA Engineer specializing in web testing, API testing, automation, database validation, and AI-assisted QA workflows." />
+  <script>document.documentElement.classList.add('js');</script>
+  <style>
+    /* =========================================================
+       Ezra Portfolio — Modern SaaS QA portfolio prototype
+       Tokens, responsive layout, components, and interactions are
+       kept in this single implementation-ready file.
+       ========================================================= */
+    :root {
+      --bg: #F8FAFC;
+      --bg-deep: #EEF6FF;
+      --surface: #FFFFFF;
+      --surface-strong: #F1F5F9;
+      --surface-soft: #F8FAFC;
+      --fg: #0F172A;
+      --muted: #475569;
+      --muted-2: #64748B;
+      --border: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --accent: #2563EB;
+      --accent-2: #14B8A6;
+      --success: #0F766E;
+      --warn: #B45309;
+      --danger: #B91C1C;
+      --shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --font-display: 'Geist', 'IBM Plex Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-body: 'IBM Plex Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --container: min(1160px, calc(100vw - 40px));
+    }
 
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 14% -6%, rgba(37, 99, 235, 0.10), transparent 30rem),
+        radial-gradient(circle at 92% 4%, rgba(20, 184, 166, 0.08), transparent 28rem),
+        linear-gradient(180deg, #FFFFFF 0%, var(--bg) 46%, #F1F5F9 100%);
+      color: var(--fg);
+      font-family: var(--font-body);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
 
-    <!--=============== SWIPER CSS ===============-->
-    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.16) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+      background-size: 112px 112px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.18), transparent 58%);
+      z-index: -2;
+    }
 
-    <!--=============== CSS ===============-->
-    <link rel="stylesheet" href="assets/css/style.css">
+    body::after { content: none; }
 
-    <!--=============== Font awesome ===============-->
-    <script src="https://kit.fontawesome.com/0b75f0d1cb.js" crossorigin="anonymous"></script>
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .container { width: var(--container); margin-inline: auto; }
+    .section { padding: clamp(72px, 9vw, 120px) 0; position: relative; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font: 650 12px/1 var(--font-body);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: none;
+    }
+    h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
+    h1 {
+      font-size: clamp(48px, 7vw, 92px);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      max-width: 950px;
+    }
+    h2 {
+      font-size: clamp(34px, 4.6vw, 58px);
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      max-width: 820px;
+    }
+    h3 { font-size: 22px; line-height: 1.18; letter-spacing: -0.01em; }
+    p { margin: 0; color: var(--muted); max-width: 68ch; }
+    .lead { font-size: clamp(18px, 2vw, 22px); color: #334155; line-height: 1.5; }
+    .small { font-size: 14px; color: var(--muted-2); }
 
-    <title>Portfolio website - Ezra Piyachanokwong</title>
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.86);
+      background: rgba(248, 250, 252, 0.84);
+    }
+    .nav {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      font: 700 13px/1 var(--font-mono);
+    }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a {
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 560;
+      transition: color .18s ease, background .18s ease;
+    }
+    .nav-links a:hover { color: var(--fg); background: rgba(148, 163, 184, 0.10); }
+    .nav-links a:focus-visible { color: var(--fg); background: rgba(148, 163, 184, 0.10); outline: 2px solid oklch(73% 0.105 218); outline-offset: 3px; }
+    .menu-button { display: none; }
+
+    .hero { padding: clamp(72px, 9vw, 128px) 0 70px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.62fr);
+      gap: clamp(36px, 5vw, 70px);
+      align-items: center;
+    }
+    .hero-copy { display: grid; gap: 26px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      color: var(--fg);
+      background: #FFFFFF;
+      font-weight: 650;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .button:hover { transform: translateY(-1px); border-color: var(--border-strong); background: #F8FAFC; box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07); }
+    .button.primary { background: var(--accent); color: #FFFFFF; border-color: var(--accent); box-shadow: 0 12px 28px rgba(37, 99, 235, 0.18); }
+    .button.primary:hover { background: #1D4ED8; }
+
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    html.js .reveal {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+      transition:
+        opacity var(--reveal-duration, 560ms) cubic-bezier(0.22, 1, 0.36, 1),
+        transform var(--reveal-duration, 560ms) cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: var(--reveal-delay, 0ms);
+      will-change: opacity, transform;
+    }
+    html.js .reveal.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      will-change: auto;
+    }
+    html.js .reveal[data-reveal="soft"] { transform: translate3d(0, 12px, 0); }
+    html.js .reveal[data-reveal="hero"] { transform: translate3d(0, 20px, 0); }
+    html.js .reveal[data-reveal="workflow"] { transform: translate3d(0, 14px, 0); }
+    html.js .hero .reveal {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      will-change: auto;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      html.js .hero .reveal {
+        animation: heroReveal var(--reveal-duration, 560ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: var(--reveal-delay, 0ms);
+      }
+      @keyframes heroReveal {
+        from { opacity: 0.84; transform: translate3d(0, 10px, 0); }
+        to { opacity: 1; transform: translate3d(0, 0, 0); }
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      html.js .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 9px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      color: #334155;
+      font: 560 12px/1 var(--font-body);
+      letter-spacing: 0.02em;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035);
+    }
+
+    .profile-card {
+      position: relative;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), transparent 38%, rgba(20, 184, 166, 0.05));
+      pointer-events: none;
+    }
+    .profile-inner { position: relative; display: grid; gap: 18px; }
+    .profile-photo {
+      min-height: 310px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 50% 24%, rgba(37, 99, 235, 0.14), transparent 34%),
+        linear-gradient(180deg, #EFF6FF, #FFFFFF);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .profile-avatar {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #DBEAFE, #CCFBF1);
+      color: #1E3A8A;
+      border: 8px solid #FFFFFF;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.10);
+      font: 760 48px/1 var(--font-display);
+      letter-spacing: -0.04em;
+    }
+    .profile-details { display: grid; gap: 10px; }
+    .profile-name-row { display: grid; gap: 10px; }
+    .profile-details h3 { font-size: clamp(24px, 2.4vw, 32px); letter-spacing: -0.025em; }
+    .location-pill {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: #F8FAFC;
+      font: 600 12px/1 var(--font-body);
+      white-space: nowrap;
+    }
+    .focus-list { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 4px; }
+    .focus-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .section-head { display: grid; gap: 16px; margin-bottom: 34px; }
+    .split { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(320px, 0.5fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    }
+    .about-card { padding: clamp(24px, 4vw, 34px); display: grid; gap: 18px; }
+    .proof-list { display: grid; gap: 12px; }
+    .proof-item {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 12px;
+      align-items: start;
+      color: #334155;
+    }
+    .check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--success);
+      border: 1px solid rgba(20, 184, 166, 0.22);
+      background: rgba(20, 184, 166, 0.08);
+      font-size: 13px;
+    }
+
+    .skills-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; align-items: stretch; }
+    .skill-card {
+      padding: 22px;
+      display: grid;
+      grid-template-rows: 78px 1fr;
+      gap: 18px;
+      height: 100%;
+      min-height: 100%;
+    }
+    .skill-header {
+      min-height: 78px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-card h3 {
+      max-width: 12ch;
+      margin: 0;
+      min-height: 52px;
+      display: flex;
+      align-items: flex-start;
+    }
+    .skill-index {
+      justify-self: end;
+      min-width: 34px;
+      text-align: right;
+      color: var(--accent);
+      font: 650 12px/1 var(--font-mono);
+      letter-spacing: 0.08em;
+      padding-top: 4px;
+    }
+    .skill-card ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; align-content: start; }
+    .skill-card li { color: var(--muted); font-size: 14px; }
+
+    .case-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+    .case-card {
+      padding: clamp(22px, 2.6vw, 28px);
+      display: grid;
+      grid-template-rows: auto auto 1fr auto auto;
+      gap: 16px;
+      align-content: start;
+      position: relative;
+      overflow: hidden;
+      min-height: 100%;
+    }
+    .case-card.featured { background: linear-gradient(180deg, #FFFFFF, #F8FAFC); border-color: rgba(37, 99, 235, 0.22); }
+    .case-card.featured::after { content: none; }
+    .case-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; position: relative; z-index: 1; }
+    .case-label { color: var(--accent); font: 650 12px/1 var(--font-body); text-transform: uppercase; letter-spacing: 0.08em; }
+    .case-card h3 { font-size: clamp(22px, 2.1vw, 31px); }
+    .case-card.featured h3 { font-size: clamp(28px, 3vw, 40px); line-height: 1.04; letter-spacing: -0.03em; max-width: 18ch; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { padding: 7px 9px; border-radius: 999px; border: 1px solid var(--border); color: #475569; background: #F8FAFC; font: 520 12px/1 var(--font-body); }
+    .case-actions { margin-top: auto; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .case-actions .button { min-height: 40px; padding-inline: 14px; }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(120px, 1fr));
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scrollbar-color: var(--border-strong) transparent;
+    }
+    .workflow-step {
+      min-height: 150px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 16px;
+      position: relative;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.04);
+    }
+    .workflow-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent-2);
+      font-family: var(--font-mono);
+      z-index: 2;
+    }
+    .step-num { color: var(--accent); font: 650 12px/1 var(--font-mono); letter-spacing: 0.08em; }
+    .step-name { color: var(--fg); font-weight: 650; line-height: 1.25; }
+
+    .timeline { display: grid; gap: 14px; position: relative; }
+    .timeline::before { content: ""; position: absolute; left: 12px; top: 10px; bottom: 10px; width: 1px; background: rgba(148, 163, 184, 0.22); }
+    .timeline-item { display: grid; grid-template-columns: 26px 1fr; gap: 16px; align-items: start; }
+    .timeline-dot { width: 25px; height: 25px; border-radius: 50%; background: #FFFFFF; border: 1px solid var(--border-strong); position: relative; z-index: 1; box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.06); }
+    .timeline-card { padding: 18px; border-radius: 18px; border: 1px solid var(--border); background: #FFFFFF; box-shadow: 0 10px 26px rgba(15, 23, 42, 0.04); }
+    .timeline-card strong { display: block; color: var(--fg); margin-bottom: 6px; letter-spacing: -0.01em; }
+
+    .lab-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      padding: clamp(24px, 4vw, 36px);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    }
+    .contact-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 18px; }
+    .contact-card { padding: 24px; }
+    .contact-list { display: grid; gap: 12px; margin-top: 18px; }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      color: #334155;
+      background: #F8FAFC;
+    }
+    .contact-link:hover { border-color: var(--border-strong); background: #FFFFFF; }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 80;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      box-shadow: var(--shadow);
+      color: var(--fg);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 980px) {
+      .nav-links {
+        position: fixed;
+        inset: 74px 16px auto 16px;
+        display: none;
+        padding: 12px;
+        flex-direction: column;
+        align-items: stretch;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: var(--shadow);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { border-radius: 12px; padding: 13px 14px; }
+      .menu-button {
+        display: inline-flex;
+        width: 42px;
+        height: 42px;
+        border-radius: 13px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        color: var(--fg);
+        background: #FFFFFF;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero-grid, .split, .contact-grid, .lab-strip { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-grid { grid-template-columns: 1fr; }
+      .workflow { grid-template-columns: 1fr; overflow: visible; }
+      .workflow-step:not(:last-child)::after { content: "↓"; right: 20px; top: auto; bottom: -18px; transform: none; color: var(--accent-2); }
+    }
+
+    @media (max-width: 620px) {
+      :root { --container: min(100vw - 28px, 1160px); }
+      .hero { padding-top: 52px; }
+      .hero-actions, .case-actions { align-items: stretch; flex-direction: column; }
+      .button { width: 100%; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .case-card.featured { min-height: auto; }
+      .contact-link { align-items: flex-start; flex-direction: column; }
+      .profile-name-row, .focus-list { grid-template-columns: 1fr; }
+      .profile-name-row { display: grid; }
+      .profile-photo { min-height: 250px; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .card, .workflow-step, .focus-item { transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+      .card:hover, .workflow-step:hover, .focus-item:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+    }
+  </style>
 </head>
-
 <body>
-    <!--=============== HEADER ===============-->
-    <header class="header" id="header">
-        <!-- nav -->
-        <nav class="nav container padd-15">
-            <!-- nav logo -->
-            <a href="#" class="nav-logo">
-                <h2>Ezra</h2>
-            </a>
-            <!-- nav menu -->
-            <div class="nav-menu" id="nav-menu">
-                <!-- nav list -->
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="#home" class="nav-link active-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#about" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#skills" class="nav-link">Skills</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#education" class="nav-link">Education</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#experience" class="nav-link">Experience</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#portfolio" class="nav-link">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#contact" class="nav-link">Contact</a>
-                    </li>
+  <header class="site-header">
+    <nav class="container nav" aria-label="Primary navigation">
+      <a class="brand-lockup" href="#top" aria-label="Ezra portfolio home">
+        <span class="brand-mark">EP</span>
+        <span>Ezra Piyachanokwong</span>
+      </a>
+      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">☰</button>
+      <div class="nav-links" id="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#case-studies">Case Studies</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
 
-                </ul>
-                <!-- nav close -->
-                <div class="nav-close" id="nav-close">
-                    <i class="lni lni-close"></i>
-                </div>
-            </div>
-            <!-- nav btn -->
-            <div class="nav-btns">
-                <!-- theme change btn -->
-                <i class="lni lni-pallet change-theme" id="theme-button"></i>
-                <!-- toggle btn -->
-                <div class="nav-toggle" id="nav-toggle">
-                    <i class="lni lni-grid-alt"></i>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <!--=============== MAIN ===============-->
-    <main class="main-content">
-        <!--=============== HOME ===============-->
-        <section class="home" id="home">
-            <div class="container">
-                <!-- intro -->
-                <div class="intro">
-                    <!-- avatar image -->
-                    <img src="assets/img/title_pic_crop.jpg" alt="">
-                    <!-- info -->
-                    <h1>Ezra Piyachanokwong</h1>
-                    <span>I'm a <span class="info-text">Full-Time Life Learner</span></span>
-                    <!-- social icons -->
-                    <ul class="social-icons">
-                        <li><a href="https://www.instagram.com/_ezra.th/">
-                                <i class="lni lni-instagram-original"></i></a></li>
-                        <li><a href="https://www.facebook.com/EzraKanoon/"><i class="lni lni-facebook-filled"></i></a>
-                        </li>
-                        <li><a href="https://ezra31448.github.io"><i class="lni lni-github-original"></i></a></li>
-                        <li><a href="https://www.youtube.com/channel/UCPRJWfN3nQrqZH3DEhffCGQ"><i
-                                    class="lni lni-youtube"></i></a></li>
-                        <li><a href="https://www.linkedin.com/in/ezra-piyachanokwong"><i
-                                    class="lni lni-linkedin"></i></a></li>
-                    </ul>
-                    <!-- button -->
-                    <div>
-                        <a href="https://www.messenger.com/t/100003462633256/" class="btn btn-default ">Message Me!</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--=============== About ===============-->
-        <section class="about section" id="about">
-            <div class="container">
-                <!-- section title -->
-                <h2 class="section-title padd-15">About Me</h2>
-                <div class="row">
-                    <div class="about-img padd-15">
-                        <!-- avatar img -->
-                        <img src="assets/img/profile_pic.jpg" alt="">
-                    </div>
-                    <div class="about-content padd-15">
-                        <div class="rounded">
-                            <div class="row">
-                                <div class="">
-                                    <!-- about text -->
-                                    <p>
-                                        Results-driven QA Engineer with hands-on experience in web and API automation
-                                        testing using Playwright,and Postman.
-                                    </p>
-                                    <br>
-                                    <p>
-                                        Proven ability to develop and execute automated test frameworks, validate
-                                        backend data with SQL, and integrate testing into CI/CD pipelines using GitHub
-                                        Actions.
-                                    </p>
-                                    <br>
-                                    <p>
-                                        Recently explored AI-assisted testing by integrating LLMs (Gemini) with n8n and
-                                        Agentic RAG (Retrieval-Augmented Generation with AI) using PostgreSQL as a vector database to
-                                        automate test data generation from unstructured files.
-                                    </p>
-                                </div>
-                                
-                            </div>
-                            <div class="cv-button-wrapper padd-10">
-                                    <p>
-                                        <a href="https://raw.githubusercontent.com/Ezra31448/ezra31448.github.io/main/Resume_QA_Ezra_Piyachanokwong.pdf"
-                                            class="btn btn-default">Download CV</a>
-
-                                    </p>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--=============== Services ===============-->
-        <section class="services section" id="skills">
-            <div class="container">
-                <h2 class="section-title padd-15">Skills</h2>
-                <div class="row">
-                    <div class="skills-column padd-15">
-                        <div class="timeline-box">
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <i class="lni lni-cog timeline-icon"></i>
-                                    <h3 class="timeline-title">Test Automation</h3>
-                                    <p class="timeline-text">
-                                        • Playwright (UI & API)
-                                    </p>
-                                    <p class="timeline-text">
-                                        • Postman, Newman
-                                    </p>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <i class="lni lni-code-alt timeline-icon"></i>
-                                    <h3 class="timeline-title">Programming Languages</h3>
-                                    <p class="timeline-text">
-                                        • Python (Pytest)
-                                    </p>
-                                    <p class="timeline-text">
-                                        • JavaScript, TypeScript (basic)
-                                    </p>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <i class="lni lni-layout-9 timeline-icon"></i>
-                                    <h3 class="timeline-title">Test Frameworks</h3>
-                                    <p class="timeline-text">
-                                        • Pytest
-                                    </p>
-                                    <p class="timeline-text">
-                                        • Playwright
-                                    </p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="skills-column padd-15">
-                        <div class="timeline-box">
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <i class="lni lni-git timeline-icon"></i>
-                                    <h3 class="timeline-title">CI/CD Tools</h3>
-                                    <p class="timeline-text">
-                                        • GitHub Actions
-                                    </p>
-                                    <p class="timeline-text">
-                                        • Postman Collection Runner
-                                    </p>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <i class="lni lni-database timeline-icon"></i>
-                                    <h3 class="timeline-title">Database</h3>
-                                    <p class="timeline-text">
-                                        • PostgreSQL, SQL (data validation & integrity)<br>
-                                    </p>
-                                    <p class="timeline-text">
-                                        • Vector DB (RAG)
-                                    </p>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <i class="lni lni-android timeline-icon"></i>
-                                    <h3 class="timeline-title">AI/LLM Integration</h3>
-                                    <p class="timeline-text">
-                                        • n8n
-                                    </p>
-                                    <p class="timeline-text">
-                                        • Gemini LLM
-                                    </p>
-                                    <p class="timeline-text">
-                                        • Agentic RAG (Retrieval-Augmented Generation with AI)
-                                    </p>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <i class="lni lni-layout timeline-icon"></i>
-                                    <h3 class="timeline-title">Other Skills</h3>
-                                    <p class="timeline-text">
-                                        • Bug Tracking & Project Management: Jira<br>
-                                    </p>
-                                    <p class="timeline-text">
-                                        • Testing Techniques: Manual, Black-box, Regression, E2E, Functional Testing<br>
-                                    </p>
-                                    <p class="timeline-text">
-                                        • Tools: Git, VSCode
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-        <!--=============== Experience ===============-->
-        <section class="section" id="experience">
-            <div class="container">
-                <!-- section title -->
-                <h2 class="section-title padd-15">Experience</h2>
-                <div class="row">
-                    <div class="experience padd-15">
-                        <div class="row">
-                            <div class="timeline-box">
-                                <div class="timeline">
-                                    <!-- timeline item -->
-                                    <div class="timeline-item">
-                                        <i class="lni lni-briefcase timeline-icon"></i>
-                                        <h3 class="timeline-date">
-                                            <i class="lni lni-calendar"></i> Jan 2026 – April 2026
-                                        </h3>
-                                        <h3 class="timeline-title">QA Engineer <br> at Lotus's (PRTR Outsource)</h3>
-                                        <p class="timeline-text">
-                                            • Designed and executed comprehensive test scenarios for API features.<br>
-                                            • Performed database validation using OracleDB to ensure backend data accuracy.<br>
-                                            • Collaborated with cross-functional teams to triage and resolve defects using Jira.<br>
-                                        </p>
-                                    </div>
-                                    <!-- timeline item -->
-                                    <div class="timeline-item">
-                                        <i class="lni lni-briefcase timeline-icon"></i>
-                                        <h3 class="timeline-date">
-                                            <i class="lni lni-calendar"></i> Sep 2025 – Nov 2025
-                                        </h3>
-                                        <h3 class="timeline-title">QA Engineer <br> at Ascend nano</h3>
-                                        <p class="timeline-text">
-                                            • Designed and executed comprehensive test scenarios for API features.<br>
-                                            • Implemented automated API testing using Robot Framework and integrated with GitHub Actions for scheduled CI pipelines.<br>
-                                            • Conducted E2E testing with Robot Framework, improving coverage and reducing manual effort.<br>
-                                            • Performed database validation using MySQL to ensure backend data accuracy.<br>
-                                            • Collaborated with cross-functional teams to triage and resolve defects using Jira.<br>
-                                        </p>
-                                    </div>
-                                    <!-- timeline item -->
-                                    <div class="timeline-item">
-                                        <i class="lni lni-briefcase timeline-icon"></i>
-                                        <h3 class="timeline-date">
-                                            <i class="lni lni-calendar"></i> Mar 2024 – Aug 2025
-                                        </h3>
-                                        <h3 class="timeline-title">QA Engineer <br> at Central Food Wholesale</h3>
-                                        <p class="timeline-text">
-                                            • Designed and executed comprehensive test scenarios for web and API features.<br>
-                                            • Implemented automated API testing using Postman and integrated with GitHub Actions for scheduled CI pipelines.<br>
-                                            • Conducted E2E testing with Playwright for UI workflows, improving coverage and reducing manual effort.<br>
-                                            • Performed database validation using PostgreSQL to ensure backend data accuracy.<br>
-                                            • Built a test data generation tool using n8n, Gemini LLM, and RAG to process inputs from PDF, Excel, CSV, and TXT.<br>
-                                            • Collaborated with cross-functional teams to triage and resolve defects using Jira.<br>
-                                        </p>
-                                    </div>
-                                    <!-- timeline item -->
-                                    <div class="timeline-item">
-                                        <i class="lni lni-briefcase timeline-icon"></i>
-                                        <h3 class="timeline-date">
-                                            <i class="lni lni-calendar"></i> Feb 2023 – Mar 2024
-                                        </h3>
-                                        <h3 class="timeline-title">QA Engineer <br> at Principal Healthcare</h3>
-                                        <p class="timeline-text">
-                                            • Designed and executed comprehensive test plans and test cases to ensure the quality and accuracy of data across multiple systems and databases.<br>
-                                            • Utilized SQL queries to validate multi-system data consistency.<br>
-                                            • Integrated test execution with QA reporting workflows and tracked defects through Jira.<br>
-                                            • Worked closely with development teams to communicate test results, provide feedback, and assist in resolving issues.<br>
-                                        </p>
-                                    </div>
-                                    <!-- timeline item -->
-                                    <div class="timeline-item">
-                                        <i class="lni lni-briefcase timeline-icon"></i>
-                                        <h3 class="timeline-date">
-                                            <i class="lni lni-calendar"></i> Jun 2022 – Feb 2023
-                                        </h3>
-                                        <h3 class="timeline-title">QA Engineer & Junior Developer <br> at Chococard
-                                            Enterprise</h3>
-                                        <p class="timeline-text">
-                                            • Conducted Black-box, GUI, Functional, and Regression testing for web applications.<br>
-                                            • Created detailed manual test plans and executed both frontend and backend tests.<br>
-                                            • Logged issues and supported root cause analysis in collaboration with developers.<br>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--=============== Education ===============-->
-        <section class="section" id="education">
-            <div class="container">
-                <!-- section title -->
-                <h2 class="section-title padd-15">Education</h2>
-                <div class="row">
-                    <div class="education padd-15">
-                        <div class="row">
-                            <div class="timeline-box">
-                                <div class="timeline">
-                                    <!-- timeline item -->
-                                    <div class="timeline-item">
-                                        <i class="lni lni-graduation timeline-icon"></i>
-                                        <h3 class="timeline-date">
-                                            <i class="lni lni-calendar"></i> August 2015 — May 2019
-                                        </h3>
-                                        <h3 class="timeline-title">B.Sc. Digital Technology for Design, Silpakorn
-                                            University</h3>
-                                        <p class="timeline-text">
-                                            • Graduated with degree in Digital Technology for Design
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--=============== Portfolio ===============-->
-        <section class="portfolio section" id="portfolio">
-            <div class="container">
-                <!-- section title -->
-                <h2 class="section-title padd-15">Portfolio</h2>
-                <div class="row">
-                    <div class="portfolio-filter padd-15">
-                        <div class="portfolio-filter-inner">
-                            <button type="button" class="active" data-filter="all">Everything</button>
-                            <button type="button" data-filter="game">Game</button>
-                            <button type="button" data-filter="web">Web</button>
-                            <button type="button" data-filter="design">Design</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <!-- portfolio item -->
-                    <a href="https://add-spotify-playlist.netlify.app/" class="portfolio-item padd-15"
-                        data-category="web">
-                        <div class="portfolio-item-inner">
-                            <div class="portfolio-item-thumbnail">
-                                <img src="assets/img/2.svg" alt="">
-                                <div class="mask"></div>
-                            </div>
-                            <span class="term">Web</span>
-                            <h3 class="portfolio-item-title">Add-spotify-playlist App</h3>
-                            <span class="more-button">&hellip;</span>
-                        </div>
-                    </a>
-                    <!-- portfolio item -->
-                    <a href="https://www.figma.com/file/RNZ9uzY2zR19o9Qmuf8g1U/Figma_Final_Project?node-id=0%3A1"
-                        class="portfolio-item padd-15" data-category="design">
-                        <div class="portfolio-item-inner">
-                            <div class="portfolio-item-thumbnail">
-                                <img src="assets/img/3.svg" alt="">
-                                <div class="mask"></div>
-                            </div>
-                            <span class="term">Design</span>
-                            <h3 class="portfolio-item-title">Figma design for exercise app</h3>
-                            <span class="more-button">&hellip;</span>
-                        </div>
-                    </a>
-                    <!-- portfolio item -->
-                    <a href="https://youtu.be/UN1c7-U-BqY" class="portfolio-item padd-15" data-category="game">
-                        <div class="portfolio-item-inner">
-                            <div class="portfolio-item-thumbnail">
-                                <img src="assets/img/1.svg" alt="">
-                                <div class="mask"></div>
-                            </div>
-                            <span class="term">Game , VR , Unity</span>
-                            <h3 class="portfolio-item-title">Outland Defender [VR]</h3>
-                            <span class="more-button">&hellip;</span>
-                        </div>
-                    </a>
-                    <!-- portfolio item -->
-                    <a href="https://piyataweeinspector.com/" class="portfolio-item padd-15" data-category="web">
-                        <div class="portfolio-item-inner">
-                            <div class="portfolio-item-thumbnail">
-                                <img src="assets/img/5.svg" alt="">
-                                <div class="mask"></div>
-                            </div>
-                            <span class="term">Web , Business</span>
-                            <h3 class="portfolio-item-title">Piyataweeinspector.com</h3>
-                            <span class="more-button">&hellip;</span>
-                        </div>
-                    </a>
-                    <!-- portfolio item -->
-                    <a href="https://exercise-tracking.vercel.app/" class="portfolio-item padd-15" data-category="web">
-                        <div class="portfolio-item-inner">
-                            <div class="portfolio-item-thumbnail">
-                                <img src="assets/img/6.svg" alt="">
-                                <div class="mask"></div>
-                            </div>
-                            <span class="term">Web , Business</span>
-                            <h3 class="portfolio-item-title">Tracking exercise application</h3>
-                            <span class="more-button">&hellip;</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-        <!--=============== Contact ===============-->
-        <section class="contact section" id="contact">
-            <div class="container">
-                <!-- section title -->
-                <h2 class="section-title padd-15">Contact us</h2>
-                <div class="row">
-                    <!-- contact box -->
-                    <div class="contact-box padd-15">
-                        <div class="contact-data">
-                            <!-- contact information -->
-                            <div class="contact-information">
-                                <h3 class="contact-subtitle">Call us for instant support</h3>
-                                <span class="contact-description">
-                                    <i class="lni lni-phone contact-icon"></i>
-                                    +66 910 099 427
-                                </span>
-                            </div>
-                            <!-- contact information -->
-                            <div class="contact-information">
-                                <h3 class="contact-subtitle">Write us by mail</h3>
-                                <span class="contact-description">
-                                    <i class="lni lni-user contact-icon"></i>
-                                    ezrapiya.th@gmail.com
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- contact form -->
-                    <form action="" class="contact-form padd-15">
-                        <div class="contact-inputs">
-                            <!-- contact content -->
-                            <div class="contact-content">
-                                <input type="email" class="contact-input">
-                                <label for="" class="contact-label">Email</label>
-                                <span></span>
-                            </div>
-                            <!-- contact content -->
-                            <div class="contact-content">
-                                <input type="text" class="contact-input">
-                                <label for="" class="contact-label">Subject</label>
-                                <span></span>
-                            </div>
-                            <!-- contact content -->
-                            <div class="contact-content contact-area">
-                                <textarea name="" id="" cols="30" rows="10" class="contact-input"></textarea>
-                                <label for="" class="contact-label">Message</label>
-                                <span></span>
-                            </div>
-                        </div>
-                        <a href="#" class="btn btn-default">Send Message</a>
-                    </form>
-                </div>
-            </div>
-        </section>
-        <!--=============== Footer ===============-->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-text padd-15">
-                    <p>&copy; Ezra Piyachanokwong</p>
-                </div>
-            </div>
-        </footer>
-    </main>
-    <!--=============== Theme Customize ===============-->
-    <div class="customize-theme">
-        <div class="card">
-            <h2>Customize your view</h2>
-            <p>Manage your font size, color, and background</p>
-            <!-- font size -->
-            <div class="font-size">
-                <h3>Font Size</h3>
-                <div>
-                    <h6>Aa</h6>
-                    <div class="choose-size">
-                        <span class="font-size-1"></span>
-                        <span class="font-size-2"></span>
-                        <span class="font-size-3 active"></span>
-                        <span class="font-size-4"></span>
-                    </div>
-                    <h3>Aa</h3>
-                </div>
-            </div>
-            <!-- color -->
-            <div class="color">
-                <h3>Color</h3>
-                <div class="choose-color">
-                    <span class="color-1"></span>
-                    <span class="color-2"></span>
-                    <span class="color-3 active"></span>
-                    <span class="color-4"></span>
-                    <span class="color-5"></span>
-                </div>
-            </div>
-            <!-- background -->
-            <div class="background">
-                <h3>background</h3>
-                <div class="choose-bg">
-                    <div class="bg-1 active">
-                        <span></span>
-                        <h5 for="bg-1">Light</h5>
-                    </div>
-                    <div class="bg-2">
-                        <span></span>
-                        <h5 for="bg-2">Dim</h5>
-                    </div>
-                    <div class="bg-3">
-                        <span></span>
-                        <h5 for="bg-3">Dark</h5>
-                    </div>
-                </div>
-            </div>
+  <main id="top">
+    <section class="hero" data-od-id="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow reveal" data-reveal="hero">Bangkok · AI-assisted QA delivery</span>
+          <h1 class="reveal" data-reveal="hero" style="--reveal-delay: 80ms;">AI-Driven Software QA Engineer</h1>
+          <p class="lead reveal" data-reveal="hero" style="--reveal-delay: 160ms;">Testing web applications, APIs, automation workflows, and AI-assisted software delivery.</p>
+          <p class="reveal" data-reveal="hero" style="--reveal-delay: 220ms;">I help teams validate product behavior, business rules, regression risks, and AI-generated implementation quality across real software delivery cycles.</p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button primary reveal" data-reveal="hero" style="--reveal-delay: 300ms;" href="Resume_QA_Ezra_Piyachanokwong.pdf" target="_blank" rel="noreferrer">Download Resume</a>
+            <a class="button reveal" data-reveal="hero" style="--reveal-delay: 370ms;" href="#case-studies">View Case Studies</a>
+            <a class="button reveal" data-reveal="hero" style="--reveal-delay: 440ms;" href="mailto:ezrapiya.th@gmail.com">Contact Me</a>
+          </div>
+          <div class="badge-row" aria-label="Core capabilities">
+            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 480ms;">Web Testing</span>
+            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 510ms;">API Testing</span>
+            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 540ms;">Playwright</span>
+            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 570ms;">Robot Framework</span>
+            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 600ms;">Claude Code</span>
+            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 630ms;">n8n</span>
+            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 660ms;">RAG</span>
+          </div>
         </div>
-    </div>
 
-    <!--=============== SWIPER JS ===============-->
-    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+        <aside class="profile-card reveal" data-reveal="soft" style="--reveal-delay: 220ms;" aria-label="Ezra profile summary">
+          <div class="profile-inner">
+            <div class="profile-photo" aria-label="Professional headshot placeholder">
+              <div class="profile-avatar" aria-hidden="true">EP</div>
+            </div>
+            <div class="profile-details">
+              <div class="profile-name-row">
+                <div>
+                  <span class="small">Professional Profile</span>
+                  <h3>Ezra Piyachanokwong</h3>
+                </div>
+                <span class="location-pill">Bangkok, Thailand</span>
+              </div>
+              <p>AI-Driven Software QA Engineer focused on web testing, API validation, automation coverage, and practical AI-assisted delivery review.</p>
+              <div class="focus-list" aria-label="Key focus areas">
+                <span class="focus-item">Web application testing</span>
+                <span class="focus-item">API &amp; database validation</span>
+                <span class="focus-item">Playwright and Robot Framework</span>
+                <span class="focus-item">AI-generated implementation review</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-    <!--=============== JS ===============-->
-    <script src="assets/js/main.js"></script>
+    <section class="section" id="about" data-od-id="about">
+      <div class="container split">
+        <div class="section-head reveal" data-reveal="soft">
+          <span class="eyebrow">About</span>
+          <h2>QA ownership for teams shipping with automation and AI coding agents.</h2>
+          <p class="lead">Ezra is a Software QA Engineer with 3+ years of experience across web application testing, API testing, E2E testing, automation testing, database validation, CI/CD-based QA workflows, and AI-assisted QA validation.</p>
+        </div>
+        <div class="card about-card reveal" data-reveal="soft" style="--reveal-delay: 120ms;">
+          <p>He has worked in delivery cycles where AI coding agents help with implementation while he owns QA validation, bug reporting, ClickUp feedback, expected behavior clarification, regression checks, and release readiness.</p>
+          <div class="proof-list">
+            <div class="proof-item"><span class="check">✓</span><span>Translates ambiguous requirements into test scenarios, expected behavior, and regression risk coverage.</span></div>
+            <div class="proof-item"><span class="check">✓</span><span>Validates AI-generated implementation through product behavior, edge cases, and data accuracy.</span></div>
+            <div class="proof-item"><span class="check">✓</span><span>Connects manual QA insight with automation pipelines, database checks, and delivery feedback loops.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills" data-od-id="skills">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="soft">
+          <span class="eyebrow">Core Skills</span>
+          <h2>Testing depth across product behavior, automation, AI workflow, and data validation.</h2>
+        </div>
+        <div class="skills-grid">
+          <article class="card skill-card reveal" data-reveal="soft" style="--reveal-delay: 0ms;"><div class="skill-header"><h3>QA &amp; Testing</h3><span class="skill-index">01</span></div><ul><li>Web Application Testing</li><li>API Testing</li><li>E2E Testing</li><li>Regression Testing</li><li>Test Case Design</li><li>Test Scenario Design</li><li>Bug Reporting</li><li>Test Documentation</li></ul></article>
+          <article class="card skill-card reveal" data-reveal="soft" style="--reveal-delay: 90ms;"><div class="skill-header"><h3>Automation</h3><span class="skill-index">02</span></div><ul><li>Playwright</li><li>Robot Framework</li><li>Postman / Newman</li><li>Pytest</li><li>GitHub Actions</li><li>Docker</li></ul></article>
+          <article class="card skill-card reveal" data-reveal="soft" style="--reveal-delay: 180ms;"><div class="skill-header"><h3>AI &amp; Workflow</h3><span class="skill-index">03</span></div><ul><li>Claude Code</li><li>ChatGPT</li><li>Gemini</li><li>n8n</li><li>RAG</li><li>Prompt Engineering</li><li>AI-assisted QA Workflow</li><li>AI-generated Implementation Validation</li></ul></article>
+          <article class="card skill-card reveal" data-reveal="soft" style="--reveal-delay: 270ms;"><div class="skill-header"><h3>Database &amp; Validation</h3><span class="skill-index">04</span></div><ul><li>PostgreSQL</li><li>MySQL</li><li>SQL</li><li>BigQuery</li><li>Firestore</li><li>Vector Database for RAG</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="case-studies" data-od-id="case-studies">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="soft">
+          <span class="eyebrow">Featured Case Studies</span>
+          <h2>Proof of quality ownership in AI-assisted and automation-heavy software delivery.</h2>
+        </div>
+        <div class="case-grid">
+          <article class="card case-card featured reveal" data-reveal="soft" style="--reveal-delay: 0ms;">
+            <div class="case-top"><span class="case-label">Primary Project</span><span class="tag">AI-assisted delivery</span></div>
+            <h3>Upload Excel QA Validation with AI Coding Agent</h3>
+            <p>Validated an Excel upload feature where users upload Excel files to generate purchase order data. The core implementation was primarily driven by an AI coding agent through Claude Code, while Ezra owned QA validation, ClickUp defect reporting, expected fix definition, business flow verification, regression testing, and release readiness review.</p>
+            <div class="tag-row"><span class="tag">Claude Code</span><span class="tag">ClickUp</span><span class="tag">Web Testing</span><span class="tag">AI Coding Agent</span><span class="tag">Regression Testing</span></div>
+            <div class="case-actions"><button class="button" type="button" data-copy="Upload Excel QA Validation with AI Coding Agent — Ezra owned QA validation, ClickUp defect reporting, expected fix definition, business flow verification, regression testing, and release readiness review.">Copy Summary</button><a class="button" href="#workflow">See Workflow</a></div>
+          </article>
+          <article class="card case-card reveal" data-reveal="soft" style="--reveal-delay: 90ms;">
+            <div class="case-top"><span class="case-label">Data workflow</span></div>
+            <h3>AI-Powered Test Data Generation with Gemini + n8n + RAG</h3>
+            <p>Designed a workflow using Gemini LLM, n8n, PostgreSQL, and RAG to generate and enrich test data from PDF, Excel, CSV, and TXT files for QA processes.</p>
+            <div class="tag-row"><span class="tag">Gemini</span><span class="tag">n8n</span><span class="tag">RAG</span><span class="tag">PostgreSQL</span><span class="tag">Test Data</span></div>
+            <div class="case-actions"><button class="button" type="button" data-copy="AI-Powered Test Data Generation — Gemini, n8n, PostgreSQL, and RAG workflow for QA test data enrichment.">Copy Summary</button></div>
+          </article>
+          <article class="card case-card reveal" data-reveal="soft" style="--reveal-delay: 180ms;">
+            <div class="case-top"><span class="case-label">API quality</span></div>
+            <h3>API Test Automation Pipeline</h3>
+            <p>Built API regression workflows using Postman Collections, Newman CLI, and GitHub Actions to support scheduled API validation and reduce repetitive manual testing.</p>
+            <div class="tag-row"><span class="tag">Postman</span><span class="tag">Newman</span><span class="tag">GitHub Actions</span><span class="tag">API Testing</span></div>
+            <div class="case-actions"><button class="button" type="button" data-copy="API Test Automation Pipeline — Postman Collections, Newman CLI, and GitHub Actions for scheduled API regression validation.">Copy Summary</button></div>
+          </article>
+          <article class="card case-card reveal" data-reveal="soft" style="--reveal-delay: 270ms;">
+            <div class="case-top"><span class="case-label">E2E automation</span></div>
+            <h3>Playwright E2E Automation</h3>
+            <p>Developed automated E2E tests for core web application workflows with a focus on regression coverage, maintainability, and test reliability.</p>
+            <div class="tag-row"><span class="tag">Playwright</span><span class="tag">TypeScript</span><span class="tag">E2E Testing</span><span class="tag">Automation</span></div>
+            <div class="case-actions"><button class="button" type="button" data-copy="Playwright E2E Automation — automated core web workflows with focus on maintainable regression coverage and reliability.">Copy Summary</button></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workflow" data-od-id="workflow">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="soft">
+          <span class="eyebrow">AI-Assisted QA Workflow</span>
+          <h2>A practical validation loop for AI-generated implementation.</h2>
+          <p class="lead">Ezra works as a QA owner in AI-assisted development cycles, validating AI-generated implementation from the perspective of functionality, user behavior, edge cases, data accuracy, and regression risk.</p>
+        </div>
+        <div class="workflow" aria-label="AI-assisted QA workflow diagram">
+          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 0ms;"><span class="step-num">01</span><span class="step-name">Requirement / ClickUp Task</span></div>
+          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 70ms;"><span class="step-num">02</span><span class="step-name">AI Coding Agent Implementation</span></div>
+          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 140ms;"><span class="step-num">03</span><span class="step-name">QA Review &amp; Bug Report</span></div>
+          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 210ms;"><span class="step-num">04</span><span class="step-name">Expected Fix Definition</span></div>
+          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 280ms;"><span class="step-num">05</span><span class="step-name">AI Fix Iteration</span></div>
+          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 350ms;"><span class="step-num">06</span><span class="step-name">Regression Validation</span></div>
+          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 420ms;"><span class="step-num">07</span><span class="step-name">Release Readiness</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience" data-od-id="experience">
+      <div class="container split">
+        <div class="section-head reveal" data-reveal="soft">
+          <span class="eyebrow">Experience</span>
+          <h2>Hands-on QA across healthcare, wholesale, commerce, and digital product systems.</h2>
+          <p>Each role adds a different validation surface: GUI and functional testing, API automation, SQL consistency checks, CI/CD regression, and AI-assisted implementation review.</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 0ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>Software Tester | Health Up</strong><p>Web application testing, automated E2E testing, AI-assisted development workflow, Claude Code collaboration, ClickUp bug feedback, Upload Excel validation.</p></div></div>
+          <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 80ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>QA Engineer | CP Axtra</strong><p>API testing, E2E testing, Robot Framework, PostgreSQL validation, Jira collaboration.</p></div></div>
+          <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 160ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>QA Engineer | Ascend nano</strong><p>API testing, Robot Framework, GitHub Actions, MySQL validation.</p></div></div>
+          <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 240ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>QA Engineer | Central Food Wholesale</strong><p>Web/API testing, Postman automation, Playwright E2E, PostgreSQL validation, AI-powered test data generation.</p></div></div>
+          <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 320ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>QA Engineer | Principal Healthcare</strong><p>Test planning, SQL validation, multi-system data consistency, QA reporting.</p></div></div>
+          <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 400ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>QA Engineer &amp; Junior Developer | Chococard Enterprise</strong><p>Manual testing, GUI testing, functional testing, regression testing, frontend/backend validation.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-od-id="learning">
+      <div class="container lab-strip reveal" data-reveal="soft">
+        <div>
+          <span class="eyebrow">Learning Journey</span>
+          <h2>Deepening AI engineering practice for better QA evaluation.</h2>
+          <p>Currently studying AI Engineering through Udemy to deepen understanding of LLM applications, prompt engineering, AI workflow design, and AI evaluation concepts.</p>
+        </div>
+        <span class="badge">LLM apps · prompts · evaluation</span>
+      </div>
+    </section>
+
+    <section class="section" id="resume" data-od-id="resume-contact">
+      <div class="container contact-grid">
+        <div class="card contact-card reveal" data-reveal="soft">
+          <span class="eyebrow">Resume</span>
+          <h2>Want the full details?</h2>
+          <p>Download the resume or contact Ezra directly for AI QA Engineer, QA Automation Engineer, Software Tester, or Software QA Engineer opportunities.</p>
+          <div class="hero-actions" style="margin-top: 22px;"><a class="button primary" href="Resume_QA_Ezra_Piyachanokwong.pdf" target="_blank" rel="noreferrer">Download Resume</a><button class="button" type="button" data-copy="Ezra Piyachanokwong — AI-Driven Software QA Engineer based in Bangkok, Thailand. Contact: ezrapiya.th@gmail.com">Copy Profile Blurb</button></div>
+        </div>
+        <div class="card contact-card reveal" data-reveal="soft" style="--reveal-delay: 120ms;" id="contact">
+          <span class="eyebrow">Contact</span>
+          <h2>Bangkok-based QA engineer for modern software teams.</h2>
+          <div class="contact-list">
+            <a class="contact-link" href="mailto:ezrapiya.th@gmail.com"><span>Email</span><strong>ezrapiya.th@gmail.com</strong></a>
+            <a class="contact-link" href="https://www.linkedin.com/in/ezra-piyachanokwong/" target="_blank" rel="noreferrer"><span>LinkedIn</span><strong>linkedin.com/in/ezra-piyachanokwong</strong></a>
+            <a class="contact-link" href="https://with-ezra.com" target="_blank" rel="noreferrer"><span>Website</span><strong>with-ezra.com</strong></a>
+            <div class="contact-link"><span>Location</span><strong>Bangkok, Thailand</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" role="status" aria-live="polite" id="toast">Copied to clipboard</div>
+
+  <script>
+    (function () {
+      const nav = document.getElementById('nav-links');
+      const menu = document.querySelector('.menu-button');
+      const toast = document.getElementById('toast');
+      const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.add('show');
+        window.clearTimeout(showToast.timer);
+        showToast.timer = window.setTimeout(() => toast.classList.remove('show'), 2200);
+      };
+
+      if (menu && nav) {
+        menu.addEventListener('click', () => {
+          const isOpen = nav.classList.toggle('open');
+          menu.setAttribute('aria-expanded', String(isOpen));
+        });
+        nav.addEventListener('click', (event) => {
+          if (event.target.matches('a')) {
+            nav.classList.remove('open');
+            menu.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      document.querySelectorAll('[data-copy]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const text = button.getAttribute('data-copy') || '';
+          try {
+            await navigator.clipboard.writeText(text);
+            showToast('Copied summary to clipboard');
+          } catch (error) {
+            showToast('Copy ready: ' + text.slice(0, 64) + '…');
+          }
+        });
+      });
+
+      document.querySelectorAll('[data-action="resume"]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          if (link.getAttribute('href') === '#') event.preventDefault();
+          showToast('Resume download placeholder — connect Ezra\'s PDF file here');
+        });
+      });
+
+      const revealItems = Array.from(document.querySelectorAll('.reveal'));
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (revealItems.length) {
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+          revealItems.forEach((item) => item.classList.add('is-visible'));
+        } else {
+          const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          }, { rootMargin: '0px 0px -12% 0px', threshold: 0.16 });
+          revealItems.forEach((item) => revealObserver.observe(item));
+        }
+      }
+    })();
+  </script>
 </body>
-
 </html>

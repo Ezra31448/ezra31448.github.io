@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Ezra Piyachanokwong — AI-Driven Software QA Engineer</title>
   <meta name="description" content="Portfolio for Ezra Piyachanokwong, an AI-Driven Software QA Engineer specializing in web testing, API testing, automation, database validation, and AI-assisted QA workflows." />
   <script>document.documentElement.classList.add('js');</script>
@@ -165,6 +165,33 @@
       align-items: center;
     }
     .hero-copy { display: grid; gap: 26px; }
+
+    /* Hero rotating "Focused on ..." line — subtle fade + vertical slide.
+       Static (first word) when prefers-reduced-motion is set (handled in JS).
+       Reserved min-height + nowrap keep it on one line so changing words never
+       causes layout shift or horizontal overflow. */
+    .hero-focus {
+      margin: 0;
+      font-size: clamp(15px, 1.9vw, 23px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      color: #334155;
+      white-space: nowrap;
+      min-height: 1.55em;                 /* reserve one line -> no vertical jump */
+    }
+    .hero-focus-label { color: var(--muted-2); font-weight: 550; margin-right: 8px; }
+    .hero-focus-word {
+      display: inline-block;
+      color: var(--accent);
+      transition: opacity .42s ease, transform .42s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .hero-focus-word.out { opacity: 0; transform: translateY(-0.45em); }
+    .hero-focus-word.pre { opacity: 0; transform: translateY(0.45em); transition: none; }
+    @media (max-width: 380px) { .hero-focus { font-size: 14px; } }   /* fit longest phrase on tiny screens */
+    @media (max-width: 360px) { .hero-focus { white-space: normal; min-height: 2.8em; font-size: 13px; } }  /* controlled wrap fallback */
+
     .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
     .button {
       display: inline-flex;
@@ -525,7 +552,7 @@
          viewport-relative and the explicit margins align it reliably. */
       .site-header {
         position: fixed;
-        top: 14px;
+        top: calc(env(safe-area-inset-top) + 10px);   /* respect iPhone notch / status bar */
         left: 16px;
         right: 16px;
         width: auto;
@@ -553,7 +580,7 @@
           0 8px 24px rgba(15, 23, 42, 0.10);            /* subtle float */
         pointer-events: none;            /* never block taps on the bar content */
       }
-      .site-header .nav { padding-inline: 12px; min-height: 52px; gap: 8px; }
+      .site-header .nav { width: 100%; max-width: none; margin: 0; padding-inline: 12px; min-height: 52px; gap: 8px; }  /* override .container width so it fills the fixed header */
       .brand-lockup { min-width: 0; }                    /* allow the name to shrink if needed */
       .brand-lockup span:last-child {
         min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -583,7 +610,7 @@
       /* Floating liquid-glass dropdown panel (fade + slide-down; never affects flow) */
       .nav-links {
         position: fixed;
-        top: 76px;                                       /* below the floating header (14+52+gap) */
+        top: calc(env(safe-area-inset-top) + 70px);      /* below the floating navbar */
         left: 16px;                                      /* aligned with header side gaps */
         right: 16px;
         bottom: auto;
@@ -1000,6 +1027,9 @@
         <div class="hero-copy">
           <span class="eyebrow reveal" data-reveal="hero">Bangkok · AI-assisted QA delivery</span>
           <h1 class="reveal" data-reveal="hero" style="--reveal-delay: 80ms;">AI-Driven Software QA Engineer</h1>
+          <p class="hero-focus reveal" data-reveal="hero" style="--reveal-delay: 140ms;">
+            <span class="hero-focus-label">Focused on</span><span class="hero-focus-word" id="hero-focus-word" data-words='["Web Testing","API Validation","Playwright Automation","Regression Testing","AI-Assisted QA Review","Software Delivery Quality"]'>Web Testing</span>
+          </p>
           <p class="lead reveal" data-reveal="hero" style="--reveal-delay: 160ms;">Testing web applications, APIs, automation workflows, and AI-assisted software delivery.</p>
           <p class="reveal" data-reveal="hero" style="--reveal-delay: 220ms;">I help teams validate product behavior, business rules, regression risks, and AI-generated implementation quality across real software delivery cycles.</p>
           <div class="hero-actions" aria-label="Primary actions">
@@ -1214,6 +1244,7 @@
         if (!nav || !menu) return;
         nav.classList.remove('open');
         menu.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-label', 'Open menu');
         document.body.classList.remove('menu-open');
         if (backdrop) backdrop.classList.remove('is-open');
       };
@@ -1221,6 +1252,7 @@
         if (!nav || !menu) return;
         nav.classList.add('open');
         menu.setAttribute('aria-expanded', 'true');
+        menu.setAttribute('aria-label', 'Close menu');
         document.body.classList.add('menu-open');
         if (backdrop) backdrop.classList.add('is-open');
       };
@@ -1306,6 +1338,29 @@
           revealItems.forEach((item) => revealObserver.observe(item));
         }
       }
+
+      // Hero rotating "Focused on ..." text — subtle fade + slide.
+      // Stays static (first word) when prefers-reduced-motion is set or no JS.
+      (function () {
+        var wordEl = document.getElementById('hero-focus-word');
+        if (!wordEl) return;
+        var words;
+        try { words = JSON.parse(wordEl.getAttribute('data-words') || '[]'); } catch (e) { words = []; }
+        if (!words || words.length < 2) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;  // keep static
+        var i = 0, HOLD = 2600, FADE = 440;
+        setInterval(function () {
+          wordEl.classList.add('out');                       // fade out + slide up
+          setTimeout(function () {
+            i = (i + 1) % words.length;
+            wordEl.textContent = words[i];
+            wordEl.classList.remove('out');
+            wordEl.classList.add('pre');                     // jump below, no transition
+            void wordEl.offsetWidth;                         // reflow
+            wordEl.classList.remove('pre');                  // animate up into view
+          }, FADE);
+        }, HOLD);
+      })();
     })();
   </script>
 </body>

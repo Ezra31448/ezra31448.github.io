@@ -518,30 +518,42 @@
     .toast.show { transform: translateY(0); opacity: 1; }
 
     @media (max-width: 980px) {
-      /* ===== MOBILE NAV — liquid-glass language, adapted for mobile =====
-         Compact edge-to-edge glass header + floating glass dropdown panel.
-         Edge-to-edge + top:0 keeps dropdown positioning identical whether or
-         not the header's backdrop-filter creates a containing block (robust). */
+      /* ===== MOBILE NAV — floating liquid-glass card (matches desktop) =====
+         The navbar floats with rounded corners + side gaps. The glass lives on a
+         ::before layer so the header element itself has NO backdrop-filter/transform
+         -> it does NOT become a containing block -> the fixed dropdown stays
+         viewport-relative and the explicit margins align it reliably. */
       .site-header {
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
+        top: 14px;
+        left: 16px;
+        right: 16px;
         width: auto;
         margin: 0;
         transform: none;
         z-index: 50;
-        border-radius: 0;
+        border-radius: 22px;
+        background: transparent;
         border: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.55);
-        background: rgba(255, 255, 255, 0.55);           /* translucent glass */
+        box-shadow: none;
+        backdrop-filter: none;            /* cancel original blur; glass is on ::before */
+        -webkit-backdrop-filter: none;
+      }
+      .site-header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: rgba(255, 255, 255, 0.45);          /* translucent liquid glass */
+        border: 1px solid rgba(255, 255, 255, 0.4);     /* soft white border */
         backdrop-filter: blur(20px) saturate(160%);
         -webkit-backdrop-filter: blur(20px) saturate(160%);
         box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.8),        /* top sheen */
-          0 6px 20px rgba(15, 23, 42, 0.08);             /* soft float */
+          inset 0 1px 0 rgba(255, 255, 255, 0.8),       /* top sheen */
+          0 8px 24px rgba(15, 23, 42, 0.10);            /* subtle float */
+        pointer-events: none;            /* never block taps on the bar content */
       }
-      .site-header .nav { padding-inline: 14px; min-height: 54px; gap: 8px; }
+      .site-header .nav { padding-inline: 12px; min-height: 52px; gap: 8px; }
       .brand-lockup { min-width: 0; }                    /* allow the name to shrink if needed */
       .brand-lockup span:last-child {
         min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -571,9 +583,9 @@
       /* Floating liquid-glass dropdown panel (fade + slide-down; never affects flow) */
       .nav-links {
         position: fixed;
-        top: 62px;                                       /* just below the compact bar */
-        left: 12px;
-        right: 12px;
+        top: 76px;                                       /* below the floating header (14+52+gap) */
+        left: 16px;                                      /* aligned with header side gaps */
+        right: 16px;
         bottom: auto;
         display: flex;                                   /* always flex; .open toggles visibility for animation */
         flex-direction: column;

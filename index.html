@@ -537,6 +537,12 @@
       .site-header .nav { padding-inline: 16px; min-height: 58px; }
       body.menu-open { overflow: hidden; }        /* lock background scroll while menu open */
 
+      /* Tone down decorative orbs/mesh on mobile (cleaner, lighter GPU, no big glass circle) */
+      :root { --bg-anim-blob-opacity: 0.4; }      /* dim the aurora orbs */
+      .animated-bg::before { display: none; }     /* hide the large rotating mesh */
+      .animated-bg::after { opacity: 0.3; }       /* soften the dot grid */
+      body.menu-open .animated-bg { opacity: 0.35; transition: opacity .25s ease; }
+
       /* Dimmed backdrop behind the open menu — tap to close */
       .menu-backdrop {
         position: fixed;
@@ -571,7 +577,13 @@
         box-shadow: 0 18px 44px rgba(15, 23, 42, 0.16);
       }
       .nav-links.open { display: flex; }
-      .nav-links a { border-radius: 12px; padding: 13px 14px; }
+      .nav-links a {
+        border-radius: 12px;
+        padding: 13px 14px;
+        white-space: nowrap;                       /* never clip/wrap labels like "Case Studies" */
+        overflow: visible;
+        text-overflow: unset;
+      }
       .nav-links a:active { background: rgba(37, 99, 235, 0.08); }
 
       /* Hamburger -> X when open */
@@ -795,30 +807,35 @@
       border-color: rgba(37, 99, 235, 0.28);
     }
 
-    /* Header — floating "Dynamic Island" glass pill (more transparent + rounded) */
+    /* Header — floating "Dynamic Island" glass pill (DESKTOP ONLY, >= 981px).
+       Scoped via min-width because media queries add no specificity: without this
+       guard, this later rule would override the mobile full-width bar and its
+       transform/backdrop-filter would trap the fixed mobile menu in a small box. */
     html { scroll-padding-top: 100px; }               /* keep anchored sections clear of the pill */
-    .site-header {
-      position: fixed;
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(1160px, calc(100vw - 32px));         /* centered island with 16px side gap */
-      z-index: 50;
-      border-radius: 999px;                           /* pill / notch shape */
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      background: rgba(255, 255, 255, 0.4);           /* more transparent glass */
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.8),       /* top sheen */
-        0 10px 30px rgba(15, 23, 42, 0.14);           /* float shadow */
-    }
-    .site-header .nav {
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      min-height: 60px;                              /* slimmer island */
-      padding-inline: 22px;                          /* breathing room inside the pill */
+    @media (min-width: 981px) {
+      .site-header {
+        position: fixed;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1160px, calc(100vw - 32px));         /* centered island with 16px side gap */
+        z-index: 50;
+        border-radius: 999px;                           /* pill / notch shape */
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.4);           /* more transparent glass */
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.8),       /* top sheen */
+          0 10px 30px rgba(15, 23, 42, 0.14);           /* float shadow */
+      }
+      .site-header .nav {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        min-height: 60px;                              /* slimmer island */
+        padding-inline: 22px;                          /* breathing room inside the pill */
+      }
     }
 
     /* Sliding glass indicator inside the nav ("magic blob" follows hover, rests on brand) */

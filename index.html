@@ -523,6 +523,7 @@
          (transform / backdrop-filter on .site-header would otherwise trap the
           fixed menu inside the small pill box — root cause of the overlap bug.) */
       .site-header {
+        position: fixed;                          /* true fixed bar — stays compact, never grows */
         top: 0;
         left: 0;
         right: 0;
@@ -840,7 +841,12 @@
 
     /* Sliding glass indicator inside the nav ("magic blob" follows hover, rests on brand) */
     .nav { position: relative; }
-    .brand-lockup, .nav-links, .nav-links a { position: relative; z-index: 1; } /* sit above the blob */
+    /* DESKTOP ONLY: links must sit above the .nav-pill blob. Scoped to >= 981px because
+       this later rule (same specificity) otherwise overrides the mobile menu's
+       position: fixed and traps the menu in-flow inside the header. */
+    @media (min-width: 981px) {
+      .brand-lockup, .nav-links, .nav-links a { position: relative; z-index: 1; }
+    }
     .nav-pill {
       position: absolute;
       top: 50%;

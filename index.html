@@ -151,13 +151,13 @@
       color: var(--muted);
       font-size: 14px;
       font-weight: 560;
-      transition: color .18s ease, background .18s ease;
+      transition: color .18s ease;
     }
-    .nav-links a:hover { color: var(--fg); background: rgba(148, 163, 184, 0.10); }
-    .nav-links a:focus-visible { color: var(--fg); background: rgba(148, 163, 184, 0.10); outline: 2px solid oklch(73% 0.105 218); outline-offset: 3px; }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-links a:focus-visible { color: var(--fg); outline: 2px solid oklch(73% 0.105 218); outline-offset: 3px; }
     .menu-button { display: none; }
 
-    .hero { padding: clamp(72px, 9vw, 128px) 0 70px; }
+    .hero { padding: clamp(96px, 10vw, 132px) 0 70px; }
     .hero-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.62fr);
@@ -394,11 +394,8 @@
 
     .workflow {
       display: grid;
-      grid-template-columns: repeat(7, minmax(120px, 1fr));
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-      scrollbar-color: var(--border-strong) transparent;
     }
     .workflow-step {
       min-height: 150px;
@@ -523,7 +520,7 @@
     @media (max-width: 980px) {
       .nav-links {
         position: fixed;
-        inset: 74px 16px auto 16px;
+        inset: 84px 16px auto 16px;
         display: none;
         padding: 12px;
         flex-direction: column;
@@ -577,7 +574,7 @@
 
     @media (max-width: 620px) {
       :root { --container: min(100vw - 28px, 1160px); }
-      .hero { padding-top: 52px; }
+      .hero { padding-top: 88px; }
       .hero-actions, .case-actions { align-items: stretch; flex-direction: column; }
       .button { width: 100%; }
       .skills-grid { grid-template-columns: 1fr; }
@@ -591,11 +588,277 @@
       .card, .workflow-step, .focus-item { transition: transform .18s ease, border-color .18s ease, background .18s ease; }
       .card:hover, .workflow-step:hover, .focus-item:hover { transform: translateY(-2px); border-color: var(--border-strong); }
     }
+
+    /* =========================================================
+       ANIMATED BACKGROUND  —  AI / QA-Automation themed
+       ---------------------------------------------------------
+       Decorative fixed layer placed BEHIND all content.
+       Visuals: drifting aurora glow + slow technical mesh
+                (AI workflow feel) + soft floating QA data nodes.
+       • CSS-only (no JS / no external libs)
+       • Animate only transform/opacity (GPU-friendly)
+       • Never blocks clicks (pointer-events: none)
+       • Respects prefers-reduced-motion
+       TUNING:
+         --bg-anim-duration       -> animation speed (smaller = faster)
+         --bg-anim-blob-opacity   -> aurora glow intensity / brightness
+       ========================================================= */
+     :root {
+       --bg-anim-duration: 18s;       /* per-cycle drift time (12–30s recommended; do NOT go below ~12s or it flickers) */
+       --bg-anim-blob-opacity: 0.95;  /* overall glow strength (0 = off, 1 = full) */
+     }
+
+    .animated-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -3;                    /* behind body::before grid (-2) & all content */
+      pointer-events: none;           /* never intercept clicks / focus / scroll   */
+      overflow: hidden;
+      isolation: isolate;             /* lock stacking so nothing leaks upward */
+    }
+
+    /* Slow rotating technical mesh — evokes an AI workflow / automation pipeline */
+    .animated-bg::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 180vmax;
+      height: 180vmax;
+      margin-left: -90vmax;
+      margin-top: -90vmax;
+      background: conic-gradient(
+        from 0deg,
+        rgba(37, 99, 235, 0.16),
+        rgba(20, 184, 166, 0.14),
+        rgba(37, 99, 235, 0.12),
+        rgba(20, 184, 166, 0.16),
+        rgba(37, 99, 235, 0.16)
+      );
+      animation: bgMeshSpin calc(var(--bg-anim-duration) * 2) linear infinite;
+      will-change: transform;
+    }
+
+    /* Floating QA "data nodes" dot grid — slow subtle pulse */
+    .animated-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(37, 99, 235, 0.30) 1.5px, transparent 1.8px);
+      background-size: 38px 38px;
+      -webkit-mask-image: radial-gradient(circle at 50% 28%, #000 0%, transparent 70%);
+      mask-image: radial-gradient(circle at 50% 28%, #000 0%, transparent 70%);
+      opacity: 0.7;
+      animation: bgNodePulse calc(var(--bg-anim-duration) * 1.5) ease-in-out infinite alternate;
+      will-change: opacity;
+    }
+
+    /* Aurora glow blobs — soft premium AI light */
+    .animated-bg__blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(64px);
+      opacity: var(--bg-anim-blob-opacity);
+      mix-blend-mode: multiply;
+      will-change: transform;
+    }
+    .animated-bg__blob--1 {
+      width: 46vw; height: 46vw;
+      left: -8vw; top: -10vh;
+      background: radial-gradient(circle at 30% 30%, rgba(37, 99, 235, 0.95), transparent 62%);
+      animation: bgDrift1 var(--bg-anim-duration) ease-in-out infinite alternate;
+    }
+    .animated-bg__blob--2 {
+      width: 40vw; height: 40vw;
+      right: -6vw; top: 8vh;
+      background: radial-gradient(circle at 60% 40%, rgba(20, 184, 166, 0.90), transparent 62%);
+      animation: bgDrift2 calc(var(--bg-anim-duration) * 1.15) ease-in-out infinite alternate;
+    }
+    .animated-bg__blob--3 {
+      width: 38vw; height: 38vw;
+      left: 28vw; bottom: -12vh;
+      background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.85), transparent 62%);
+      animation: bgDrift3 calc(var(--bg-anim-duration) * 0.9) ease-in-out infinite alternate;
+    }
+
+    @keyframes bgDrift1 {
+      0%   { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(6vw, 8vh, 0) scale(1.12); }
+    }
+    @keyframes bgDrift2 {
+      0%   { transform: translate3d(0, 0, 0) scale(1.05); }
+      100% { transform: translate3d(-7vw, 6vh, 0) scale(0.95); }
+    }
+    @keyframes bgDrift3 {
+      0%   { transform: translate3d(0, 0, 0) scale(0.95); }
+      100% { transform: translate3d(4vw, -7vh, 0) scale(1.10); }
+    }
+    @keyframes bgMeshSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes bgNodePulse {
+      0%   { opacity: 0.45; }
+      100% { opacity: 0.85; }
+    }
+
+    /* Performance: lighten blur on small screens */
+    @media (max-width: 620px) {
+      .animated-bg__blob { filter: blur(50px); }
+      .animated-bg::before { width: 220vmax; height: 220vmax; margin-left: -110vmax; margin-top: -110vmax; }
+    }
+
+    /* Accessibility: fully disable animated-bg motion for reduced-motion users */
+    @media (prefers-reduced-motion: reduce) {
+      .animated-bg::before,
+      .animated-bg::after,
+      .animated-bg__blob { animation: none !important; }
+    }
+
+    /* =========================================================
+       LIQUID GLASS SURFACES
+       ---------------------------------------------------------
+       Frosted, translucent panels that blur the animated bg
+       drifting behind them -> "liquid glass" mood.
+       Equal specificity + later source order override the
+       original solid white card backgrounds.
+       Readability stays high: translucent white + dark text.
+       TUNING:
+         glass blur  -> the blur()/saturate() values
+         glass tint  -> rgba alpha in the backgrounds
+       ========================================================= */
+
+    /* Hero panels — real frosted blur over the moving background */
+    .card,
+    .profile-card,
+    .learning-strip {
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(18px) saturate(150%);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+      border-color: rgba(255, 255, 255, 0.65);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.75),    /* top sheen — glass highlight */
+        inset 0 0 0 1px rgba(255, 255, 255, 0.18),  /* faint inner rim */
+        0 16px 40px rgba(15, 23, 42, 0.10);         /* soft float shadow */
+    }
+    .profile-card { background: rgba(255, 255, 255, 0.5); }
+    .case-card.featured {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(248, 250, 252, 0.5));
+      border-color: rgba(37, 99, 235, 0.28);
+    }
+
+    /* Header — floating "Dynamic Island" glass pill (more transparent + rounded) */
+    html { scroll-padding-top: 100px; }               /* keep anchored sections clear of the pill */
+    .site-header {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1160px, calc(100vw - 32px));         /* centered island with 16px side gap */
+      z-index: 50;
+      border-radius: 999px;                           /* pill / notch shape */
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.4);           /* more transparent glass */
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),       /* top sheen */
+        0 10px 30px rgba(15, 23, 42, 0.14);           /* float shadow */
+    }
+    .site-header .nav {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      min-height: 60px;                              /* slimmer island */
+      padding-inline: 22px;                          /* breathing room inside the pill */
+    }
+
+    /* Sliding glass indicator inside the nav ("magic blob" follows hover, rests on brand) */
+    .nav { position: relative; }
+    .brand-lockup, .nav-links, .nav-links a { position: relative; z-index: 1; } /* sit above the blob */
+    .nav-pill {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 40px;
+      width: 0;                                       /* JS sets width to match the target */
+      transform: translate3d(0, -50%, 0);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.9),     /* glossy top edge */
+        inset 0 -2px 5px rgba(148, 163, 184, 0.18);   /* inner shade -> นูน/เด้ง 3D glass chunk */
+      pointer-events: none;
+      z-index: 0;
+      transition:
+        transform .45s cubic-bezier(0.34, 1.56, 0.64, 1),  /* bouncy "pop" slide */
+        width .45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    /* Press feedback — glass chunk flashes + accent ring on click */
+    .nav-pill.is-press {
+      animation: navPillPress .55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes navPillPress {
+      0%   { filter: brightness(1);    box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), inset 0 -2px 5px rgba(148,163,184,0.18); }
+      30%  { filter: brightness(1.14); box-shadow: inset 0 1px 1px rgba(255,255,255,1), inset 0 -2px 9px rgba(148,163,184,0.26), 0 0 0 5px rgba(37,99,235,0.18); }
+      100% { filter: brightness(1);    box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), inset 0 -2px 5px rgba(148,163,184,0.18); }
+    }
+    @media (max-width: 980px) { .nav-pill { display: none; } }       /* disabled on mobile (touch) */
+    @media (prefers-reduced-motion: reduce) { .nav-pill { transition: none; } }
+
+    /* Secondary surfaces — translucent glass WITHOUT backdrop-filter
+       (kept cheap: ~13 small items would be costly to blur) */
+    .workflow-step,
+    .timeline-card,
+    .tag,
+    .badge,
+    .focus-item,
+    .contact-link,
+    .location-pill,
+    .learning-topics {
+      background: rgba(255, 255, 255, 0.6);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+    .timeline-dot {
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.06);
+    }
+
+    /* Performance: lighter blur on small screens */
+    @media (max-width: 620px) {
+      .card, .profile-card, .learning-strip, .site-header {
+        backdrop-filter: blur(12px) saturate(140%);
+        -webkit-backdrop-filter: blur(12px) saturate(140%);
+      }
+    }
+
+    /* Accessibility: respect users who reduce transparency -> solid surfaces */
+    @media (prefers-reduced-transparency: reduce) {
+      .card, .profile-card, .learning-strip, .site-header,
+      .workflow-step, .timeline-card, .tag, .badge,
+      .focus-item, .contact-link, .location-pill, .learning-topics {
+        background: #FFFFFF;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- ANIMATED BACKGROUND: decorative only, sits behind all content (z-index:-3) -->
+  <div class="animated-bg" aria-hidden="true">
+    <span class="animated-bg__blob animated-bg__blob--1"></span>
+    <span class="animated-bg__blob animated-bg__blob--2"></span>
+    <span class="animated-bg__blob animated-bg__blob--3"></span>
+  </div>
+
   <header class="site-header">
     <nav class="container nav" aria-label="Primary navigation">
+      <span class="nav-pill" aria-hidden="true"></span>
       <a class="brand-lockup" href="#top" aria-label="Ezra portfolio home">
         <span class="brand-mark">EP</span>
         <span>Ezra Piyachanokwong</span>
@@ -840,6 +1103,42 @@
             menu.setAttribute('aria-expanded', 'false');
           }
         });
+      }
+
+      // Sliding glass indicator inside the top nav (follows hover, rests on the brand)
+      const navBar = document.querySelector('.nav');
+      const brandEl = navBar && navBar.querySelector('.brand-lockup');
+      const navPill = navBar && navBar.querySelector('.nav-pill');
+      const navLinkEls = navBar ? Array.from(navBar.querySelectorAll('.nav-links a')) : [];
+      if (navBar && navPill && brandEl) {
+        let currentTarget = brandEl;
+        const moveNavPill = (el) => {
+          if (!el) return;
+          currentTarget = el;
+          const pad = 14;                                       // horizontal breathing room (px each side)
+          const nr = navBar.getBoundingClientRect();
+          const r = el.getBoundingClientRect();
+          navPill.style.width = (r.width + pad * 2) + 'px';
+          navPill.style.transform = 'translate3d(' + (r.left - nr.left - pad) + 'px, -50%, 0)';
+        };
+        const pressPill = () => {                               // click feedback: replay press animation
+          navPill.classList.remove('is-press');
+          void navPill.offsetWidth;                             // force reflow so it restarts on rapid taps
+          navPill.classList.add('is-press');
+        };
+        navPill.addEventListener('animationend', () => navPill.classList.remove('is-press'));
+        const isDesktop = () => window.matchMedia('(min-width: 981px)').matches;
+        moveNavPill(brandEl);                                   // start resting on the brand
+        navLinkEls.forEach((a) => {
+          a.addEventListener('mouseenter', () => { if (isDesktop()) moveNavPill(a); });
+          a.addEventListener('focus', () => { if (isDesktop()) moveNavPill(a); });
+          a.addEventListener('pointerdown', pressPill);         // feedback on press/click
+        });
+        brandEl.addEventListener('mouseenter', () => { if (isDesktop()) moveNavPill(brandEl); });
+        brandEl.addEventListener('pointerdown', pressPill);
+        navBar.addEventListener('mouseleave', () => { if (isDesktop()) moveNavPill(brandEl); });
+        window.addEventListener('resize', () => moveNavPill(currentTarget));
+        window.addEventListener('load', () => moveNavPill(currentTarget));
       }
 
       document.querySelectorAll('[data-copy]').forEach((button) => {

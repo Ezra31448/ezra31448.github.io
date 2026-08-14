@@ -107,9 +107,10 @@
     button, input { font: inherit; }
     button { cursor: pointer; }
     .container { width: var(--container); margin-inline: auto; }
-    /* content-visibility: the browser skips style/layout/paint for sections
-       far off-screen — cheaper load, cheaper scroll, less battery. */
-    .section { padding: clamp(72px, 9vw, 120px) 0; position: relative; content-visibility: auto; contain-intrinsic-size: auto 900px; }
+    /* One continuous document: tight section rhythm, no content-visibility —
+       its estimated 900px boxes made sections pop in as isolated panels,
+       shifted layout on render, and clipped shared background layers. */
+    .section { padding: clamp(44px, 6vw, 76px) 0; position: relative; }
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -193,7 +194,7 @@
     .nav-links a:focus-visible { color: var(--fg); outline: 2px solid oklch(73% 0.105 218); outline-offset: 3px; }
     .menu-button { display: none; }
 
-    .hero { padding: clamp(96px, 10vw, 132px) 0 70px; }
+    .hero { padding: clamp(96px, 10vw, 132px) 0 44px; }
     .hero-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.62fr);
@@ -253,11 +254,12 @@
 
     html.js .reveal {
       opacity: 0;
-      transform: translate3d(0, 18px, 0);
+      transform: translate3d(0, 14px, 0);
       transition:
-        opacity var(--reveal-duration, 560ms) cubic-bezier(0.22, 1, 0.36, 1),
-        transform var(--reveal-duration, 560ms) cubic-bezier(0.22, 1, 0.36, 1);
-      transition-delay: var(--reveal-delay, 0ms);
+        opacity var(--reveal-duration, 400ms) cubic-bezier(0.22, 1, 0.36, 1),
+        transform var(--reveal-duration, 400ms) cubic-bezier(0.22, 1, 0.36, 1);
+      /* halve every inline stagger centrally — snappy, not a slow cascade */
+      transition-delay: calc(var(--reveal-delay, 0ms) * 0.5);
       will-change: opacity, transform;
     }
     html.js .reveal.is-visible {
@@ -265,9 +267,8 @@
       transform: translate3d(0, 0, 0);
       will-change: auto;
     }
-    html.js .reveal[data-reveal="soft"] { transform: translate3d(0, 12px, 0); }
-    html.js .reveal[data-reveal="hero"] { transform: translate3d(0, 20px, 0); }
-    html.js .reveal[data-reveal="workflow"] { transform: translate3d(0, 14px, 0); }
+    html.js .reveal[data-reveal="soft"] { transform: translate3d(0, 8px, 0); }
+    html.js .reveal[data-reveal="hero"] { transform: translate3d(0, 14px, 0); }
     html.js .hero .reveal {
       opacity: 1;
       transform: translate3d(0, 0, 0);
@@ -275,8 +276,8 @@
     }
     @media (prefers-reduced-motion: no-preference) {
       html.js .hero .reveal {
-        animation: heroReveal var(--reveal-duration, 560ms) cubic-bezier(0.22, 1, 0.36, 1) both;
-        animation-delay: var(--reveal-delay, 0ms);
+        animation: heroReveal var(--reveal-duration, 400ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: calc(var(--reveal-delay, 0ms) * 0.5);
       }
       @keyframes heroReveal {
         from { opacity: 0.84; transform: translate3d(0, 10px, 0); }
@@ -1356,12 +1357,14 @@
     }
 
     /* =========================================================
-       HERO SPOTLIGHT — soft light follows the cursor (desktop only)
+       PAGE SPOTLIGHT — ambient light follows the cursor page-wide
+       Fixed to the viewport (not the hero), so the glow keeps
+       following in every section while scrolling.
        ========================================================= */
     .hero { position: relative; }
-    .hero-spotlight {
-      position: absolute;
-      inset: 0;
+    .page-spotlight {
+      position: fixed;
+      inset: 0;                          /* viewport-sized: no edges to clip the glow */
       z-index: -1;                       /* above animated-bg(-3)/grid(-2), below content */
       pointer-events: none;
       background: radial-gradient(680px circle at var(--sx, 50%) var(--sy, 28%),
@@ -1371,14 +1374,14 @@
       opacity: 0;
       transition: opacity .55s ease;
     }
-    .hero-spotlight.is-on { opacity: 1; }
-    html[data-theme="dark"] .hero-spotlight {
+    .page-spotlight.is-on { opacity: 1; }
+    html[data-theme="dark"] .page-spotlight {
       background: radial-gradient(720px circle at var(--sx, 50%) var(--sy, 28%),
         rgba(91, 140, 255, 0.36),
         rgba(45, 212, 191, 0.16) 40%,
         transparent 70%);
     }
-    @media (prefers-reduced-motion: reduce) { .hero-spotlight { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .page-spotlight { display: none; } }
 
     /* =========================================================
        3D TILT — cards lean toward the cursor (JS-driven, desktop only)
@@ -1391,19 +1394,21 @@
       inset: 0;
       border-radius: inherit;
       background: radial-gradient(300px circle at var(--gx, 50%) var(--gy, 30%),
-        rgba(255, 255, 255, 0.55),
-        rgba(255, 255, 255, 0.16) 45%,
+        rgba(255, 255, 255, 0.34),
+        rgba(255, 255, 255, 0.10) 45%,
         transparent 72%);
       opacity: 0;
-      transition: opacity .28s ease;
+      transition: opacity .38s ease;
       pointer-events: none;
       z-index: 3;
     }
     .tilt.is-tilting .tilt-glare { opacity: 1; }
+    /* after mouseleave, the held light dims in place — slow & graceful, not the snappy .38s */
+    .tilt.is-dimming .tilt-glare { transition-duration: 1.2s; }
     html[data-theme="dark"] .tilt-glare {
       background: radial-gradient(300px circle at var(--gx, 50%) var(--gy, 30%),
-        rgba(147, 197, 253, 0.30),
-        rgba(147, 197, 253, 0.08) 45%,
+        rgba(147, 197, 253, 0.22),
+        rgba(147, 197, 253, 0.06) 45%,
         transparent 72%);
     }
     @media (prefers-reduced-motion: reduce) {
@@ -1419,6 +1424,9 @@
     <span class="animated-bg__blob animated-bg__blob--2"></span>
     <span class="animated-bg__blob animated-bg__blob--3"></span>
   </div>
+  <!-- PAGE SPOTLIGHT: ambient light following the cursor, viewport-fixed so it
+       works in every section, not just the hero -->
+  <span class="page-spotlight" aria-hidden="true"></span>
 
   <header class="site-header">
     <nav class="container nav" aria-label="Primary navigation">
@@ -1451,7 +1459,6 @@
 
   <main id="top">
     <section class="hero" data-od-id="hero">
-      <span class="hero-spotlight" aria-hidden="true"></span>
       <div class="container hero-grid">
         <div class="hero-copy">
           <span class="eyebrow reveal" data-reveal="hero">Bangkok · AI-assisted QA delivery</span>
@@ -1580,13 +1587,15 @@
           <p class="lead">Ezra works as a QA owner in AI-assisted development cycles, validating AI-generated implementation from the perspective of functionality, user behavior, edge cases, data accuracy, and regression risk.</p>
         </div>
         <div class="workflow" aria-label="AI-assisted QA workflow diagram">
-          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 0ms;"><span class="step-num">01</span><span class="step-name">Requirement / ClickUp Task</span></div>
-          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 70ms;"><span class="step-num">02</span><span class="step-name">AI Coding Agent Implementation</span></div>
-          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 140ms;"><span class="step-num">03</span><span class="step-name">QA Review &amp; Bug Report</span></div>
-          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 210ms;"><span class="step-num">04</span><span class="step-name">Expected Fix Definition</span></div>
-          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 280ms;"><span class="step-num">05</span><span class="step-name">AI Fix Iteration</span></div>
-          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 350ms;"><span class="step-num">06</span><span class="step-name">Regression Validation</span></div>
-          <div class="workflow-step reveal" data-reveal="workflow" style="--reveal-delay: 420ms;"><span class="step-num">07</span><span class="step-name">Release Readiness</span></div>
+          <!-- no .reveal here: the full 7-step geometry is present from the start;
+               the sequential ignition (below) is the only animation -->
+          <div class="workflow-step"><span class="step-num">01</span><span class="step-name">Requirement / ClickUp Task</span></div>
+          <div class="workflow-step"><span class="step-num">02</span><span class="step-name">AI Coding Agent Implementation</span></div>
+          <div class="workflow-step"><span class="step-num">03</span><span class="step-name">QA Review &amp; Bug Report</span></div>
+          <div class="workflow-step"><span class="step-num">04</span><span class="step-name">Expected Fix Definition</span></div>
+          <div class="workflow-step"><span class="step-num">05</span><span class="step-name">AI Fix Iteration</span></div>
+          <div class="workflow-step"><span class="step-num">06</span><span class="step-name">Regression Validation</span></div>
+          <div class="workflow-step"><span class="step-num">07</span><span class="step-name">Release Readiness</span></div>
         </div>
       </div>
     </section>
@@ -1993,7 +2002,7 @@
         var activate = function () {
           steps.forEach(function (step, i) {
             if (reduce) { step.classList.add('is-active'); return; }   // instant final state
-            window.setTimeout(function () { step.classList.add('is-active'); }, 450 + i * 220);
+            window.setTimeout(function () { step.classList.add('is-active'); }, 120 + i * 70);
           });
         };
         if (reduce || !('IntersectionObserver' in window)) { activate(); return; }
@@ -2005,14 +2014,13 @@
         io.observe(wf);
       })();
 
-      // ===== Hero spotlight — soft light follows the cursor =====
+      // ===== Page spotlight — ambient light follows the cursor page-wide =====
       (function () {
-        var hero = document.querySelector('.hero');
-        var spot = document.querySelector('.hero-spotlight');
-        if (!hero || !spot) return;
+        var spot = document.querySelector('.page-spotlight');
+        if (!spot) return;
         if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;   // desktop only
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        var tx = 0.5, ty = 0.28, cx = 0.5, cy = 0.28, raf = null, on = false;
+        var tx = 0.5, ty = 0.28, cx = 0.5, cy = 0.28, raf = null, on = false;   // 0..1 across the viewport
         var loop = function () {
           cx += (tx - cx) * 0.13;                                   // smooth chase (lerp)
           cy += (ty - cy) * 0.13;
@@ -2021,15 +2029,15 @@
           if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) raf = window.requestAnimationFrame(loop);  // event-driven: idle -> 0 frames
           else raf = null;
         };
-        hero.addEventListener('pointermove', function (e) {
-          var r = hero.getBoundingClientRect();
-          tx = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
-          ty = Math.min(Math.max((e.clientY - r.top) / r.height, 0), 1);
+        window.addEventListener('pointermove', function (e) {
+          var w = window.innerWidth || 1280, h = window.innerHeight || 800;
+          tx = Math.min(Math.max(e.clientX / w, 0), 1);             // viewport coords — works in every section
+          ty = Math.min(Math.max(e.clientY / h, 0), 1);
           if (!on) { on = true; spot.classList.add('is-on'); }
           if (!raf) raf = window.requestAnimationFrame(loop);
         });
-        hero.addEventListener('pointerleave', function () {
-          on = false;
+        document.documentElement.addEventListener('mouseleave', function () {
+          on = false;                                               // cursor left the window -> fade out
           spot.classList.remove('is-on');
           if (!raf) raf = window.requestAnimationFrame(loop);
         });
@@ -2039,7 +2047,7 @@
       (function () {
         if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;  // desktop only
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        var MAX = 6.0;                                               // max degrees — clearly visible
+        var MAX = 3.0;                                               // max degrees — subtle lean, no flash
         var cards = Array.from(document.querySelectorAll('.card, .profile-card, .workflow-step'));
         cards.forEach(function (card) {
           card.classList.add('tilt');
@@ -2048,20 +2056,25 @@
           glare.setAttribute('aria-hidden', 'true');
           card.appendChild(glare);
           var target = { x: 0, y: 0 }, current = { x: 0, y: 0 };
-          var raf = null, active = false;
+          var raf = null, active = false, glareHeld = false;        // glareHeld: light stays at the exit point after mouseleave
+          var lastG = { x: 50, y: 30 };                             // last raw cursor position on the card (%)
           var paint = function () {
             card.style.transform =
               'perspective(900px) rotateX(' + current.y.toFixed(2) + 'deg) rotateY(' +
-              current.x.toFixed(2) + 'deg) translateY(-3px)';
-            /* glare rides the lerped tilt (one write per frame, not per mousemove) */
-            card.style.setProperty('--gx', (((current.x / (2 * MAX)) + 0.5) * 100).toFixed(1) + '%');
-            card.style.setProperty('--gy', ((0.5 - (current.y / (2 * MAX))) * 100).toFixed(1) + '%');
+              current.x.toFixed(2) + 'deg) translateY(-2px)';
+            /* glare rides the lerped tilt (one write per frame, not per mousemove) —
+               but once held, the light freezes and only the card returns to flat */
+            if (!glareHeld) {
+              card.style.setProperty('--gx', (((current.x / (2 * MAX)) + 0.5) * 100).toFixed(1) + '%');
+              card.style.setProperty('--gy', ((0.5 - (current.y / (2 * MAX))) * 100).toFixed(1) + '%');
+            }
           };
           var settle = function () {
             raf = null;
             card.style.transform = '';                               // hand control back to CSS
             card.style.transition = '';                              // restore hover transitions
             card.style.willChange = '';
+            card.classList.add('is-dimming');                        // held light slowly dims at the exit spot
             card.classList.remove('is-tilting');
           };
           var loop = function () {
@@ -2078,6 +2091,8 @@
             // never fight the reveal entrance animation
             if (card.classList.contains('reveal') && !card.classList.contains('is-visible')) return;
             active = true;
+            glareHeld = false;                                       // resuming: light follows the cursor again
+            card.classList.remove('is-dimming');                     // back to the snappy fade-in
             card.style.transition = 'none';                          // stop CSS .18s from lagging rAF
             card.style.willChange = 'transform';
             card.classList.add('is-tilting');
@@ -2090,10 +2105,14 @@
             var py = (e.clientY - r.top) / r.height;
             target.x = (px - 0.5) * 2 * MAX;                         // rotateY
             target.y = -(py - 0.5) * 2 * MAX;                        // rotateX
+            lastG.x = px * 100; lastG.y = py * 100;                  // remember raw spot for the exit freeze
           });
           card.addEventListener('mouseleave', function () {
             active = false;
-            target.x = 0; target.y = 0;
+            target.x = 0; target.y = 0;                              // card returns to flat 0,0
+            glareHeld = true;                                        // but the light holds at the last cursor spot
+            card.style.setProperty('--gx', lastG.x.toFixed(1) + '%');
+            card.style.setProperty('--gy', lastG.y.toFixed(1) + '%');
             if (!raf) raf = window.requestAnimationFrame(loop);
           });
         });

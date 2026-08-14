@@ -39,7 +39,7 @@
   <!-- Fonts actually used by the design tokens -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" />
   <style>
     /* =========================================================
        Ezra Portfolio — Modern SaaS QA portfolio prototype
@@ -66,9 +66,9 @@
       --radius-xl: 24px;
       --radius-lg: 18px;
       --radius-md: 12px;
-      --font-display: 'Geist', 'IBM Plex Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      --font-body: 'IBM Plex Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --font-display: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-body: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
       --container: min(1160px, calc(100vw - 40px));
     }
 
@@ -289,21 +289,6 @@
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
       html.js .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
-    .badge-row { display: flex; flex-wrap: wrap; gap: 9px; }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      padding: 0 11px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: #FFFFFF;
-      color: #334155;
-      font: 560 12px/1 var(--font-body);
-      letter-spacing: 0.02em;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035);
-    }
-
     .profile-card {
       position: relative;
       padding: 24px;
@@ -1013,7 +998,6 @@
     .workflow-step,
     .timeline-card,
     .tag,
-    .badge,
     .focus-item,
     .contact-link,
     .location-pill,
@@ -1038,7 +1022,7 @@
     /* Accessibility: respect users who reduce transparency -> solid surfaces */
     @media (prefers-reduced-transparency: reduce) {
       .card, .profile-card, .learning-strip, .site-header,
-      .workflow-step, .timeline-card, .tag, .badge,
+      .workflow-step, .timeline-card, .tag,
       .focus-item, .contact-link, .location-pill, .learning-topics,
       .site-header::before, .nav-links, .metric-pill,
       .featured-case-preview, .cc-metrics, .cc-log-panel, .cc-photo-badge {
@@ -1254,7 +1238,6 @@
     html[data-theme="dark"] .workflow-step,
     html[data-theme="dark"] .timeline-card,
     html[data-theme="dark"] .tag,
-    html[data-theme="dark"] .badge,
     html[data-theme="dark"] .focus-item,
     html[data-theme="dark"] .contact-link,
     html[data-theme="dark"] .location-pill,
@@ -1264,10 +1247,12 @@
       border-color: rgba(148, 163, 184, 0.16);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 20px rgba(0, 0, 0, 0.25);
     }
-    html[data-theme="dark"] .badge { color: #C3D0E4; }
     html[data-theme="dark"] .tag { color: #A9B8CE; }
     html[data-theme="dark"] .focus-item { color: #C3D0E4; }
     html[data-theme="dark"] .proof-item { color: #C3D0E4; }
+    /* contact rows hard-code a light-theme slate -> override both text tones in dark */
+    html[data-theme="dark"] .contact-link { color: var(--muted); }
+    html[data-theme="dark"] .contact-link strong { color: var(--fg); }
     html[data-theme="dark"] .learning-topics li {
       background: rgba(20, 30, 52, 0.8);
       border-color: rgba(148, 163, 184, 0.14);
@@ -1345,7 +1330,6 @@
       html[data-theme="dark"] .workflow-step,
       html[data-theme="dark"] .timeline-card,
       html[data-theme="dark"] .tag,
-      html[data-theme="dark"] .badge,
       html[data-theme="dark"] .focus-item,
       html[data-theme="dark"] .contact-link,
       html[data-theme="dark"] .location-pill,
@@ -1472,15 +1456,6 @@
             <a class="button primary reveal" data-reveal="hero" style="--reveal-delay: 300ms;" href="Resume_QA_Ezra_Piyachanokwong.pdf" target="_blank" rel="noreferrer">Download Resume</a>
             <a class="button reveal" data-reveal="hero" style="--reveal-delay: 370ms;" href="#case-studies">View Case Studies</a>
             <a class="button reveal" data-reveal="hero" style="--reveal-delay: 440ms;" href="mailto:ezrapiya.th@gmail.com">Contact Me</a>
-          </div>
-          <div class="badge-row" aria-label="Core capabilities">
-            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 480ms;">Web Testing</span>
-            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 510ms;">API Testing</span>
-            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 540ms;">Playwright</span>
-            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 570ms;">Robot Framework</span>
-            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 600ms;">Claude Code</span>
-            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 630ms;">n8n</span>
-            <span class="badge reveal" data-reveal="hero" style="--reveal-delay: 660ms;">RAG</span>
           </div>
         </div>
 

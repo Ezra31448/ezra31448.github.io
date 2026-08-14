@@ -5,7 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Ezra Piyachanokwong — AI-Driven Software QA Engineer</title>
   <meta name="description" content="Portfolio for Ezra Piyachanokwong, an AI-Driven Software QA Engineer specializing in web testing, API testing, automation, database validation, and AI-assisted QA workflows." />
+  <link rel="canonical" href="https://with-ezra.com/" />
+  <meta name="theme-color" content="#0B1220" />
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ezra Piyachanokwong" />
+  <meta property="og:url" content="https://with-ezra.com/" />
+  <meta property="og:title" content="Ezra Piyachanokwong — AI-Driven Software QA Engineer" />
+  <meta property="og:description" content="AI-assisted QA delivery: web & API testing, Playwright/Robot Framework automation, database validation, and AI-generated implementation review." />
+  <meta property="og:image" content="https://with-ezra.com/profile.jpg" />
+  <meta property="og:image:alt" content="Ezra Piyachanokwong — AI-Driven Software QA Engineer" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Favicon: EP brand mark -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563EB'/%3E%3Ctext x='32' y='43' font-family='Menlo,Consolas,monospace' font-size='26' font-weight='700' fill='%23FFFFFF' text-anchor='middle'%3EEP%3C/text%3E%3C/svg%3E" />
+
+  <!-- Theme: set before first paint to avoid flash -->
+  <script>
+    (function () {
+      var theme = 'light';
+      try {
+        var saved = localStorage.getItem('theme');
+        theme = (saved === 'dark' || saved === 'light')
+          ? saved                                    // returning visitor: honor their choice
+          : 'dark';                                  // first visit: dark by default
+      } catch (e) { /* private mode etc. */ }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
   <script>document.documentElement.classList.add('js');</script>
+
+  <!-- Fonts actually used by the design tokens -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" />
   <style>
     /* =========================================================
        Ezra Portfolio — Modern SaaS QA portfolio prototype
@@ -73,7 +107,9 @@
     button, input { font: inherit; }
     button { cursor: pointer; }
     .container { width: var(--container); margin-inline: auto; }
-    .section { padding: clamp(72px, 9vw, 120px) 0; position: relative; }
+    /* content-visibility: the browser skips style/layout/paint for sections
+       far off-screen — cheaper load, cheaper scroll, less battery. */
+    .section { padding: clamp(72px, 9vw, 120px) 0; position: relative; content-visibility: auto; contain-intrinsic-size: auto 900px; }
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -442,12 +478,29 @@
       right: -12px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--accent-2);
+      color: var(--muted-2);
+      opacity: 0.55;
+      transition: color .3s ease, opacity .3s ease;
       font-family: var(--font-mono);
       z-index: 2;
     }
     .step-num { color: var(--accent); font: 650 12px/1 var(--font-mono); letter-spacing: 0.08em; }
     .step-name { color: var(--fg); font-weight: 650; line-height: 1.25; }
+
+    /* Pipeline activation — steps light up in sequence on scroll (JS adds .is-active).
+       Arrows default to muted and ignite as each step activates -> the flow "runs". */
+    .workflow-step { transition: transform .18s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease; }
+    .workflow-step.is-active {
+      border-color: rgba(37, 99, 235, 0.45);
+      background: rgba(37, 99, 235, 0.05);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 12px 28px rgba(37, 99, 235, 0.12);
+    }
+    .workflow-step.is-active .step-num { color: var(--accent-2); }
+    .workflow-step.is-active:not(:last-child)::after {
+      color: var(--accent-2);
+      opacity: 1;
+      text-shadow: 0 0 10px rgba(20, 184, 166, 0.55);
+    }
 
     .timeline { display: grid; gap: 14px; position: relative; }
     .timeline::before { content: ""; position: absolute; left: 12px; top: 10px; bottom: 10px; width: 1px; background: rgba(148, 163, 184, 0.22); }
@@ -589,7 +642,7 @@
 
       /* Tone down decorative orbs/mesh on mobile (cleaner, lighter GPU, no big glass circle) */
       :root { --bg-anim-blob-opacity: 0.4; }
-      .animated-bg::before { display: none; }            /* hide the large rotating mesh */
+      .animated-bg::before { display: none; }            /* hide the large mesh wash on mobile */
       .animated-bg::after { opacity: 0.3; }
       body.menu-open .animated-bg { opacity: 0.35; transition: opacity .25s ease; }
 
@@ -701,7 +754,7 @@
       .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .case-grid { grid-template-columns: 1fr; }
       .workflow { grid-template-columns: 1fr; overflow: visible; }
-      .workflow-step:not(:last-child)::after { content: "↓"; right: 20px; top: auto; bottom: -18px; transform: none; color: var(--accent-2); }
+      .workflow-step:not(:last-child)::after { content: "↓"; right: 20px; top: auto; bottom: -18px; transform: none; color: var(--muted-2); }
     }
 
     @media (max-width: 620px) {
@@ -744,7 +797,7 @@
          --bg-anim-blob-opacity   -> aurora glow intensity / brightness
        ========================================================= */
      :root {
-       --bg-anim-duration: 18s;       /* per-cycle drift time (12–30s recommended; do NOT go below ~12s or it flickers) */
+       --bg-anim-duration: 28s;       /* per-cycle drift time — slower = calmer & cheaper (GPU works less often) */
        --bg-anim-blob-opacity: 0.95;  /* overall glow strength (0 = off, 1 = full) */
      }
 
@@ -757,7 +810,9 @@
       isolation: isolate;             /* lock stacking so nothing leaks upward */
     }
 
-    /* Slow rotating technical mesh — evokes an AI workflow / automation pipeline */
+    /* Static technical mesh wash — evokes an AI workflow feel.
+       Battery: NO rotation (a 180vmax layer spinning every frame was the
+       single biggest constant GPU cost); blobs still drift behind it. */
     .animated-bg::before {
       content: "";
       position: absolute;
@@ -775,8 +830,6 @@
         rgba(20, 184, 166, 0.16),
         rgba(37, 99, 235, 0.16)
       );
-      animation: bgMeshSpin calc(var(--bg-anim-duration) * 2) linear infinite;
-      will-change: transform;
     }
 
     /* Floating QA "data nodes" dot grid — slow subtle pulse */
@@ -797,7 +850,7 @@
     .animated-bg__blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(64px);
+      filter: blur(48px);
       opacity: var(--bg-anim-blob-opacity);
       mix-blend-mode: multiply;
       will-change: transform;
@@ -833,19 +886,14 @@
       0%   { transform: translate3d(0, 0, 0) scale(0.95); }
       100% { transform: translate3d(4vw, -7vh, 0) scale(1.10); }
     }
-    @keyframes bgMeshSpin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
     @keyframes bgNodePulse {
       0%   { opacity: 0.45; }
       100% { opacity: 0.85; }
     }
 
-    /* Performance: lighten blur on small screens */
+    /* Performance: lighter blur on small screens */
     @media (max-width: 620px) {
-      .animated-bg__blob { filter: blur(50px); }
-      .animated-bg::before { width: 220vmax; height: 220vmax; margin-left: -110vmax; margin-top: -110vmax; }
+      .animated-bg__blob { filter: blur(40px); }
     }
 
     /* Accessibility: fully disable animated-bg motion for reduced-motion users */
@@ -999,6 +1047,369 @@
       }
       .cc-photo-badge { color: #0F172A; }
     }
+
+    /* =========================================================
+       NAV RIGHT GROUP + THEME TOGGLE
+       ========================================================= */
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: #FFFFFF;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035);
+      transition: color .18s ease, border-color .18s ease, background .18s ease, transform .18s ease;
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover { color: var(--fg); border-color: var(--border-strong); transform: translateY(-1px); }
+    .theme-toggle .icon-sun { display: none; }
+    html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    /* keep controls above the sliding nav pill (desktop) */
+    @media (min-width: 981px) {
+      .nav-right, .theme-toggle { position: relative; z-index: 1; }
+    }
+
+    /* =========================================================
+       TIMELINE — animated progress line (draws on scroll)
+       ========================================================= */
+    .timeline-progress {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      margin-left: -0.5px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      transform: scaleY(0);
+      transform-origin: top;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .timeline-dot { transition: background-color .3s ease, border-color .3s ease, box-shadow .3s ease; }
+    .timeline-item.is-passed .timeline-dot {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.14);
+    }
+    @media (prefers-reduced-motion: reduce) { .timeline-progress { transform: scaleY(1) !important; } }
+
+    /* =========================================================
+       QA TERMINAL — simulated regression run (dark in both themes)
+       ========================================================= */
+    .qa-demo { display: grid; gap: 18px; }
+    .terminal {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(11, 18, 32, 0.88);
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      font-family: var(--font-mono);
+    }
+    .term-bar { display: flex; align-items: center; gap: 7px; padding: 12px 16px; border-bottom: 1px solid rgba(148, 163, 184, 0.16); }
+    .term-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .term-dot--r { background: #FF5F57; }
+    .term-dot--y { background: #FEBC2E; }
+    .term-dot--g { background: #28C840; }
+    .term-title { margin-left: 8px; color: #8FA3BF; font-size: 12px; letter-spacing: 0.04em; }
+    .term-body {
+      padding: 18px 20px 24px;
+      font-size: clamp(12.5px, 1.5vw, 14.5px);
+      line-height: 1.95;
+      color: #D7E2F2;
+      min-height: 19em;               /* reserve height -> no layout jump while lines appear */
+    }
+    .term-line { white-space: pre-wrap; }
+    .term-cmd { color: #EAF1FB; }
+    .term-line[data-sev="dim"] { color: #8FA3BF; }
+    .term-line[data-sev="ok"] { color: #4ADE80; }
+    .term-line[data-sev="fail"] { color: #F87171; }
+    .term-line[data-sev="warn"] { color: #FBBF24; }
+    .term-line[data-sev="done"] { color: #93C5FD; font-weight: 600; }
+    .term-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 1.05em;
+      margin-left: 3px;
+      vertical-align: text-bottom;
+      background: #7DD3FC;
+      animation: termBlink 1.05s steps(1) infinite;
+    }
+    @keyframes termBlink { 50% { opacity: 0; } }
+    .terminal:not(.is-live) .term-cursor { animation-play-state: paused; }   /* no blink when off-screen/hidden */
+
+    /* =========================================================
+       BATTERY SAVERS
+       • html.tab-hidden — every ambient animation pauses when the
+         browser tab is hidden (defensive; most engines stop too)
+       • html.bg-calm — auto calm mode, set by JS when the user has
+         Save-Data on OR is on battery below 20%. Ambient motion stops
+         entirely; the page keeps its full static look.
+       ========================================================= */
+    html.tab-hidden .animated-bg::after,
+    html.tab-hidden .animated-bg__blob,
+    html.tab-hidden .term-cursor { animation-play-state: paused !important; }
+    html.bg-calm .animated-bg::before,
+    html.bg-calm .animated-bg::after,
+    html.bg-calm .animated-bg__blob { animation: none !important; }
+    html.bg-calm .animated-bg__blob { opacity: 0.45; }
+    /* animation mode: JS hides output lines, reveals them sequentially */
+    html.js .term-body.animating .term-line:not(.term-cmd-line) { display: none; }
+    html.js .term-body.animating .term-line:not(.term-cmd-line).on { display: block; }
+
+    /* =========================================================
+       METRICS — count-up numbers
+       ========================================================= */
+    .metrics-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .metric-pill {
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      text-align: center;
+      padding: 20px 14px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+    .metric-num {
+      font-family: var(--font-mono);
+      font-size: clamp(30px, 3.6vw, 46px);
+      font-weight: 650;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+    }
+    .metric-label { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+    @media (max-width: 980px) { .metrics-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 620px) { .metrics-row { gap: 10px; } .metric-pill { padding: 16px 10px; } }
+
+    /* =========================================================
+       DARK THEME
+       Same selectors as the light glass system, later in source
+       order -> overrides while keeping every existing rule.
+       ========================================================= */
+    html:not([data-theme="dark"]) { color-scheme: light; }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #0B1220;
+      --bg-deep: #0E1626;
+      --surface: #111A2C;
+      --surface-strong: #0F172A;
+      --surface-soft: #0D1526;
+      --fg: #E6EDF7;
+      --muted: #9AACC4;
+      --muted-2: #7C8FAB;
+      --border: #24334D;
+      --border-strong: #33456A;
+      --accent: #5B8CFF;
+      --accent-2: #2DD4BF;
+      --success: #34D399;
+      --warn: #FBBF24;
+      --danger: #F87171;
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    }
+    html[data-theme="dark"] body {
+      background:
+        radial-gradient(circle at 14% -6%, rgba(37, 99, 235, 0.18), transparent 30rem),
+        radial-gradient(circle at 92% 4%, rgba(20, 184, 166, 0.12), transparent 28rem),
+        linear-gradient(180deg, #0D1526 0%, #0B1220 46%, #090F1C 100%);
+      color: var(--fg);
+    }
+    html[data-theme="dark"] body::before {
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+    }
+    html[data-theme="dark"] .animated-bg::before { opacity: 0.55; }
+    html[data-theme="dark"] .animated-bg__blob { mix-blend-mode: screen; opacity: 0.5; }
+
+    /* primary glass surfaces */
+    html[data-theme="dark"] .card,
+    html[data-theme="dark"] .profile-card,
+    html[data-theme="dark"] .learning-strip {
+      background: rgba(15, 23, 42, 0.55);
+      border-color: rgba(148, 163, 184, 0.16);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+        0 16px 40px rgba(0, 0, 0, 0.40);
+    }
+    html[data-theme="dark"] .profile-card { background: rgba(15, 23, 42, 0.5); }
+    html[data-theme="dark"] .case-card.featured {
+      background: linear-gradient(180deg, rgba(20, 30, 52, 0.6), rgba(13, 20, 36, 0.5));
+      border-color: rgba(91, 140, 255, 0.35);
+    }
+
+    /* secondary glass surfaces */
+    html[data-theme="dark"] .workflow-step,
+    html[data-theme="dark"] .timeline-card,
+    html[data-theme="dark"] .tag,
+    html[data-theme="dark"] .badge,
+    html[data-theme="dark"] .focus-item,
+    html[data-theme="dark"] .contact-link,
+    html[data-theme="dark"] .location-pill,
+    html[data-theme="dark"] .learning-topics,
+    html[data-theme="dark"] .metric-pill {
+      background: rgba(20, 30, 52, 0.6);
+      border-color: rgba(148, 163, 184, 0.16);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    html[data-theme="dark"] .badge { color: #C3D0E4; }
+    html[data-theme="dark"] .tag { color: #A9B8CE; }
+    html[data-theme="dark"] .focus-item { color: #C3D0E4; }
+    html[data-theme="dark"] .proof-item { color: #C3D0E4; }
+    html[data-theme="dark"] .learning-topics li {
+      background: rgba(20, 30, 52, 0.8);
+      border-color: rgba(148, 163, 184, 0.14);
+      color: #C3D0E4;
+    }
+    html[data-theme="dark"] .learning-topics { background: rgba(15, 23, 42, 0.6); }
+    html[data-theme="dark"] .workflow-step.is-active {
+      border-color: rgba(91, 140, 255, 0.55);
+      background: rgba(91, 140, 255, 0.10);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+    html[data-theme="dark"] .timeline-dot { background: #101B31; box-shadow: 0 0 0 5px rgba(91, 140, 255, 0.10); }
+    html[data-theme="dark"] .check { color: #5EEAD4; border-color: rgba(45, 212, 191, 0.30); background: rgba(45, 212, 191, 0.12); }
+
+    /* buttons & controls */
+    html[data-theme="dark"] .button {
+      background: #101B31;
+      color: var(--fg);
+      border-color: rgba(148, 163, 184, 0.20);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.30);
+    }
+    html[data-theme="dark"] .button:hover { background: #152239; border-color: var(--border-strong); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.40); }
+    html[data-theme="dark"] .theme-toggle { background: #101B31; }
+    html[data-theme="dark"] .brand-mark { background: #101B31; }
+    html[data-theme="dark"] .profile-photo { background: #16233B; }
+    html[data-theme="dark"] .toast { background: #101B31; }
+
+    /* header — desktop pill */
+    @media (min-width: 981px) {
+      html[data-theme="dark"] .site-header {
+        background: rgba(13, 21, 38, 0.55);
+        border-color: rgba(148, 163, 184, 0.20);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
+    }
+    html[data-theme="dark"] .nav-pill {
+      background: rgba(148, 163, 184, 0.14);
+      border-color: rgba(148, 163, 184, 0.24);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), inset 0 -2px 5px rgba(0, 0, 0, 0.35);
+    }
+    /* header — mobile glass + dropdown */
+    @media (max-width: 980px) {
+      html[data-theme="dark"] .site-header::before {
+        background: rgba(13, 21, 38, 0.55);
+        border-color: rgba(148, 163, 184, 0.20);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0, 0, 0, 0.30);
+      }
+      html[data-theme="dark"] .nav-links {
+        background: rgba(13, 21, 38, 0.78);
+        border-color: rgba(148, 163, 184, 0.22);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 18px 44px rgba(0, 0, 0, 0.50);
+      }
+      html[data-theme="dark"] .nav-links a { color: #E6EDF7; }
+      html[data-theme="dark"] .nav-links a:active { background: rgba(91, 140, 255, 0.16); }
+      html[data-theme="dark"] .menu-button {
+        background: rgba(13, 21, 38, 0.60);
+        border-color: rgba(148, 163, 184, 0.24);
+        color: #E6EDF7;
+      }
+      html[data-theme="dark"] .menu-icon,
+      html[data-theme="dark"] .menu-icon::before,
+      html[data-theme="dark"] .menu-icon::after { background: #E6EDF7; }
+    }
+    html[data-theme="dark"] .nav-links a:focus-visible { outline-color: var(--accent); }
+    html[data-theme="dark"] .lead { color: #C7D2E4; }
+    html[data-theme="dark"] .hero-focus { color: #C7D2E4; }
+    html[data-theme="dark"] .contact-link:hover { background: #101B31; border-color: var(--border-strong); }
+    html[data-theme="dark"] .timeline-item.is-passed .timeline-dot { box-shadow: 0 0 0 5px rgba(91, 140, 255, 0.16); }
+
+    /* reduced transparency + dark -> solid dark surfaces */
+    @media (prefers-reduced-transparency: reduce) {
+      html[data-theme="dark"] .card,
+      html[data-theme="dark"] .profile-card,
+      html[data-theme="dark"] .learning-strip,
+      html[data-theme="dark"] .workflow-step,
+      html[data-theme="dark"] .timeline-card,
+      html[data-theme="dark"] .tag,
+      html[data-theme="dark"] .badge,
+      html[data-theme="dark"] .focus-item,
+      html[data-theme="dark"] .contact-link,
+      html[data-theme="dark"] .location-pill,
+      html[data-theme="dark"] .learning-topics,
+      html[data-theme="dark"] .metric-pill { background: #111C33; }
+      html[data-theme="dark"] .site-header,
+      html[data-theme="dark"] .nav-links { background: #0F1B33; }
+      .terminal { background: #0B1220; backdrop-filter: none; -webkit-backdrop-filter: none; }
+    }
+
+    /* =========================================================
+       HERO SPOTLIGHT — soft light follows the cursor (desktop only)
+       ========================================================= */
+    .hero { position: relative; }
+    .hero-spotlight {
+      position: absolute;
+      inset: 0;
+      z-index: -1;                       /* above animated-bg(-3)/grid(-2), below content */
+      pointer-events: none;
+      background: radial-gradient(680px circle at var(--sx, 50%) var(--sy, 28%),
+        rgba(37, 99, 235, 0.30),
+        rgba(20, 184, 166, 0.14) 40%,
+        transparent 70%);
+      opacity: 0;
+      transition: opacity .55s ease;
+    }
+    .hero-spotlight.is-on { opacity: 1; }
+    html[data-theme="dark"] .hero-spotlight {
+      background: radial-gradient(720px circle at var(--sx, 50%) var(--sy, 28%),
+        rgba(91, 140, 255, 0.36),
+        rgba(45, 212, 191, 0.16) 40%,
+        transparent 70%);
+    }
+    @media (prefers-reduced-motion: reduce) { .hero-spotlight { display: none; } }
+
+    /* =========================================================
+       3D TILT — cards lean toward the cursor (JS-driven, desktop only)
+       JS writes inline transform; glare span is injected by JS too,
+       so no-JS / touch / reduced-motion users get plain cards.
+       ========================================================= */
+    .tilt { position: relative; transform-style: preserve-3d; }
+    .tilt-glare {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(300px circle at var(--gx, 50%) var(--gy, 30%),
+        rgba(255, 255, 255, 0.55),
+        rgba(255, 255, 255, 0.16) 45%,
+        transparent 72%);
+      opacity: 0;
+      transition: opacity .28s ease;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .tilt.is-tilting .tilt-glare { opacity: 1; }
+    html[data-theme="dark"] .tilt-glare {
+      background: radial-gradient(300px circle at var(--gx, 50%) var(--gy, 30%),
+        rgba(147, 197, 253, 0.30),
+        rgba(147, 197, 253, 0.08) 45%,
+        transparent 72%);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tilt { transform: none !important; }
+      .tilt-glare { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -1016,16 +1427,22 @@
         <span class="brand-mark">EP</span>
         <span>Ezra Piyachanokwong</span>
       </a>
-      <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
-        <span class="menu-icon"></span>
-      </button>
-      <div class="nav-links" id="nav-links">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#case-studies">Case Studies</a>
-        <a href="#workflow">Workflow</a>
-        <a href="#experience">Experience</a>
-        <a href="#contact">Contact</a>
+      <div class="nav-right">
+        <div class="nav-links" id="nav-links">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#case-studies">Case Studies</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+          <span class="menu-icon"></span>
+        </button>
       </div>
     </nav>
   </header>
@@ -1034,6 +1451,7 @@
 
   <main id="top">
     <section class="hero" data-od-id="hero">
+      <span class="hero-spotlight" aria-hidden="true"></span>
       <div class="container hero-grid">
         <div class="hero-copy">
           <span class="eyebrow reveal" data-reveal="hero">Bangkok · AI-assisted QA delivery</span>
@@ -1062,7 +1480,7 @@
         <aside class="profile-card reveal" data-reveal="soft" style="--reveal-delay: 220ms;" aria-label="Ezra profile summary">
           <div class="profile-inner">
             <div class="profile-photo">
-              <img class="profile-avatar" src="profile.jpg" alt="Ezra Piyachanokwong" />
+              <img class="profile-avatar" src="profile.jpg" alt="Ezra Piyachanokwong" width="960" height="720" decoding="async" fetchpriority="high" />
             </div>
             <div class="profile-details">
               <div class="profile-name-row">
@@ -1130,28 +1548,25 @@
             <h3>Upload Excel QA Validation with AI Coding Agent</h3>
             <p>Validated an Excel upload feature where users upload Excel files to generate purchase order data. The core implementation was primarily driven by an AI coding agent through Claude Code, while Ezra owned QA validation, ClickUp defect reporting, expected fix definition, business flow verification, regression testing, and release readiness review.</p>
             <div class="tag-row"><span class="tag">Claude Code</span><span class="tag">ClickUp</span><span class="tag">Web Testing</span><span class="tag">AI Coding Agent</span><span class="tag">Regression Testing</span></div>
-            <div class="case-actions"><button class="button" type="button" data-copy="Upload Excel QA Validation with AI Coding Agent — Ezra owned QA validation, ClickUp defect reporting, expected fix definition, business flow verification, regression testing, and release readiness review.">Copy Summary</button><a class="button" href="#workflow">See Workflow</a></div>
+            <div class="case-actions"><a class="button" href="#workflow">See Workflow</a></div>
           </article>
           <article class="card case-card reveal" data-reveal="soft" style="--reveal-delay: 90ms;">
             <div class="case-top"><span class="case-label">Data workflow</span></div>
             <h3>AI-Powered Test Data Generation with Gemini + n8n + RAG</h3>
             <p>Designed a workflow using Gemini LLM, n8n, PostgreSQL, and RAG to generate and enrich test data from PDF, Excel, CSV, and TXT files for QA processes.</p>
             <div class="tag-row"><span class="tag">Gemini</span><span class="tag">n8n</span><span class="tag">RAG</span><span class="tag">PostgreSQL</span><span class="tag">Test Data</span></div>
-            <div class="case-actions"><button class="button" type="button" data-copy="AI-Powered Test Data Generation — Gemini, n8n, PostgreSQL, and RAG workflow for QA test data enrichment.">Copy Summary</button></div>
           </article>
           <article class="card case-card reveal" data-reveal="soft" style="--reveal-delay: 180ms;">
             <div class="case-top"><span class="case-label">API quality</span></div>
             <h3>API Test Automation Pipeline</h3>
             <p>Built API regression workflows using Postman Collections, Newman CLI, and GitHub Actions to support scheduled API validation and reduce repetitive manual testing.</p>
             <div class="tag-row"><span class="tag">Postman</span><span class="tag">Newman</span><span class="tag">GitHub Actions</span><span class="tag">API Testing</span></div>
-            <div class="case-actions"><button class="button" type="button" data-copy="API Test Automation Pipeline — Postman Collections, Newman CLI, and GitHub Actions for scheduled API regression validation.">Copy Summary</button></div>
           </article>
           <article class="card case-card reveal" data-reveal="soft" style="--reveal-delay: 270ms;">
             <div class="case-top"><span class="case-label">E2E automation</span></div>
             <h3>Playwright E2E Automation</h3>
             <p>Developed automated E2E tests for core web application workflows with a focus on regression coverage, maintainability, and test reliability.</p>
             <div class="tag-row"><span class="tag">Playwright</span><span class="tag">TypeScript</span><span class="tag">E2E Testing</span><span class="tag">Automation</span></div>
-            <div class="case-actions"><button class="button" type="button" data-copy="Playwright E2E Automation — automated core web workflows with focus on maintainable regression coverage and reliability.">Copy Summary</button></div>
           </article>
         </div>
       </div>
@@ -1176,6 +1591,43 @@
       </div>
     </section>
 
+    <section class="section" id="qa-in-action" data-od-id="qa-in-action">
+      <div class="container">
+        <div class="section-head reveal" data-reveal="soft">
+          <span class="eyebrow">QA In Action</span>
+          <h2>A regression cycle, end to end.</h2>
+          <p class="lead">Watch the validation loop I run against AI-generated implementation — from test run to bug report to release readiness.</p>
+        </div>
+        <div class="qa-demo reveal" data-reveal="soft" style="--reveal-delay: 120ms;">
+          <div class="terminal" id="qa-terminal" aria-label="Simulated Playwright regression run">
+            <div class="term-bar" aria-hidden="true">
+              <span class="term-dot term-dot--r"></span>
+              <span class="term-dot term-dot--y"></span>
+              <span class="term-dot term-dot--g"></span>
+              <span class="term-title">qa-regression · playwright · chromium</span>
+            </div>
+            <div class="term-body">
+              <div class="term-line term-cmd-line"><span class="term-cmd" data-cmd="$ npx playwright test upload-excel --grep @regression">$ npx playwright test upload-excel --grep @regression</span><span class="term-cursor" aria-hidden="true"></span></div>
+              <div class="term-line" data-sev="dim">▸ 24 tests · 3 workflows · headed=false</div>
+              <div class="term-line" data-sev="ok">✓ upload dialog + file picker · 312ms</div>
+              <div class="term-line" data-sev="ok">✓ xlsx → purchase-order mapping · 894ms</div>
+              <div class="term-line" data-sev="fail" data-hold="1">✗ row 10,001 · duplicate SKU accepted → ClickUp #482</div>
+              <div class="term-line" data-sev="warn">↻ expected fix defined · AI agent re-implements</div>
+              <div class="term-line" data-sev="ok">✓ duplicate SKU rejected + warning shown · 766ms</div>
+              <div class="term-line" data-sev="ok">✓ regression sweep · 24/24 passed</div>
+              <div class="term-line" data-sev="done">✔ release readiness approved</div>
+            </div>
+          </div>
+          <div class="metrics-row" role="list" aria-label="QA experience metrics">
+            <div class="metric-pill" role="listitem"><span class="metric-num" data-count="3" data-suffix="+">3+</span><span class="metric-label">Years hands-on QA</span></div>
+            <div class="metric-pill" role="listitem"><span class="metric-num" data-count="6">6</span><span class="metric-label">Companies · delivery teams</span></div>
+            <div class="metric-pill" role="listitem"><span class="metric-num" data-count="7">7</span><span class="metric-label">Steps in my AI-QA loop</span></div>
+            <div class="metric-pill" role="listitem"><span class="metric-num" data-count="4">4</span><span class="metric-label">Featured case studies</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="experience" data-od-id="experience">
       <div class="container split">
         <div class="section-head reveal" data-reveal="soft">
@@ -1184,6 +1636,7 @@
           <p>Each role adds a different validation surface: GUI and functional testing, API automation, SQL consistency checks, CI/CD regression, and AI-assisted implementation review.</p>
         </div>
         <div class="timeline">
+          <span class="timeline-progress" aria-hidden="true"></span>
           <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 0ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>Software Tester | Health Up</strong><p>Web application testing, automated E2E testing, AI-assisted development workflow, Claude Code collaboration, ClickUp bug feedback, Upload Excel validation.</p></div></div>
           <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 80ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>QA Engineer | CP Axtra</strong><p>API testing, E2E testing, Robot Framework, PostgreSQL validation, Jira collaboration.</p></div></div>
           <div class="timeline-item reveal" data-reveal="soft" style="--reveal-delay: 160ms;"><span class="timeline-dot"></span><div class="timeline-card"><strong>QA Engineer | Ascend nano</strong><p>API testing, Robot Framework, GitHub Actions, MySQL validation.</p></div></div>
@@ -1220,7 +1673,7 @@
           <span class="eyebrow">Resume</span>
           <h2>Want the full details?</h2>
           <p>Download the resume or contact Ezra directly for AI QA Engineer, QA Automation Engineer, Software Tester, or Software QA Engineer opportunities.</p>
-          <div class="hero-actions" style="margin-top: 22px;"><a class="button primary" href="Resume_QA_Ezra_Piyachanokwong.pdf" target="_blank" rel="noreferrer">Download Resume</a><button class="button" type="button" data-copy="Ezra Piyachanokwong — AI-Driven Software QA Engineer based in Bangkok, Thailand. Contact: ezrapiya.th@gmail.com">Copy Profile Blurb</button></div>
+          <div class="hero-actions" style="margin-top: 22px;"><a class="button primary" href="Resume_QA_Ezra_Piyachanokwong.pdf" target="_blank" rel="noreferrer">Download Resume</a></div>
         </div>
         <div class="card contact-card reveal" data-reveal="soft" style="--reveal-delay: 120ms;" id="contact">
           <span class="eyebrow">Contact</span>
@@ -1308,29 +1761,16 @@
         });
         brandEl.addEventListener('mouseenter', () => { if (isDesktop()) moveNavPill(brandEl); });
         brandEl.addEventListener('pointerdown', pressPill);
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) {
+          themeBtn.addEventListener('mouseenter', () => { if (isDesktop()) moveNavPill(themeBtn); });
+          themeBtn.addEventListener('focus', () => { if (isDesktop()) moveNavPill(themeBtn); });
+          themeBtn.addEventListener('pointerdown', pressPill);
+        }
         navBar.addEventListener('mouseleave', () => { if (isDesktop()) moveNavPill(brandEl); });
         window.addEventListener('resize', () => moveNavPill(currentTarget));
         window.addEventListener('load', () => moveNavPill(currentTarget));
       }
-
-      document.querySelectorAll('[data-copy]').forEach((button) => {
-        button.addEventListener('click', async () => {
-          const text = button.getAttribute('data-copy') || '';
-          try {
-            await navigator.clipboard.writeText(text);
-            showToast('Copied summary to clipboard');
-          } catch (error) {
-            showToast('Copy ready: ' + text.slice(0, 64) + '…');
-          }
-        });
-      });
-
-      document.querySelectorAll('[data-action="resume"]').forEach((link) => {
-        link.addEventListener('click', (event) => {
-          if (link.getAttribute('href') === '#') event.preventDefault();
-          showToast('Resume download placeholder — connect Ezra\'s PDF file here');
-        });
-      });
 
       const revealItems = Array.from(document.querySelectorAll('.reveal'));
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1359,8 +1799,8 @@
         try { words = JSON.parse(wordEl.getAttribute('data-words') || '[]'); } catch (e) { words = []; }
         if (!words || words.length < 2) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;  // keep static
-        var i = 0, HOLD = 2600, FADE = 440;
-        setInterval(function () {
+        var i = 0, HOLD = 2600, FADE = 440, timer = null;
+        var tick = function () {
           wordEl.classList.add('out');                       // fade out + slide up
           setTimeout(function () {
             i = (i + 1) % words.length;
@@ -1370,7 +1810,293 @@
             void wordEl.offsetWidth;                         // reflow
             wordEl.classList.remove('pre');                  // animate up into view
           }, FADE);
-        }, HOLD);
+        };
+        // battery: only rotate while the hero is actually on screen & tab visible
+        var start = function () { if (timer === null) timer = window.setInterval(tick, HOLD); };
+        var stop = function () { if (timer !== null) { window.clearInterval(timer); timer = null; } };
+        var inView = true;
+        var sync = function () { if (inView && !document.hidden) start(); else stop(); };
+        if ('IntersectionObserver' in window) {
+          inView = false;
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) { inView = entry.isIntersecting; sync(); });
+          }, { threshold: 0 });
+          io.observe(wordEl);
+        }
+        document.addEventListener('visibilitychange', sync);
+        sync();
+      })();
+
+      // ===== Theme toggle (persisted, syncs meta theme-color) =====
+      (function () {
+        var btn = document.getElementById('theme-toggle');
+        var root = document.documentElement;
+        if (!btn) return;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        var isDark = function () { return root.getAttribute('data-theme') === 'dark'; };
+        var sync = function () {
+          btn.setAttribute('aria-label', isDark() ? 'Switch to light theme' : 'Switch to dark theme');
+          if (meta) meta.setAttribute('content', isDark() ? '#0B1220' : '#F8FAFC');
+        };
+        btn.addEventListener('click', function () {
+          var next = isDark() ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try { localStorage.setItem('theme', next); } catch (e) { /* storage unavailable */ }
+          sync();
+        });
+        sync();
+      })();
+
+      // ===== Battery saver — auto calm mode + pause when tab hidden =====
+      (function () {
+        var root = document.documentElement;
+        document.addEventListener('visibilitychange', function () {
+          root.classList.toggle('tab-hidden', document.hidden);
+        });
+        var saveData = false, lowBattery = false;
+        var apply = function () { root.classList.toggle('bg-calm', saveData || lowBattery); };
+        try {
+          var conn = navigator.connection;
+          if (conn && conn.saveData) { saveData = true; apply(); }
+        } catch (e) { /* Network Information API unavailable — skip */ }
+        try {
+          if (typeof navigator.getBattery === 'function') {
+            navigator.getBattery().then(function (b) {
+              var update = function () { lowBattery = !b.charging && b.level < 0.2; apply(); };
+              b.addEventListener('levelchange', update);
+              b.addEventListener('chargingchange', update);
+              update();
+            }).catch(function () { /* battery promise rejected — skip */ });
+          }
+        } catch (e) { /* Battery API unavailable (e.g. Safari) — skip */ }
+      })();
+
+      // ===== QA terminal — simulated regression run =====
+      // Static full output is the no-JS / reduced-motion fallback.
+      (function () {
+        var term = document.getElementById('qa-terminal');
+        if (!term) return;
+        var body = term.querySelector('.term-body');
+        var cmd = body.querySelector('.term-cmd');
+        var lines = Array.from(body.querySelectorAll('.term-line:not(.term-cmd-line)'));
+        if (!body || !cmd || !lines.length) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // keep static output
+        var fullCmd = cmd.getAttribute('data-cmd') || cmd.textContent || '';
+        var timers = [];
+        var later = function (fn, ms) { timers.push(window.setTimeout(fn, ms)); };
+        var reset = function () {
+          timers.forEach(window.clearTimeout);
+          timers = [];
+          cmd.textContent = '';
+          lines.forEach(function (l) { l.classList.remove('on'); });
+          body.classList.add('animating');
+        };
+        var run = function () {
+          reset();
+          var t = 500;
+          for (var i = 0; i < fullCmd.length; i++) {
+            (function (ch) { later(function () { cmd.textContent += ch; }, t); })(fullCmd.charAt(i));
+            t += 24;
+          }
+          t += 480;
+          lines.forEach(function (l) {
+            later(function () { l.classList.add('on'); }, t);
+            t += l.hasAttribute('data-hold') ? 1250 : 520;
+          });
+          t += 4200;                                  // hold final state, then loop
+          later(run, t);
+        };
+        var running = false, inView = false;
+        var pauseTimers = function () { timers.forEach(window.clearTimeout); timers = []; };
+        var sync = function () {
+          var live = inView && !document.hidden;                    // battery: no work when unseen
+          term.classList.toggle('is-live', live);
+          if (live) { if (!running) { running = true; run(); } }
+          else if (running) { running = false; pauseTimers(); }
+        };
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) { inView = entry.isIntersecting; sync(); });
+        }, { threshold: 0.25 });
+        io.observe(term);
+        document.addEventListener('visibilitychange', sync);
+      })();
+
+      // ===== Metrics count-up =====
+      (function () {
+        var els = Array.from(document.querySelectorAll('.metric-num[data-count]'));
+        if (!els.length) return;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var animate = function (el) {
+          var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+          var suffix = el.getAttribute('data-suffix') || '';
+          if (reduce) { el.textContent = target + suffix; return; }
+          var dur = 1300, t0 = null;
+          var step = function (ts) {
+            if (t0 === null) t0 = ts;
+            var p = Math.min((ts - t0) / dur, 1);
+            var eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * eased) + suffix;
+            if (p < 1) window.requestAnimationFrame(step);
+          };
+          el.textContent = '0' + suffix;
+          window.requestAnimationFrame(step);
+        };
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { animate(entry.target); io.unobserve(entry.target); }
+          });
+        }, { threshold: 0.6 });
+        els.forEach(function (el) { io.observe(el); });
+      })();
+
+      // ===== Timeline progress line — draws as you scroll =====
+      (function () {
+        var tl = document.querySelector('.timeline');
+        var bar = document.querySelector('.timeline-progress');
+        if (!tl || !bar) return;
+        var items = Array.from(tl.querySelectorAll('.timeline-item'));
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          bar.style.transform = 'scaleY(1)';
+          items.forEach(function (it) { it.classList.add('is-passed'); });
+          return;
+        }
+        var update = function () {
+          var r = tl.getBoundingClientRect();
+          var vh = window.innerHeight || 800;
+          var focus = Math.min(Math.max((vh * 0.72 - r.top) / r.height, 0), 1);
+          bar.style.transform = 'scaleY(' + focus + ')';
+          var reachedY = r.top + r.height * focus;
+          items.forEach(function (it) {
+            var ir = it.getBoundingClientRect();
+            if (ir.top + 14 <= reachedY) it.classList.add('is-passed');
+            else it.classList.remove('is-passed');
+          });
+        };
+        var ticking = false;
+        var onScroll = function () {
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(function () { update(); ticking = false; });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        update();
+      })();
+
+      // ===== Workflow pipeline — steps ignite in sequence (one-shot) =====
+      (function () {
+        var wf = document.querySelector('.workflow');
+        if (!wf) return;
+        var steps = Array.from(wf.querySelectorAll('.workflow-step'));
+        if (!steps.length) return;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var activate = function () {
+          steps.forEach(function (step, i) {
+            if (reduce) { step.classList.add('is-active'); return; }   // instant final state
+            window.setTimeout(function () { step.classList.add('is-active'); }, 450 + i * 220);
+          });
+        };
+        if (reduce || !('IntersectionObserver' in window)) { activate(); return; }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { activate(); io.disconnect(); }  // fire once, then stop
+          });
+        }, { threshold: 0.3 });
+        io.observe(wf);
+      })();
+
+      // ===== Hero spotlight — soft light follows the cursor =====
+      (function () {
+        var hero = document.querySelector('.hero');
+        var spot = document.querySelector('.hero-spotlight');
+        if (!hero || !spot) return;
+        if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;   // desktop only
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var tx = 0.5, ty = 0.28, cx = 0.5, cy = 0.28, raf = null, on = false;
+        var loop = function () {
+          cx += (tx - cx) * 0.13;                                   // smooth chase (lerp)
+          cy += (ty - cy) * 0.13;
+          spot.style.setProperty('--sx', (cx * 100).toFixed(2) + '%');
+          spot.style.setProperty('--sy', (cy * 100).toFixed(2) + '%');
+          if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) raf = window.requestAnimationFrame(loop);  // event-driven: idle -> 0 frames
+          else raf = null;
+        };
+        hero.addEventListener('pointermove', function (e) {
+          var r = hero.getBoundingClientRect();
+          tx = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
+          ty = Math.min(Math.max((e.clientY - r.top) / r.height, 0), 1);
+          if (!on) { on = true; spot.classList.add('is-on'); }
+          if (!raf) raf = window.requestAnimationFrame(loop);
+        });
+        hero.addEventListener('pointerleave', function () {
+          on = false;
+          spot.classList.remove('is-on');
+          if (!raf) raf = window.requestAnimationFrame(loop);
+        });
+      })();
+
+      // ===== 3D tilt + glare — glass cards lean toward the cursor =====
+      (function () {
+        if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;  // desktop only
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var MAX = 6.0;                                               // max degrees — clearly visible
+        var cards = Array.from(document.querySelectorAll('.card, .profile-card, .workflow-step'));
+        cards.forEach(function (card) {
+          card.classList.add('tilt');
+          var glare = document.createElement('span');                // moving catch-light
+          glare.className = 'tilt-glare';
+          glare.setAttribute('aria-hidden', 'true');
+          card.appendChild(glare);
+          var target = { x: 0, y: 0 }, current = { x: 0, y: 0 };
+          var raf = null, active = false;
+          var paint = function () {
+            card.style.transform =
+              'perspective(900px) rotateX(' + current.y.toFixed(2) + 'deg) rotateY(' +
+              current.x.toFixed(2) + 'deg) translateY(-3px)';
+            /* glare rides the lerped tilt (one write per frame, not per mousemove) */
+            card.style.setProperty('--gx', (((current.x / (2 * MAX)) + 0.5) * 100).toFixed(1) + '%');
+            card.style.setProperty('--gy', ((0.5 - (current.y / (2 * MAX))) * 100).toFixed(1) + '%');
+          };
+          var settle = function () {
+            raf = null;
+            card.style.transform = '';                               // hand control back to CSS
+            card.style.transition = '';                              // restore hover transitions
+            card.style.willChange = '';
+            card.classList.remove('is-tilting');
+          };
+          var loop = function () {
+            current.x += (target.x - current.x) * 0.16;
+            current.y += (target.y - current.y) * 0.16;
+            paint();
+            if (active || Math.abs(target.x - current.x) > 0.01 || Math.abs(target.y - current.y) > 0.01) {
+              raf = window.requestAnimationFrame(loop);
+            } else {
+              settle();
+            }
+          };
+          card.addEventListener('mouseenter', function () {
+            // never fight the reveal entrance animation
+            if (card.classList.contains('reveal') && !card.classList.contains('is-visible')) return;
+            active = true;
+            card.style.transition = 'none';                          // stop CSS .18s from lagging rAF
+            card.style.willChange = 'transform';
+            card.classList.add('is-tilting');
+            if (!raf) raf = window.requestAnimationFrame(loop);
+          });
+          card.addEventListener('mousemove', function (e) {
+            if (!active) return;
+            var r = card.getBoundingClientRect();
+            var px = (e.clientX - r.left) / r.width;                 // 0..1 across the card
+            var py = (e.clientY - r.top) / r.height;
+            target.x = (px - 0.5) * 2 * MAX;                         // rotateY
+            target.y = -(py - 0.5) * 2 * MAX;                        // rotateX
+          });
+          card.addEventListener('mouseleave', function () {
+            active = false;
+            target.x = 0; target.y = 0;
+            if (!raf) raf = window.requestAnimationFrame(loop);
+          });
+        });
       })();
     })();
   </script>

@@ -783,8 +783,8 @@
          --bg-anim-blob-opacity   -> aurora glow intensity / brightness
        ========================================================= */
      :root {
-       --bg-anim-duration: 28s;       /* per-cycle drift time — slower = calmer & cheaper (GPU works less often) */
-       --bg-anim-blob-opacity: 0.95;  /* overall glow strength (0 = off, 1 = full) */
+       --bg-anim-duration: 52s;       /* slower drift = less compositing work */
+       --bg-anim-blob-opacity: 0.68;  /* keep the glow, reduce expensive blur blending */
      }
 
     .animated-bg {
@@ -836,7 +836,7 @@
     .animated-bg__blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(48px);
+      filter: blur(36px);
       opacity: var(--bg-anim-blob-opacity);
       mix-blend-mode: multiply;
       will-change: transform;
@@ -879,7 +879,8 @@
 
     /* Performance: lighter blur on small screens */
     @media (max-width: 620px) {
-      .animated-bg__blob { filter: blur(40px); }
+      .animated-bg__blob { filter: blur(28px); }
+      .animated-bg__blob--2, .animated-bg__blob--3 { display: none; }
     }
 
     /* Accessibility: fully disable animated-bg motion for reduced-motion users */
@@ -1399,11 +1400,48 @@
       .tilt { transform: none !important; }
       .tilt-glare { display: none; }
     }
+
+    /* GPU-rendered data nodes: decorative, responsive, and never interactive. */
+    .webgl-field {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      opacity: 0.72;
+      pointer-events: none;
+    }
+    html[data-theme="dark"] .webgl-field { opacity: 0.9; }
+    html.bg-calm .webgl-field,
+    html.tab-hidden .webgl-field { display: none; }
+    @media (max-width: 620px) { .webgl-field { opacity: 0.42; } }
+    @media (prefers-reduced-motion: reduce), (prefers-reduced-transparency: reduce) {
+      .webgl-field { display: none; }
+    }
+
+    /* Performance-first ambient mode: preserve the visual language without
+       permanent blur compositing or always-on CSS animation. */
+    .animated-bg::after,
+    .animated-bg__blob { animation: none !important; }
+    .animated-bg__blob { filter: none; opacity: 0.26; }
+    .card,
+    .profile-card,
+    .learning-strip,
+    .site-header,
+    .site-header::before,
+    .nav-links,
+    .menu-button,
+    .terminal {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    @media (max-width: 980px) { .webgl-field { display: none; } }
   </style>
 </head>
 <body>
   <!-- ANIMATED BACKGROUND: decorative only, sits behind all content (z-index:-3) -->
   <div class="animated-bg" aria-hidden="true">
+    <canvas class="webgl-field" id="webgl-field"></canvas>
     <span class="animated-bg__blob animated-bg__blob--1"></span>
     <span class="animated-bg__blob animated-bg__blob--2"></span>
     <span class="animated-bg__blob animated-bg__blob--3"></span>
@@ -1677,6 +1715,44 @@
 
   <script>
     (function () {
+      // ===== WebGL particle field — ambient QA / automation data nodes =====
+      (function () {
+        var canvas = document.getElementById('webgl-field');
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var saveData = navigator.connection && navigator.connection.saveData;
+        if (!canvas || reduce || saveData || !window.WebGLRenderingContext) return;
+        var gl = canvas.getContext('webgl', { alpha: true, antialias: false, powerPreference: 'low-power' });
+        if (!gl) return;
+        var vs = 'attribute vec2 a_position; attribute float a_seed; uniform float u_dpr; uniform vec2 u_pointer; varying float v_seed; void main(){ vec2 p = a_position + u_pointer * (0.012 + a_seed * 0.018); gl_Position = vec4(p, 0.0, 1.0); gl_PointSize = (2.4 + a_seed * 4.0) * u_dpr; v_seed = a_seed; }';
+        var fs = 'precision mediump float; varying float v_seed; uniform float u_dark; void main(){ vec2 d = gl_PointCoord - vec2(.5); float a = 1.0 - smoothstep(.04, .25, dot(d,d)); vec3 day = mix(vec3(.08,.48,.95), vec3(.05,.78,.67), v_seed); vec3 night = mix(vec3(.35,.68,1.0), vec3(.18,.93,.78), v_seed); gl_FragColor = vec4(mix(day, night, u_dark), a * .52); }';
+        var shader = function (type, source) { var s = gl.createShader(type); gl.shaderSource(s, source); gl.compileShader(s); return s; };
+        var program = gl.createProgram(); gl.attachShader(program, shader(gl.VERTEX_SHADER, vs)); gl.attachShader(program, shader(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+        var count = 32, dots = [], values = new Float32Array(count * 3);
+        for (var i = 0; i < count; i++) dots.push({ x: Math.random(), y: Math.random(), vx: (Math.random() - .5) * .00011, vy: (Math.random() - .5) * .00011, seed: Math.random() });
+        var buffer = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferData(gl.ARRAY_BUFFER, values.byteLength, gl.DYNAMIC_DRAW);
+        var position = gl.getAttribLocation(program, 'a_position'), seed = gl.getAttribLocation(program, 'a_seed');
+        var dpr = 1, pointer = { x: 0, y: 0 }, target = { x: 0, y: 0 }, raf = null, previous = 0, lastInteraction = performance.now();
+        var resize = function () { dpr = 1; canvas.width = window.innerWidth; canvas.height = window.innerHeight; gl.viewport(0, 0, canvas.width, canvas.height); };
+        var draw = function (now) {
+          if (document.hidden || document.documentElement.classList.contains('bg-calm')) { raf = null; return; }
+          if (now - previous < 80) { raf = requestAnimationFrame(draw); return; }
+          previous = now; pointer.x += (target.x - pointer.x) * .035; pointer.y += (target.y - pointer.y) * .035;
+          for (var j = 0; j < count; j++) { var p = dots[j]; p.x = (p.x + p.vx + 1) % 1; p.y = (p.y + p.vy + 1) % 1; values[j * 3] = p.x * 2 - 1; values[j * 3 + 1] = 1 - p.y * 2; values[j * 3 + 2] = p.seed; }
+          gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.useProgram(program); gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferSubData(gl.ARRAY_BUFFER, 0, values);
+          gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 12, 0); gl.enableVertexAttribArray(seed); gl.vertexAttribPointer(seed, 1, gl.FLOAT, false, 12, 8);
+          gl.uniform1f(gl.getUniformLocation(program, 'u_dpr'), dpr); gl.uniform2f(gl.getUniformLocation(program, 'u_pointer'), pointer.x, pointer.y); gl.uniform1f(gl.getUniformLocation(program, 'u_dark'), document.documentElement.getAttribute('data-theme') === 'dark' ? 1 : 0);
+          gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE); gl.drawArrays(gl.POINTS, 0, count);
+          raf = now - lastInteraction < 1400 ? requestAnimationFrame(draw) : null;
+        };
+        resize(); window.addEventListener('resize', resize, { passive: true });
+        window.addEventListener('pointermove', function (e) { target.x = (e.clientX / window.innerWidth - .5) * 2; target.y = (.5 - e.clientY / window.innerHeight) * 2; lastInteraction = performance.now(); if (!raf) raf = requestAnimationFrame(draw); }, { passive: true });
+        document.addEventListener('visibilitychange', function () { if (!document.hidden && !raf) raf = requestAnimationFrame(draw); });
+        new MutationObserver(function () { if (!document.hidden && !document.documentElement.classList.contains('bg-calm') && !raf) raf = requestAnimationFrame(draw); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); if (raf) cancelAnimationFrame(raf); raf = null; });
+        raf = requestAnimationFrame(draw);
+      })();
+
       const nav = document.getElementById('nav-links');
       const menu = document.querySelector('.menu-button');
       const toast = document.getElementById('toast');

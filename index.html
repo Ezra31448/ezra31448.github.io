@@ -1436,6 +1436,60 @@
       -webkit-backdrop-filter: none;
     }
     @media (max-width: 980px) { .webgl-field { display: none; } }
+
+    /* Dark mode turns the quiet backdrop into a static Milky Way scene.
+       These are layered CSS gradients—not an image or an animation—so the
+       atmosphere costs virtually nothing after the first paint. */
+    html[data-theme="dark"] body {
+      background:
+        radial-gradient(ellipse 62% 38% at 10% 4%, rgba(48, 78, 180, 0.24), transparent 70%),
+        radial-gradient(ellipse 48% 34% at 93% 82%, rgba(27, 118, 138, 0.16), transparent 72%),
+        linear-gradient(155deg, #01030b 0%, #050a1b 48%, #01030a 100%);
+    }
+    html[data-theme="dark"] body::before {
+      inset: 0;
+      z-index: -2;
+      opacity: 0.9;
+      mask-image: none;
+      -webkit-mask-image: none;
+      background-image:
+        radial-gradient(circle at 18px 22px, rgba(255,255,255,.86) 0 1px, transparent 1.35px),
+        radial-gradient(circle at 92px 67px, rgba(149,198,255,.72) 0 1px, transparent 1.45px),
+        radial-gradient(circle at 144px 32px, rgba(255,255,255,.55) 0 .8px, transparent 1.2px),
+        radial-gradient(circle at 46px 118px, rgba(111,232,255,.52) 0 .9px, transparent 1.3px);
+      background-size: 173px 149px, 211px 197px, 257px 223px, 307px 271px;
+      animation: starTwinkle 12s ease-in-out infinite alternate;
+      will-change: opacity;
+    }
+    @keyframes starTwinkle {
+      0%, 28% { opacity: 0.62; }
+      52% { opacity: 0.94; }
+      76%, 100% { opacity: 0.72; }
+    }
+    html.tab-hidden[data-theme="dark"] body::before { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+      html[data-theme="dark"] body::before { animation: none; opacity: 0.76; }
+    }
+    html[data-theme="dark"] body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.72;
+      background: linear-gradient(124deg,
+        transparent 25%,
+        rgba(93, 119, 220, 0.05) 34%,
+        rgba(159, 188, 255, 0.18) 43%,
+        rgba(225, 235, 255, 0.29) 49%,
+        rgba(111, 158, 235, 0.14) 56%,
+        rgba(32, 68, 147, 0.04) 65%,
+        transparent 74%);
+    }
+    html[data-theme="dark"] .animated-bg::before {
+      opacity: 0.32;
+      background: radial-gradient(ellipse at 50% 50%, rgba(76, 102, 219, 0.28), rgba(17, 34, 94, 0.09) 40%, transparent 69%);
+    }
   </style>
 </head>
 <body>

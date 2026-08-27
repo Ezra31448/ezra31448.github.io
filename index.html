@@ -453,6 +453,8 @@
       .stat { min-height: 98px; }
       .work-grid { grid-template-columns: 1fr; }
       .quality-snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .work-card:not(.featured) { grid-template-rows: auto auto; align-content: start; gap: 18px; min-height: 0; }
+      .work-card:not(.featured) .work-copy { align-content: start; gap: 14px; }
       .work-card.featured { grid-column: auto; grid-template-columns: 1fr; gap: 24px; min-height: 0; }
       .field-note { min-height: 230px; }
       .process-line { grid-template-columns: 1fr; gap: 23px; }

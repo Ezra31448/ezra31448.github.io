@@ -195,9 +195,10 @@
     .skip-link { position: fixed; left: 16px; top: 12px; z-index: 100; padding: 10px 14px; border-radius: 10px; background: var(--lime); color: var(--bg); transform: translateY(-150%); transition: transform .18s var(--ease); }
     .skip-link:focus { transform: translateY(0); }
 
-    .three-layer { position: fixed; inset: 0; z-index: -2; pointer-events: none; opacity: .9; transition: opacity .78s var(--ease); will-change: opacity; }
+    .three-layer { position: fixed; inset: 0; z-index: -2; pointer-events: none; opacity: .9; transition: opacity .78s var(--ease); will-change: opacity; contain: layout paint style; }
     #three-canvas { width: 100%; height: 100%; display: block; }
-    html[data-theme="light"] .three-layer { opacity: .32; }
+    html[data-theme="light"] .three-layer { opacity: .22; }
+    html[data-theme="light"] .nav-shell, html[data-theme="light"] .nav-links, html[data-theme="light"] .visual-stamp, html[data-theme="light"] .visual-interaction, html[data-theme="light"] .principle { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255, 255, 255, .92); }
     html.bg-calm .three-layer { opacity: .16; }
 
     .site-header { position: fixed; top: 16px; left: 0; right: 0; z-index: 40; pointer-events: none; }
@@ -234,7 +235,7 @@
     .menu-toggle[aria-expanded="true"]::before { transform: translateY(4px) rotate(45deg); }
     .menu-toggle[aria-expanded="true"]::after { transform: translateY(-4px) rotate(-45deg); }
 
-    .section { position: relative; padding: clamp(92px, 11vw, 156px) 0; }
+    .section { position: relative; padding: clamp(92px, 11vw, 156px) 0; content-visibility: auto; contain-intrinsic-size: 720px; }
     .hero { min-height: min(920px, 100svh); display: flex; align-items: center; padding: 150px 0 78px; }
     .hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(350px, .74fr); gap: clamp(48px, 8vw, 110px); align-items: center; }
     .hero-copy { display: grid; gap: 25px; max-width: 700px; }
@@ -275,7 +276,7 @@
     .profile-frame { position: relative; width: min(315px, 73vw); aspect-ratio: .78; padding: 10px; border: 1px solid rgba(215, 255, 85, .38); border-radius: 25px; background: linear-gradient(145deg, rgba(215,255,85,.16), rgba(155,140,255,.11) 44%, rgba(8,11,24,.25)); box-shadow: var(--shadow), 0 0 0 9px rgba(215,255,85,.035); transform: rotate(3deg); }
     .profile-frame::before { content: "PERSON / QA-01"; position: absolute; left: 24px; top: -12px; padding: 5px 8px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--bg); color: var(--lime); font: 400 9px/1 var(--font-mono); letter-spacing: .06em; }
     .profile-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 17px; filter: saturate(.88) contrast(1.03); }
-    .visual-stamp { position: absolute; right: 0; bottom: 56px; display: grid; gap: 8px; width: 150px; padding: 14px; border: 1px solid var(--line); border-radius: 15px; background: color-mix(in srgb, var(--panel-solid) 84%, transparent); backdrop-filter: blur(12px); box-shadow: var(--shadow); transform: rotate(-5deg); }
+    .visual-stamp { position: absolute; right: 0; bottom: 56px; display: grid; gap: 8px; width: 150px; padding: 14px; border: 1px solid var(--line); border-radius: 15px; background: color-mix(in srgb, var(--panel-solid) 84%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: var(--shadow); transform: rotate(-5deg); }
     .stamp-label { color: var(--ink-faint); font: 400 9px/1 var(--font-mono); letter-spacing: .06em; }
     .stamp-value { color: var(--ink); font-size: 14px; font-weight: 800; line-height: 1.25; }
     .stamp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 5px var(--lime-soft); }
@@ -295,7 +296,7 @@
     .about-signature { display: flex; align-items: center; gap: 12px; margin-top: 34px; color: var(--ink-faint); font: 400 11px/1 var(--font-mono); }
     .about-signature::before { content: ""; width: 48px; height: 1px; background: var(--lime); }
     .principles { display: grid; gap: 12px; }
-    .principle { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; min-height: 0; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--panel); backdrop-filter: blur(12px); }
+    .principle { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; min-height: 0; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); contain: layout paint; }
     .principle-number { color: var(--lime); font: 500 12px/1 var(--font-mono); }
     .principle h3 { font-size: 16px; letter-spacing: -.03em; }
     .principle p { margin-top: 6px; color: var(--ink-faint); font-size: 12px; line-height: 1.5; }
@@ -306,7 +307,7 @@
     .stat span { color: var(--ink-faint); font: 400 10px/1.35 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
 
     .work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .work-card { position: relative; display: grid; gap: 22px; min-height: 340px; padding: clamp(22px, 3vw, 32px); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); box-shadow: 0 18px 50px rgba(0,0,0,.12); overflow: hidden; transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s var(--ease), border-color .2s ease, background .2s ease; }
+    .work-card { position: relative; display: grid; gap: 22px; min-height: 340px; padding: clamp(22px, 3vw, 32px); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); box-shadow: 0 18px 50px rgba(0,0,0,.12); overflow: hidden; contain: layout paint; transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s var(--ease), border-color .2s ease, background .2s ease; }
     .work-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .7; background: radial-gradient(circle at var(--mx, 70%) var(--my, 0%), rgba(215,255,85,.12), transparent 32%); }
     .work-card:hover { border-color: var(--line-strong); background: color-mix(in srgb, var(--panel-solid) 78%, transparent); }
     .work-card.featured { grid-column: span 2; min-height: 410px; grid-template-columns: minmax(0, 1.25fr) minmax(250px, .75fr); gap: 40px; align-items: end; background: linear-gradient(135deg, rgba(215,255,85,.09), rgba(17,22,43,.64) 42%, rgba(155,140,255,.09)); }
@@ -387,8 +388,8 @@
     .reveal { opacity: 1; transform: none; }
     html.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s var(--ease), transform .65s var(--ease); transition-delay: calc(var(--delay, 0ms) * .55); }
     html.js .reveal.is-visible { opacity: 1; transform: translateY(0); }
-    html.motion-ready .word-reveal .motion-word { display: inline-block; opacity: 0; transform: translateY(.5em); filter: blur(5px); transition: opacity .58s var(--ease), transform .58s var(--ease), filter .58s var(--ease); transition-delay: calc(80ms + var(--word-index, 0) * 42ms); }
-    html.motion-ready .word-reveal.is-motion-visible .motion-word { opacity: 1; transform: translateY(0); filter: blur(0); }
+    html.motion-ready .word-reveal .motion-word { display: inline-block; opacity: 0; transform: translateY(.5em); transition: opacity .42s var(--ease), transform .42s var(--ease); transition-delay: calc(60ms + var(--word-index, 0) * 34ms); }
+    html.motion-ready .word-reveal.is-motion-visible .motion-word { opacity: 1; transform: translateY(0); }
     html.motion-ready .decode-reveal { position: relative; }
     html.motion-ready .decode-reveal::after { content: ""; display: inline-block; width: 1px; height: 1em; margin-left: 7px; vertical-align: -.18em; background: var(--lime); opacity: 0; transition: opacity .2s ease; }
     html.motion-ready .decode-reveal.is-motion-visible::after { opacity: .7; }
@@ -647,7 +648,8 @@
       } catch (error) {
         return;
       }
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.35));
+      const pixelRatioCap = root.dataset.theme === 'light' ? 1 : 1.1;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, pixelRatioCap));
       renderer.setClearColor(0x000000, 0);
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(42, 1, .1, 40);
@@ -656,7 +658,7 @@
       scene.add(group);
 
       const mobile = window.matchMedia('(max-width: 680px)').matches;
-      const count = mobile ? 76 : 148;
+      const count = mobile ? 56 : 108;
       const points = new Float32Array(count * 3);
       const colors = new Float32Array(count * 3);
       const pointColorA = new THREE.Color('#70e8ff');
@@ -685,27 +687,24 @@
       // remains decorative, so it never competes with the readable HTML layer.
       const signalOrb = new THREE.Group();
       const orbCore = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(.92, 2),
-        new THREE.MeshStandardMaterial({ color: 0x182a55, roughness: .38, metalness: .42, emissive: 0x27206a, emissiveIntensity: .55, transparent: true, opacity: .92 })
+        new THREE.IcosahedronGeometry(.92, 1),
+        new THREE.MeshBasicMaterial({ color: 0x252b68, transparent: true, opacity: .9 })
       );
       const orbWire = new THREE.LineSegments(
-        new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.04, 2)),
+        new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.04, 1)),
         new THREE.LineBasicMaterial({ color: 0xd7ff55, transparent: true, opacity: .62, blending: THREE.AdditiveBlending })
       );
       signalOrb.add(orbCore, orbWire);
       const orbitRings = [
-        { radius: 1.28, tube: .012, color: 0x70e8ff, opacity: .62, rotation: [Math.PI * .18, Math.PI * .12, 0] },
+        { radius: 1.28, tube: .012, color: 0x70e8ff, opacity: .56, rotation: [Math.PI * .18, Math.PI * .12, 0] },
         { radius: 1.52, tube: .009, color: 0x9b8cff, opacity: .42, rotation: [Math.PI * .58, 0, Math.PI * .18] },
         { radius: 1.78, tube: .007, color: 0xd7ff55, opacity: .34, rotation: [0, Math.PI * .62, Math.PI * .38] }
       ].map((config) => {
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(config.radius, config.tube, 6, 72), new THREE.MeshBasicMaterial({ color: config.color, transparent: true, opacity: config.opacity, blending: THREE.AdditiveBlending, depthWrite: false }));
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(config.radius, config.tube, 6, 48), new THREE.MeshBasicMaterial({ color: config.color, transparent: true, opacity: config.opacity, blending: THREE.AdditiveBlending, depthWrite: false }));
         ring.rotation.set(...config.rotation);
         signalOrb.add(ring);
         return ring;
       });
-      const orbLight = new THREE.PointLight(0x70e8ff, 7, 5, 2);
-      orbLight.position.set(-1.3, 1.1, 1.5);
-      signalOrb.add(orbLight);
       const glowCanvas = document.createElement('canvas');
       glowCanvas.width = glowCanvas.height = 128;
       const glowContext = glowCanvas.getContext('2d');
@@ -732,7 +731,7 @@
       setOrbPosition();
 
       const linePositions = [];
-      const lineCount = mobile ? 12 : 26;
+      const lineCount = mobile ? 8 : 18;
       for (let i = 0; i < lineCount; i += 1) {
         const a = Math.floor(Math.random() * count);
         let b = Math.floor(Math.random() * count);
@@ -749,6 +748,7 @@
       let height = 0;
       let frame = 0;
       let lastFrame = 0;
+      let frameInterval = root.dataset.theme === 'light' ? 1000 / 18 : 1000 / 26;
       let active = true;
       let hidden = document.hidden;
       let visibilityTarget = 1;
@@ -759,7 +759,7 @@
         const distanceScrolled = Math.max(0, -hero.getBoundingClientRect().top);
         const fadeDistance = Math.max(360, hero.offsetHeight * .72);
         visibilityTarget = Math.max(0, Math.min(1, 1 - distanceScrolled / fadeDistance));
-        const baseOpacity = root.dataset.theme === 'light' ? .32 : .9;
+        const baseOpacity = root.dataset.theme === 'light' ? .22 : .9;
         threeLayer.style.opacity = (baseOpacity * visibilityTarget).toFixed(3);
         threeLayer.classList.toggle('is-away', visibilityTarget < .02);
       };
@@ -783,15 +783,12 @@
       const render = (now) => {
         frame = 0;
         if (!active || hidden) return;
-        if (now - lastFrame < 1000 / 30) { frame = requestAnimationFrame(render); return; }
+        if (now - lastFrame < frameInterval) { frame = requestAnimationFrame(render); return; }
         lastFrame = now;
         pointer.x += (pointer.targetX - pointer.x) * .035;
         pointer.y += (pointer.targetY - pointer.y) * .035;
         group.rotation.y = now * .000045 + pointer.x * .06;
         group.rotation.x = pointer.y * .035;
-        camera.position.x += (pointer.x * .18 - camera.position.x) * .035;
-        camera.position.y += (pointer.y * .12 - camera.position.y) * .035;
-        camera.lookAt(0, 0, 0);
         pointCloud.position.x += (pointer.x * .24 - pointCloud.position.x) * .045;
         pointCloud.position.y += (pointer.y * .16 - pointCloud.position.y) * .045;
         networkLines.position.x += (pointer.x * .1 - networkLines.position.x) * .035;
@@ -806,7 +803,7 @@
         signalOrb.position.y += (orbBase.y + pointer.y * .18 - signalOrb.position.y) * .055;
         pulse += (0 - pulse) * .08;
         signalOrb.scale.setScalar(1 + pulse * .065);
-        orbLight.intensity = 7 + pulse * 6;
+        orbCore.material.opacity = .84 + pulse * .12;
         renderer.render(scene, camera);
         frame = requestAnimationFrame(render);
       };
@@ -823,7 +820,7 @@
         const observer = new IntersectionObserver((entries) => { active = entries[0].isIntersecting; scheduleVisibilityUpdate(); if (active) start(); else if (frame) { cancelAnimationFrame(frame); frame = 0; } }, { threshold: 0 });
         observer.observe(hero);
       }
-      new MutationObserver(scheduleVisibilityUpdate).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+      new MutationObserver(() => { frameInterval = root.dataset.theme === 'light' ? 1000 / 18 : 1000 / 26; renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, root.dataset.theme === 'light' ? 1 : 1.1)); scheduleVisibilityUpdate(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
       updateSceneVisibility();
       canvas.addEventListener('webglcontextlost', (event) => { event.preventDefault(); active = false; if (frame) cancelAnimationFrame(frame); }, { passive: false });
       start();

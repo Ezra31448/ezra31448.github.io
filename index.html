@@ -82,7 +82,7 @@
       ]
     }
   </script>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23d7ff55'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='24' font-weight='800' fill='%23080b18' text-anchor='middle'%3EEP%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect x='2' y='2' width='14' height='14' fill='%2304060c'/%3E%3Crect x='0' y='0' width='14' height='14' fill='%23d7ff55'/%3E%3Crect x='1' y='1' width='12' height='12' fill='none' stroke='%23080b14' stroke-width='1'/%3E%3Cpath fill='%23080b14' d='M3 4h4v1H4v1h2v1H4v2h3v1H3V4zm5 0h3v1h1v2h-1v1H9v2H8V4zm1 1v2h2V5H9z'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" />
@@ -99,56 +99,77 @@
   </script>
   <style>
     :root {
-      --ink: #f4f6ff;
-      --ink-soft: #c6cae0;
-      --ink-faint: #858aa8;
-      --bg: #080b18;
-      --bg-raised: #10152a;
-      --panel: rgba(17, 22, 43, .72);
-      --panel-solid: #11162b;
-      --line: rgba(163, 171, 218, .18);
-      --line-strong: rgba(215, 255, 85, .42);
+      --ink: #f2f5fc;
+      --ink-soft: #b8c0d8;
+      --ink-faint: #7e87a6;
+      --bg: #080b14;
+      --bg-raised: #0e1322;
+      --panel: rgba(14, 19, 34, .82);
+      --panel-solid: #111729;
+      --line: rgba(148, 163, 208, .18);
+      --line-strong: rgba(215, 255, 85, .48);
       --lime: #d7ff55;
-      --lime-soft: rgba(215, 255, 85, .13);
+      --lime-ink: #d7ff55;
+      --lime-on: #080b14;
+      --lime-soft: rgba(215, 255, 85, .12);
       --violet: #9b8cff;
-      --cyan: #70e8ff;
-      --red: #ff7d7d;
-      --shadow: 0 24px 70px rgba(0, 0, 0, .26);
-      --radius-xl: 30px;
-      --radius-lg: 22px;
-      --radius-md: 15px;
+      --cyan: #6ee7ff;
+      --red: #ff7585;
+      --voxel-depth: #04060c;
+      --voxel-edge: rgba(148, 163, 208, .22);
+      --voxel-lime-depth: #6d8800;
+      --shadow: 0 18px 44px rgba(0, 0, 0, .34);
+      --shadow-voxel: 3px 3px 0 var(--voxel-depth);
+      --shadow-voxel-lime: 3px 3px 0 var(--voxel-lime-depth);
+      --radius-xl: 8px;
+      --radius-lg: 6px;
+      --radius-md: 4px;
       --max: 1180px;
       --ease: cubic-bezier(.23, 1, .32, 1);
       --font-body: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --font-pixel: var(--font-body);
+      --font-arcade: var(--font-mono);
     }
 
     html[data-theme="light"] {
-      --ink: #11152a;
-      --ink-soft: #48506e;
-      --ink-faint: #69728f;
-      --bg: #f4f5fb;
+      --ink: #0f1424;
+      --ink-soft: #3d4663;
+      --ink-faint: #646e8f;
+      --bg: #f5f4ef;
       --bg-raised: #ffffff;
-      --panel: rgba(255, 255, 255, .76);
+      --panel: rgba(255, 255, 255, .92);
       --panel-solid: #ffffff;
-      --line: rgba(35, 43, 80, .14);
-      --line-strong: rgba(78, 92, 212, .42);
-      --lime: #587600;
-      --lime-soft: rgba(88, 118, 0, .1);
-      --violet: #5d52c8;
-      --cyan: #007b98;
-      --red: #c74646;
-      --shadow: 0 24px 70px rgba(34, 45, 100, .12);
+      --line: rgba(15, 20, 36, .14);
+      --line-strong: rgba(15, 20, 36, .45);
+      --lime: #cdf235;
+      --lime-ink: #3b5000;
+      --lime-on: #0f1424;
+      --lime-soft: rgba(180, 218, 20, .18);
+      --violet: #5548c8;
+      --cyan: #007494;
+      --red: #c93b4b;
+      --voxel-depth: rgba(15, 20, 36, .9);
+      --voxel-edge: rgba(15, 20, 36, .14);
+      --voxel-lime-depth: #0f1424;
+      --shadow: 0 16px 38px rgba(15, 20, 36, .07);
+      --shadow-voxel: 3px 3px 0 rgba(15, 20, 36, .16);
+      --shadow-voxel-lime: 3px 3px 0 #0f1424;
     }
     html[data-theme="light"] body {
       background:
-        radial-gradient(circle at 12% -12%, rgba(0, 123, 152, .08), transparent 31rem),
-        radial-gradient(circle at 93% 12%, rgba(93, 82, 200, .09), transparent 28rem),
+        radial-gradient(circle at 12% -12%, rgba(0, 116, 148, .06), transparent 31rem),
+        radial-gradient(circle at 93% 12%, rgba(85, 72, 200, .06), transparent 28rem),
         var(--bg);
     }
-    html[data-theme="light"] body::before { opacity: .58; background-image: linear-gradient(rgba(93, 82, 200, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(93, 82, 200, .07) 1px, transparent 1px); }
-    html[data-theme="light"] .button:not(.primary) { background: rgba(255, 255, 255, .68); }
-    html[data-theme="light"] .work-card, html[data-theme="light"] .about-statement, html[data-theme="light"] .process-wrap { box-shadow: 0 20px 55px rgba(34, 45, 100, .09); }
+    html[data-theme="light"] body::before {
+      opacity: .55;
+      background-image:
+        linear-gradient(rgba(15, 20, 36, .05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 20, 36, .05) 1px, transparent 1px);
+    }
+    html[data-theme="light"] .button:not(.primary) { background: var(--bg-raised); }
+    html[data-theme="light"] .voxel-stage-bar { background: rgba(15, 20, 36, .03); }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 110px; }
@@ -157,8 +178,8 @@
       min-width: 320px;
       color: var(--ink);
       background:
-        radial-gradient(circle at 12% -12%, rgba(112, 232, 255, .13), transparent 31rem),
-        radial-gradient(circle at 93% 12%, rgba(155, 140, 255, .14), transparent 28rem),
+        radial-gradient(circle at 12% -12%, rgba(110, 231, 255, .08), transparent 31rem),
+        radial-gradient(circle at 93% 12%, rgba(155, 140, 255, .09), transparent 28rem),
         var(--bg);
       font-family: var(--font-body);
       line-height: 1.6;
@@ -174,9 +195,11 @@
       z-index: -3;
       pointer-events: none;
       opacity: .42;
-      background-image: linear-gradient(rgba(164, 173, 221, .075) 1px, transparent 1px), linear-gradient(90deg, rgba(164, 173, 221, .075) 1px, transparent 1px);
-      background-size: 84px 84px;
-      mask-image: linear-gradient(to bottom, #000, transparent 78%);
+      background-image:
+        linear-gradient(rgba(148, 163, 208, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 208, .06) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, #000, transparent 84%);
     }
     body::after {
       content: "";
@@ -184,205 +207,415 @@
       inset: 0;
       z-index: -4;
       pointer-events: none;
-      background: linear-gradient(180deg, transparent 0, rgba(8, 11, 24, .25) 65%, var(--bg) 100%);
+      background: linear-gradient(180deg, transparent 0, rgba(8, 11, 20, .25) 65%, var(--bg) 100%);
     }
-    html[data-theme="light"] body::after { background: linear-gradient(180deg, transparent 0, rgba(244, 245, 251, .1) 65%, var(--bg) 100%); }
+    html[data-theme="light"] body::after { background: linear-gradient(180deg, transparent 0, rgba(245, 244, 239, .12) 65%, var(--bg) 100%); }
     a { color: inherit; text-decoration: none; }
     button { color: inherit; font: inherit; cursor: pointer; }
     img { display: block; max-width: 100%; }
-    :focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
+    :focus-visible { outline: 2px solid var(--lime-ink); outline-offset: 3px; }
     .container { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
-    .skip-link { position: fixed; left: 16px; top: 12px; z-index: 100; padding: 10px 14px; border-radius: 10px; background: var(--lime); color: var(--bg); transform: translateY(-150%); transition: transform .18s var(--ease); }
+    .skip-link {
+      position: fixed; left: 16px; top: 12px; z-index: 100;
+      padding: 10px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-md);
+      background: var(--lime); color: var(--lime-on);
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+      box-shadow: var(--shadow-voxel);
+      transform: translateY(-170%); transition: transform .18s var(--ease);
+    }
     .skip-link:focus { transform: translateY(0); }
 
-    .three-layer { position: fixed; inset: 0; z-index: -2; pointer-events: none; opacity: .9; transition: opacity .78s var(--ease); will-change: opacity; contain: layout paint style; }
-    #three-canvas { width: 100%; height: 100%; display: block; }
-    html[data-theme="light"] .three-layer { opacity: .22; }
-    html[data-theme="light"] .nav-shell, html[data-theme="light"] .nav-links, html[data-theme="light"] .visual-stamp, html[data-theme="light"] .visual-interaction, html[data-theme="light"] .principle { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255, 255, 255, .92); }
-    html.bg-calm .three-layer { opacity: .16; }
+    .px-icon {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      flex: 0 0 auto;
+      fill: currentColor;
+      shape-rendering: crispEdges;
+      filter: none;
+    }
+    .px-badge {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      border: 1px solid var(--line-strong);
+      border-radius: 3px;
+      background: var(--lime-soft);
+      color: var(--lime-ink);
+      box-shadow: var(--shadow-voxel), inset 0 1px 0 rgba(255, 255, 255, .14);
+      transform: translateZ(14px);
+    }
+    .px-badge .px-icon { width: 20px; height: 20px; }
+
+    html[data-theme="light"] .nav-shell, html[data-theme="light"] .nav-links, html[data-theme="light"] .principle { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--panel-solid); }
 
     .site-header { position: fixed; top: 16px; left: 0; right: 0; z-index: 40; pointer-events: none; }
     .nav-shell {
-      min-height: 62px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       gap: 18px;
       padding: 8px 10px 8px 14px;
       border: 1px solid var(--line);
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--bg-raised) 76%, transparent);
-      backdrop-filter: blur(20px) saturate(135%);
-      -webkit-backdrop-filter: blur(20px) saturate(135%);
-      box-shadow: 0 14px 38px rgba(0, 0, 0, .14), inset 0 1px 0 rgba(255, 255, 255, .08);
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      backdrop-filter: blur(16px) saturate(130%);
+      -webkit-backdrop-filter: blur(16px) saturate(130%);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
       pointer-events: auto;
     }
-    .brand { display: inline-flex; align-items: center; gap: 11px; min-width: max-content; font-size: 14px; font-weight: 800; letter-spacing: -.03em; }
-    .brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; background: var(--lime); color: var(--bg); font: 500 12px/1 var(--font-mono); letter-spacing: -.08em; }
-    .nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 3px; margin-left: auto; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; min-width: max-content; font-family: var(--font-body); font-size: 15px; font-weight: 800; letter-spacing: -.025em; }
+    .brand-mark {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      height: 34px; padding: 0 10px;
+      border: 1px solid var(--line-strong); border-radius: 3px;
+      background: var(--lime); color: var(--lime-on);
+      font: 500 11px/1 var(--font-mono); letter-spacing: .04em;
+      box-shadow: var(--shadow-voxel-lime), inset 0 1px 0 rgba(255, 255, 255, .35);
+    }
+    .brand-mark .px-icon { width: 16px; height: 16px; }
+    .nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-left: auto; }
     .nav-controls { display: flex; align-items: center; gap: 8px; }
-    .nav-links a { position: relative; padding: 9px 11px; color: var(--ink-faint); font-size: 12px; font-weight: 700; transition: color .18s ease; }
-    .nav-links a::after { content: ""; position: absolute; left: 11px; right: 11px; bottom: 4px; height: 1px; background: var(--lime); transform: scaleX(0); transform-origin: left; transition: transform .18s var(--ease); }
+    .nav-links a { position: relative; padding: 8px 11px; color: var(--ink-faint); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .02em; transition: color .18s ease; }
+    .nav-links a::after { content: ""; position: absolute; left: 11px; right: 11px; bottom: 4px; height: 1.5px; background: var(--lime-ink); transform: scaleX(0); transform-origin: left; transition: transform .18s var(--ease); }
     .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
     .nav-links a:hover::after, .nav-links a.is-active::after { transform: scaleX(1); }
-    .theme-toggle, .menu-toggle { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink-soft); }
-    .theme-toggle svg { width: 16px; height: 16px; transition: transform .28s var(--ease); }
-    .theme-toggle:hover svg { transform: rotate(18deg) scale(1.06); }
-    html[data-theme="light"] .theme-toggle { background: rgba(255, 255, 255, .66); border-color: rgba(78, 92, 212, .24); box-shadow: 0 6px 18px rgba(34, 45, 100, .08); }
+    .theme-toggle, .menu-toggle {
+      display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
+      width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 3px;
+      background: var(--bg-raised); color: var(--ink-soft);
+      box-shadow: var(--shadow-voxel), inset 0 1px 0 rgba(255, 255, 255, .08);
+      transition: transform .12s var(--ease), box-shadow .12s var(--ease), border-color .15s ease, background .15s ease, color .15s ease;
+    }
+    .theme-toggle:hover, .menu-toggle:hover { transform: translate(-1px, -1px); border-color: var(--line-strong); color: var(--ink); }
+    .theme-toggle:active, .menu-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--voxel-depth); }
+    .theme-toggle .px-icon, .menu-toggle .px-icon { width: 16px; height: 16px; }
     html[data-theme="dark"] .icon-sun, html[data-theme="light"] .icon-moon { display: none; }
-    .menu-toggle { display: none; flex-direction: column; gap: 4px; border-radius: 12px; }
-    .menu-toggle span, .menu-toggle::before, .menu-toggle::after { content: ""; display: block; flex: 0 0 auto; width: 17px; height: 1.5px; border-radius: 999px; background: currentColor; transition: transform .18s var(--ease), opacity .18s ease; }
-    .menu-toggle[aria-expanded="true"] span { opacity: 0; }
-    .menu-toggle[aria-expanded="true"]::before { transform: translateY(4px) rotate(45deg); }
-    .menu-toggle[aria-expanded="true"]::after { transform: translateY(-4px) rotate(-45deg); }
+    .menu-toggle { display: none; }
+    .menu-toggle[aria-expanded="true"] { background: var(--lime); color: var(--lime-on); border-color: var(--line-strong); }
 
-    .section { position: relative; padding: clamp(92px, 11vw, 156px) 0; content-visibility: auto; contain-intrinsic-size: 720px; }
-    .hero { min-height: min(920px, 100svh); display: flex; align-items: center; padding: 150px 0 78px; }
-    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(350px, .74fr); gap: clamp(48px, 8vw, 110px); align-items: center; }
-    .hero-copy { display: grid; gap: 25px; max-width: 700px; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--lime); font: 500 11px/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; }
-    .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 5px var(--lime-soft); }
+    .section { position: relative; padding: clamp(88px, 10vw, 144px) 0; content-visibility: auto; contain-intrinsic-size: 720px; }
+    .hero { min-height: min(880px, 100svh); display: flex; align-items: center; padding: 132px 0 72px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(350px, .86fr); gap: clamp(36px, 6vw, 84px); align-items: center; }
+    .hero-copy { display: grid; gap: 22px; max-width: 680px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--lime-ink); font: 500 11px/1.3 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+    .eyebrow .px-icon { width: 16px; height: 16px; }
     h1, h2, h3, p { margin: 0; }
-    h1, h2, h3 { text-wrap: balance; }
-    h1 { max-width: 720px; font-size: clamp(52px, 7.6vw, 104px); line-height: .95; letter-spacing: -.075em; font-weight: 800; }
-    h1 em { color: var(--lime); font-style: normal; }
+    h1, h2, h3 { font-family: var(--font-body); text-wrap: balance; }
+    h1 { max-width: 720px; font-size: clamp(44px, 5.8vw, 76px); line-height: 1.02; letter-spacing: -.045em; font-weight: 800; }
+    h1 em { color: var(--lime-ink); font-style: normal; text-shadow: none; }
     .hero-title { position: relative; }
     .hero-title-measure, .hero-title-typed { display: block; }
     .hero-title-measure { visibility: hidden; }
     .hero-title-typed { position: absolute; inset: 0; color: var(--ink); }
-    .hero-title-typed em { color: var(--lime); font-style: normal; }
-    .typing-cursor { display: inline-block; width: .06em; height: .84em; margin-left: .1em; background: var(--lime); vertical-align: -.06em; animation: typeCursorBlink 1s steps(1, end) infinite; }
+    .hero-title-typed em { color: var(--lime-ink); font-style: normal; }
+    .typing-cursor { display: inline-block; width: .08em; height: .86em; margin-left: .08em; background: var(--lime-ink); vertical-align: -.08em; animation: typeCursorBlink 1s steps(1, end) infinite; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
     @keyframes typeCursorBlink { 0%, 45% { opacity: 1; } 46%, 100% { opacity: 0; } }
     html:not(.js) .hero-title-typed { display: none; }
     @media (prefers-reduced-motion: reduce) { .typing-cursor { animation: none; } }
-    h2 { max-width: 850px; font-size: clamp(36px, 5vw, 68px); line-height: .99; letter-spacing: -.065em; font-weight: 800; }
-    h3 { font-size: clamp(20px, 2.2vw, 28px); line-height: 1.1; letter-spacing: -.045em; font-weight: 800; }
-    .hero-lead { max-width: 610px; color: var(--ink-soft); font-size: clamp(18px, 2.1vw, 24px); line-height: 1.45; letter-spacing: -.025em; }
-    .hero-note { max-width: 550px; color: var(--ink-faint); font-size: 14px; }
+    h2 { max-width: 850px; font-size: clamp(32px, 4.2vw, 54px); line-height: 1.06; letter-spacing: -.04em; font-weight: 800; }
+    h3 { font-size: clamp(19px, 2vw, 25px); line-height: 1.2; letter-spacing: -.025em; font-weight: 700; }
+    .hero-lead { max-width: 590px; color: var(--ink-soft); font-size: clamp(17px, 1.9vw, 21px); line-height: 1.5; letter-spacing: -.015em; }
+    .hero-note { max-width: 540px; color: var(--ink-faint); font-size: 14px; }
     .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 4px; }
-    .button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 18px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: rgba(255,255,255,.035); font-size: 12px; font-weight: 800; transition: transform .18s var(--ease), border-color .18s ease, background .18s ease, color .18s ease; }
-    .button:hover { transform: translateY(-2px); border-color: var(--line-strong); background: var(--lime-soft); }
-    .button:active { transform: scale(.97); }
-    .button.primary { border-color: var(--lime); background: var(--lime); color: var(--bg); }
-    .button.primary:hover { background: var(--lime); color: var(--bg); filter: brightness(1.06); }
-    .button .arrow { font-size: 17px; line-height: 0; }
-    .hero-bottom { display: flex; align-items: center; gap: 12px; margin-top: 10px; color: var(--ink-faint); font: 400 11px/1 var(--font-mono); }
-    .hero-bottom::before { content: ""; width: 38px; height: 1px; background: var(--line-strong); }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      min-height: 46px; padding: 0 18px;
+      border: 1px solid var(--line); border-radius: var(--radius-md);
+      color: var(--ink); background: var(--bg-raised);
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: .02em;
+      box-shadow: var(--shadow-voxel), inset 0 1px 0 rgba(255, 255, 255, .08);
+      transition: transform .14s var(--ease), border-color .14s ease, background .14s ease, box-shadow .14s var(--ease);
+    }
+    .button .px-icon { width: 16px; height: 16px; }
+    .button:hover { transform: translate(-1px, -1px); border-color: var(--line-strong); background: var(--panel-solid); box-shadow: 4px 4px 0 var(--voxel-depth); }
+    .button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--voxel-depth); }
+    .button.primary {
+      border-color: var(--lime); background: var(--lime); color: var(--lime-on); font-weight: 500;
+      box-shadow: var(--shadow-voxel-lime), inset 0 1px 0 rgba(255, 255, 255, .38);
+    }
+    html[data-theme="light"] .button.primary { border-color: var(--line); }
+    .button.primary:hover { background: var(--lime); color: var(--lime-on); filter: brightness(1.04); box-shadow: 4px 4px 0 var(--voxel-lime-depth); }
+    .button .arrow { font-size: 15px; line-height: 0; }
+    .hero-bottom { display: flex; align-items: center; gap: 12px; margin-top: 8px; color: var(--ink-faint); font: 400 11px/1 var(--font-mono); letter-spacing: .04em; }
+    .hero-bottom::before { content: ""; width: 32px; height: 1px; background: var(--line-strong); }
 
-    .hero-visual { position: relative; min-height: 560px; display: grid; place-items: center; }
-    .visual-halo { position: absolute; width: min(34vw, 410px); aspect-ratio: 1; border: 1px solid rgba(155, 140, 255, .28); border-radius: 50%; box-shadow: 0 0 80px rgba(112, 232, 255, .08), inset 0 0 70px rgba(155, 140, 255, .08); transform: rotate(-18deg); }
-    .visual-halo::before, .visual-halo::after { content: ""; position: absolute; inset: 12%; border: 1px dashed rgba(112, 232, 255, .22); border-radius: 50%; }
-    .visual-halo::after { inset: 25%; border-style: solid; border-color: rgba(215, 255, 85, .23); }
-    .profile-frame { position: relative; width: min(315px, 73vw); aspect-ratio: .78; padding: 10px; border: 1px solid rgba(215, 255, 85, .38); border-radius: 25px; background: linear-gradient(145deg, rgba(215,255,85,.16), rgba(155,140,255,.11) 44%, rgba(8,11,24,.25)); box-shadow: var(--shadow), 0 0 0 9px rgba(215,255,85,.035); transform: rotate(3deg); }
-    .profile-frame::before { content: "PERSON / QA-01"; position: absolute; left: 24px; top: -12px; padding: 5px 8px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--bg); color: var(--lime); font: 400 9px/1 var(--font-mono); letter-spacing: .06em; }
-    .profile-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 17px; filter: saturate(.88) contrast(1.03); }
-    .visual-stamp { position: absolute; right: 0; bottom: 56px; display: grid; gap: 8px; width: 150px; padding: 14px; border: 1px solid var(--line); border-radius: 15px; background: color-mix(in srgb, var(--panel-solid) 84%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: var(--shadow); transform: rotate(-5deg); }
-    .stamp-label { color: var(--ink-faint); font: 400 9px/1 var(--font-mono); letter-spacing: .06em; }
-    .stamp-value { color: var(--ink); font-size: 14px; font-weight: 800; line-height: 1.25; }
-    .stamp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 5px var(--lime-soft); }
-    .visual-index { position: absolute; left: 0; bottom: 30px; color: var(--ink-faint); font: 400 10px/1.5 var(--font-mono); writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: .11em; }
-    .visual-interaction { position: absolute; top: 58px; right: 0; display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-faint); background: color-mix(in srgb, var(--bg-raised) 62%, transparent); backdrop-filter: blur(10px); font: 400 9px/1 var(--font-mono); letter-spacing: .06em; }
-    .visual-interaction i { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 4px var(--lime-soft); }
+    .hero-visual { position: relative; display: grid; gap: 14px; align-content: center; }
+    .voxel-stage {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .07);
+      overflow: hidden;
+    }
+    .voxel-stage-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8, 11, 20, .36);
+    }
+    .voxel-stage-title {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--ink-soft);
+      font: 500 10px/1 var(--font-mono);
+      letter-spacing: .06em;
+    }
+    .voxel-led {
+      width: 7px; height: 7px; border-radius: 1px;
+      background: var(--lime-ink);
+      box-shadow: 0 0 0 3px var(--lime-soft);
+    }
+    .visual-interaction {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 10px;
+      border: 1px solid var(--line-strong); border-radius: 3px;
+      color: var(--lime-ink); background: var(--lime-soft);
+      font: 500 10px/1 var(--font-mono); letter-spacing: .04em;
+      box-shadow: var(--shadow-voxel);
+      transition: transform .12s var(--ease), box-shadow .12s var(--ease), background .14s ease, color .14s ease;
+    }
+    .visual-interaction .px-icon { width: 16px; height: 16px; }
+    .visual-interaction:hover { transform: translate(-1px, -1px); background: var(--lime); color: var(--lime-on); }
+    .visual-interaction:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--voxel-depth); }
     .visual-interaction span { white-space: nowrap; }
 
-    .section-intro { display: grid; gap: 20px; margin-bottom: 52px; }
-    .section-intro .section-kicker { color: var(--violet); font: 500 11px/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; }
-    .section-intro p { max-width: 650px; color: var(--ink-soft); font-size: 17px; }
-    .about-layout { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(270px, .72fr); gap: 28px; align-items: stretch; }
-    .about-statement { padding: clamp(28px, 4vw, 52px); border: 1px solid var(--line); border-radius: var(--radius-xl); background: linear-gradient(135deg, rgba(155,140,255,.1), rgba(17,22,43,.52) 46%, rgba(112,232,255,.05)); box-shadow: var(--shadow); }
-    html[data-theme="light"] .about-statement { background: linear-gradient(135deg, rgba(93,82,200,.08), rgba(255,255,255,.72) 46%, rgba(0,123,152,.05)); }
-    .about-statement h3 { max-width: 680px; font-size: clamp(26px, 3.3vw, 48px); }
-    .about-statement p { max-width: 640px; margin-top: 22px; color: var(--ink-soft); font-size: 15px; }
-    .about-signature { display: flex; align-items: center; gap: 12px; margin-top: 34px; color: var(--ink-faint); font: 400 11px/1 var(--font-mono); }
-    .about-signature::before { content: ""; width: 48px; height: 1px; background: var(--lime); }
-    .principles { display: grid; gap: 12px; }
-    .principle { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; min-height: 0; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); contain: layout paint; }
-    .principle-number { color: var(--lime); font: 500 12px/1 var(--font-mono); }
-    .principle h3 { font-size: 16px; letter-spacing: -.03em; }
-    .principle p { margin-top: 6px; color: var(--ink-faint); font-size: 12px; line-height: 1.5; }
+    .voxel-canvas-wrap {
+      position: relative;
+      height: 310px;
+      background-color: #0a0f1e;
+      background-image:
+        radial-gradient(rgba(215, 255, 85, .14) 1px, transparent 1px),
+        linear-gradient(rgba(148, 163, 208, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 208, .06) 1px, transparent 1px);
+      background-size: 24px 24px, 24px 24px, 24px 24px;
+      cursor: pointer;
+    }
+    #three-canvas { width: 100%; height: 100%; display: block; }
+    .voxel-hud-meta {
+      position: absolute; left: 12px; right: 12px; bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      pointer-events: none;
+      color: rgba(184, 192, 216, .78);
+      font: 400 9.5px/1 var(--font-mono);
+      letter-spacing: .06em;
+    }
+    .voxel-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      background: var(--bg-raised);
+    }
+    .voxel-tab {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 40px; padding: 0 6px;
+      border: 0; border-right: 1px solid var(--line);
+      background: transparent; color: var(--ink-faint);
+      font: 500 10px/1 var(--font-mono); letter-spacing: .02em;
+      transition: background .14s ease, color .14s ease;
+    }
+    .voxel-tab:last-child { border-right: 0; }
+    .voxel-tab .px-icon { width: 15px; height: 15px; }
+    .voxel-tab:hover { background: var(--lime-soft); color: var(--ink); }
+    .voxel-tab.is-active { background: var(--lime); color: var(--lime-on); }
 
-    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 28px; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--line); }
-    .stat { min-height: 112px; display: grid; align-content: center; gap: 5px; padding: 18px; background: color-mix(in srgb, var(--bg-raised) 78%, transparent); }
-    .stat strong { color: var(--ink); font-size: clamp(25px, 3vw, 38px); line-height: 1; letter-spacing: -.06em; }
+    .operator-card {
+      display: grid;
+      grid-template-columns: 68px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
+    .profile-frame {
+      width: 68px; height: 68px; padding: 2px;
+      border: 1px solid var(--line-strong); border-radius: 4px;
+      background: var(--bg-raised); overflow: hidden;
+    }
+    .profile-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      border-radius: 2px; filter: saturate(.82) contrast(1.06);
+    }
+    .operator-copy { display: grid; gap: 4px; min-width: 0; }
+    .operator-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .stamp-label { color: var(--lime-ink); font: 500 10px/1 var(--font-mono); letter-spacing: .05em; }
+    .operator-loc { color: var(--ink-faint); font: 400 10px/1 var(--font-mono); letter-spacing: .04em; }
+    .stamp-value { color: var(--ink); font-family: var(--font-body); font-size: 14px; font-weight: 700; line-height: 1.3; letter-spacing: -.015em; }
+    .operator-sub { color: var(--ink-faint); font: 400 9.5px/1.3 var(--font-mono); letter-spacing: .04em; }
+    .operator-badge { transform: none; }
+
+    .section-intro { display: grid; gap: 18px; margin-bottom: 48px; }
+    .section-intro .section-kicker { color: var(--violet); font: 500 11px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+    .section-intro p { max-width: 650px; color: var(--ink-soft); font-size: 16px; }
+    .about-layout { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(270px, .72fr); gap: 24px; align-items: stretch; }
+    .about-statement {
+      padding: clamp(28px, 4vw, 48px);
+      border: 1px solid var(--line); border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(155,140,255,.08), rgba(14,19,34,.88) 46%, rgba(110,231,255,.05));
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
+    html[data-theme="light"] .about-statement { background: linear-gradient(135deg, rgba(85,72,200,.06), rgba(255,255,255,.95) 46%, rgba(0,116,148,.04)); }
+    .about-statement h3 { max-width: 680px; font-size: clamp(24px, 3vw, 38px); }
+    .about-statement p { max-width: 640px; margin-top: 20px; color: var(--ink-soft); font-size: 15px; }
+    .about-signature { display: flex; align-items: center; gap: 12px; margin-top: 32px; color: var(--ink-faint); font: 400 11px/1 var(--font-mono); }
+    .about-signature::before { content: ""; width: 42px; height: 1px; background: var(--lime-ink); }
+    .principles { display: grid; gap: 12px; }
+    .principle {
+      display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start;
+      min-height: 0; padding: 18px;
+      border: 1px solid var(--line); border-radius: var(--radius-md);
+      background: var(--panel);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
+    .principle-meta { display: grid; justify-items: center; gap: 7px; }
+    .principle .px-badge { transform: none; }
+    .principle-number { color: var(--lime-ink); font: 500 10px/1 var(--font-mono); }
+    .principle h3 { font-size: 17px; letter-spacing: -.02em; }
+    .principle p { margin-top: 5px; color: var(--ink-faint); font-size: 13px; line-height: 1.5; }
+
+    .stat-row {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 24px;
+      border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--line);
+      box-shadow: var(--shadow);
+    }
+    .stat { min-height: 112px; display: grid; align-content: center; gap: 8px; padding: 18px; background: var(--bg-raised); }
+    .stat-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .stat-icon { width: 16px; height: 16px; color: var(--lime-ink); }
+    .stat strong { color: var(--ink); font-family: var(--font-body); font-size: clamp(26px, 3vw, 38px); font-weight: 800; line-height: 1; letter-spacing: -.04em; }
     .stat span { color: var(--ink-faint); font: 400 10px/1.35 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
 
     .work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .work-card { position: relative; display: grid; gap: 22px; min-height: 340px; padding: clamp(22px, 3vw, 32px); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); box-shadow: 0 18px 50px rgba(0,0,0,.12); overflow: hidden; contain: layout paint; transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s var(--ease), border-color .2s ease, background .2s ease; }
-    .work-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .7; background: radial-gradient(circle at var(--mx, 70%) var(--my, 0%), rgba(215,255,85,.12), transparent 32%); }
-    .work-card:hover { border-color: var(--line-strong); background: color-mix(in srgb, var(--panel-solid) 78%, transparent); }
-    .work-card.featured { grid-column: span 2; min-height: 410px; grid-template-columns: minmax(0, 1.25fr) minmax(250px, .75fr); gap: 40px; align-items: end; background: linear-gradient(135deg, rgba(215,255,85,.09), rgba(17,22,43,.64) 42%, rgba(155,140,255,.09)); }
-    html[data-theme="light"] .work-card.featured { background: linear-gradient(135deg, rgba(88,118,0,.09), rgba(255,255,255,.72) 42%, rgba(93,82,200,.08)); }
+    .work-card {
+      position: relative; display: grid; gap: 20px; min-height: 320px;
+      padding: clamp(22px, 3vw, 32px);
+      border: 1px solid var(--line); border-radius: var(--radius-lg);
+      background: var(--panel);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+      transform-style: preserve-3d;
+      transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform .22s var(--ease), border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .work-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .7; background: radial-gradient(circle at var(--mx, 70%) var(--my, 0%), rgba(215,255,85,.09), transparent 36%); }
+    .work-card:hover { border-color: var(--line-strong); background: var(--panel-solid); }
+    .work-card.featured {
+      grid-column: span 2; min-height: 390px;
+      grid-template-columns: minmax(0, 1.25fr) minmax(250px, .75fr); gap: 36px; align-items: end;
+      background: linear-gradient(135deg, rgba(215,255,85,.06), rgba(14,19,34,.9) 42%, rgba(155,140,255,.07));
+    }
+    html[data-theme="light"] .work-card.featured { background: linear-gradient(135deg, rgba(180,218,20,.14), rgba(255,255,255,.96) 42%, rgba(85,72,200,.06)); }
     .work-card > * { position: relative; z-index: 1; }
-    .work-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; color: var(--ink-faint); font: 400 10px/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; }
-    .work-status { display: inline-flex; align-items: center; gap: 7px; color: var(--lime); }
-    .work-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-    .work-copy { display: grid; gap: 17px; align-content: end; }
-    .work-copy h3 { max-width: 660px; font-size: clamp(27px, 3.4vw, 52px); }
+    .work-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; color: var(--ink-faint); font: 400 10.5px/1.2 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; transform-style: preserve-3d; }
+    .work-top-id { display: inline-flex; align-items: center; gap: 12px; transform-style: preserve-3d; }
+    .work-status { display: inline-flex; align-items: center; gap: 7px; color: var(--lime-ink); }
+    .work-status::before { content: ""; width: 6px; height: 6px; border-radius: 1px; background: currentColor; }
+    .work-copy { display: grid; gap: 16px; align-content: end; transform-style: preserve-3d; }
+    .work-copy h3 { max-width: 660px; font-size: clamp(25px, 2.9vw, 40px); letter-spacing: -.035em; }
     .work-copy p { max-width: 620px; color: var(--ink-soft); font-size: 14px; }
-    .work-card:not(.featured) .work-copy h3 { font-size: clamp(24px, 2.7vw, 36px); }
+    .work-card:not(.featured) .work-copy h3 { font-size: clamp(22px, 2.2vw, 30px); }
     .quality-card .work-copy { gap: 16px; }
-    .quality-snapshot { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--line); }
-    .quality-snapshot div { display: grid; gap: 4px; min-width: 0; padding: 12px 10px; background: rgba(8, 11, 24, .25); }
-    html[data-theme="light"] .quality-snapshot div { background: rgba(255, 255, 255, .45); }
-    .quality-snapshot strong { color: var(--ink); font-size: 23px; line-height: 1; letter-spacing: -.06em; }
-    .quality-snapshot span { color: var(--ink-faint); font: 400 9px/1.25 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
+    .quality-snapshot { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--line); }
+    .quality-snapshot div { display: grid; gap: 4px; min-width: 0; padding: 12px 10px; background: var(--bg-raised); }
+    .quality-snapshot strong { color: var(--ink); font-family: var(--font-body); font-size: 24px; font-weight: 800; line-height: 1; letter-spacing: -.04em; }
+    .quality-snapshot span { color: var(--ink-faint); font: 400 9.5px/1.25 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
     .work-meta { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
-    .tag { padding: 7px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-faint); font: 400 10px/1 var(--font-mono); }
-    .field-note { display: grid; gap: 16px; align-self: stretch; padding: 20px; border: 1px solid rgba(215,255,85,.28); border-radius: 17px; background: rgba(8,11,24,.34); }
-    html[data-theme="light"] .field-note { background: rgba(255,255,255,.45); }
-    .field-note-label { color: var(--lime); font: 400 10px/1 var(--font-mono); letter-spacing: .06em; }
-    .field-note strong { font-size: 21px; line-height: 1.15; letter-spacing: -.04em; }
+    .tag { padding: 6px 9px; border: 1px solid var(--line); border-radius: 3px; background: var(--bg-raised); color: var(--ink-faint); font: 400 10px/1 var(--font-mono); }
+    .field-note { display: grid; gap: 15px; align-self: stretch; padding: 20px; border: 1px solid var(--line-strong); border-radius: var(--radius-md); background: var(--bg-raised); }
+    .field-note-label { color: var(--lime-ink); font: 500 10px/1 var(--font-mono); letter-spacing: .06em; }
+    .field-note strong { font-family: var(--font-body); font-size: 19px; font-weight: 700; line-height: 1.25; letter-spacing: -.025em; }
     .field-note ul { display: grid; gap: 10px; padding: 0; margin: auto 0 0; list-style: none; }
-    .field-note li { display: flex; gap: 9px; color: var(--ink-soft); font-size: 12px; }
-    .field-note li::before { content: "↳"; color: var(--lime); font-family: var(--font-mono); }
-    .work-arrow { display: inline-flex; align-items: center; gap: 7px; margin-top: auto; color: var(--lime); font: 500 11px/1 var(--font-mono); }
-    .work-arrow span { font-size: 17px; transition: transform .18s var(--ease); }
+    .field-note li { display: flex; gap: 9px; color: var(--ink-soft); font-size: 12.5px; }
+    .field-note li::before { content: ">"; color: var(--lime-ink); font-family: var(--font-mono); font-size: 11px; }
+    .work-arrow { display: inline-flex; align-items: center; gap: 7px; margin-top: auto; color: var(--lime-ink); font: 500 11px/1 var(--font-mono); }
+    .work-arrow span { font-size: 16px; transition: transform .18s var(--ease); }
     .work-card:hover .work-arrow span { transform: translateX(4px); }
 
-    .process-wrap { padding: clamp(26px, 4vw, 42px); border: 1px solid var(--line); border-radius: var(--radius-xl); background: rgba(17,22,43,.52); box-shadow: var(--shadow); }
-    html[data-theme="light"] .process-wrap { background: rgba(255,255,255,.58); }
+    .process-wrap {
+      padding: clamp(26px, 4vw, 40px);
+      border: 1px solid var(--line); border-radius: var(--radius-xl);
+      background: var(--panel);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
     .process-line { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
-    .process-line::before { content: ""; position: absolute; left: 9%; right: 9%; top: 22px; height: 1px; background: linear-gradient(90deg, var(--lime), var(--violet), var(--cyan)); opacity: .5; }
-    .process-step { position: relative; display: grid; gap: 18px; padding-right: 26px; }
+    .process-line::before { content: ""; position: absolute; left: 26px; right: calc(25% - 26px); top: 26px; height: 1px; background: linear-gradient(90deg, var(--lime-ink), var(--violet), var(--cyan)); opacity: .6; }
+    .process-step { position: relative; display: grid; gap: 16px; padding-right: 24px; }
     .process-step:last-child { padding-right: 0; }
-    .process-dot { position: relative; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--bg-raised); color: var(--lime); font: 400 11px/1 var(--font-mono); }
-    .process-step:nth-child(2) .process-dot { color: var(--violet); border-color: rgba(155,140,255,.5); }
-    .process-step:nth-child(3) .process-dot { color: var(--cyan); border-color: rgba(112,232,255,.5); }
-    .process-step h3 { font-size: 18px; }
-    .process-step p { margin-top: 7px; color: var(--ink-faint); font-size: 12px; line-height: 1.55; }
+    .process-dot {
+      position: relative; z-index: 1;
+      display: grid; place-items: center; gap: 3px; padding: 6px;
+      width: 52px; height: 52px;
+      border: 1px solid var(--line-strong); border-radius: var(--radius-md);
+      background: var(--bg-raised); color: var(--lime-ink);
+      font: 500 10px/1 var(--font-mono);
+      box-shadow: var(--shadow-voxel), inset 0 1px 0 rgba(255, 255, 255, .08);
+    }
+    .process-dot .px-icon { width: 18px; height: 18px; }
+    .process-step:nth-child(2) .process-dot { color: var(--violet); border-color: var(--violet); }
+    .process-step:nth-child(3) .process-dot { color: var(--cyan); border-color: var(--cyan); }
+    .process-step h3 { font-size: 19px; }
+    .process-step p { margin-top: 6px; color: var(--ink-faint); font-size: 13px; line-height: 1.55; }
 
     .experience-layout { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); gap: clamp(34px, 8vw, 100px); align-items: start; }
-    .experience-lead { position: sticky; top: 120px; display: grid; gap: 20px; }
+    .experience-lead { position: sticky; top: 120px; display: grid; gap: 18px; }
     .experience-lead p { color: var(--ink-soft); font-size: 16px; }
     .experience-list { display: grid; gap: 0; border-top: 1px solid var(--line); }
-    .experience-item { display: grid; grid-template-columns: 145px 1fr; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); }
-    .experience-year { color: var(--lime); font: 400 11px/1.4 var(--font-mono); }
-    .experience-role { display: grid; gap: 7px; }
-    .experience-role strong { font-size: 16px; letter-spacing: -.02em; }
-    .experience-role span { color: var(--ink-faint); font-size: 13px; }
+    .experience-item { display: grid; grid-template-columns: 190px 1fr; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+    .experience-year { display: inline-flex; align-items: flex-start; gap: 9px; color: var(--lime-ink); font: 400 10.5px/1.45 var(--font-mono); }
+    .experience-year .px-icon { width: 16px; height: 16px; margin-top: 0; }
+    .experience-role { display: grid; gap: 6px; }
+    .experience-role strong { font-family: var(--font-body); font-size: 16px; font-weight: 700; letter-spacing: -.015em; }
+    .experience-role span { color: var(--ink-faint); font-size: 13.5px; }
 
-    .now-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(260px, .7fr); gap: 32px; align-items: center; padding: clamp(26px, 4vw, 48px); border: 1px solid rgba(112,232,255,.25); border-radius: var(--radius-xl); background: linear-gradient(120deg, rgba(112,232,255,.08), rgba(155,140,255,.08) 55%, rgba(215,255,85,.08)); }
-    .now-copy { display: grid; gap: 16px; }
+    .now-card {
+      display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(260px, .7fr); gap: 32px; align-items: center;
+      padding: clamp(26px, 4vw, 44px);
+      border: 1px solid var(--line); border-radius: var(--radius-xl);
+      background: linear-gradient(120deg, rgba(110,231,255,.06), rgba(155,140,255,.07) 55%, rgba(215,255,85,.06));
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
+    .now-copy { display: grid; gap: 14px; }
     .now-copy p { color: var(--ink-soft); font-size: 15px; }
     .learning-list { display: flex; flex-wrap: wrap; gap: 8px; align-content: center; }
-    .learning-list span { padding: 10px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); background: rgba(8,11,24,.22); font: 400 11px/1 var(--font-mono); }
-    html[data-theme="light"] .learning-list span { background: rgba(255,255,255,.5); }
+    .learning-list span { padding: 9px 12px; border: 1px solid var(--line); border-radius: 3px; color: var(--ink-soft); background: var(--bg-raised); font: 400 11px/1 var(--font-mono); }
 
     .contact-section { padding-bottom: 70px; }
-    .contact-box { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(300px, .72fr); gap: clamp(24px, 5vw, 62px); align-items: stretch; padding: clamp(28px, 5vw, 64px); border: 1px solid var(--line-strong); border-radius: var(--radius-xl); background: radial-gradient(circle at 80% 10%, rgba(215,255,85,.13), transparent 28rem), var(--panel); box-shadow: var(--shadow); }
-    .contact-copy { display: grid; align-content: center; gap: 17px; }
+    .contact-box {
+      display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(300px, .72fr); gap: clamp(24px, 5vw, 62px); align-items: stretch;
+      padding: clamp(28px, 5vw, 58px);
+      border: 1px solid var(--line-strong); border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 80% 10%, rgba(215,255,85,.09), transparent 28rem), var(--panel);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
+    .contact-copy { display: grid; align-content: center; gap: 16px; }
     .contact-copy h2 { max-width: 760px; }
     .contact-copy p { max-width: 560px; color: var(--ink-soft); }
-    .contact-actions { display: grid; align-content: end; justify-items: stretch; gap: 10px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: rgba(8, 11, 24, .24); }
-    html[data-theme="light"] .contact-actions { background: rgba(255, 255, 255, .38); }
-    .contact-actions-label { padding: 3px 4px 6px; color: var(--ink-faint); font: 400 9px/1.25 var(--font-mono); letter-spacing: .08em; }
-    .contact-action-item { appearance: none; -webkit-appearance: none; display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 46px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, .035); color: var(--ink-soft); font: 400 12px/1 var(--font-mono); text-align: left; transition: transform .18s var(--ease), border-color .18s ease, background .18s ease, color .18s ease; }
-    .contact-action-item strong { color: var(--lime); font-size: 16px; font-weight: 500; }
-    .contact-action-item:hover { transform: translateY(-1px); border-color: var(--line-strong); background: var(--lime-soft); color: var(--ink); }
-    .contact-action-item--primary { border-color: var(--lime); background: var(--lime); color: var(--bg); font-weight: 800; }
-    .contact-action-item--primary strong { color: var(--bg); }
-    .contact-action-item--primary:hover { background: var(--lime); color: var(--bg); filter: brightness(1.06); }
-    footer { padding: 26px 0 36px; border-top: 1px solid var(--line); color: var(--ink-faint); font: 400 10px/1.5 var(--font-mono); }
+    .contact-actions { display: grid; align-content: end; justify-items: stretch; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--bg-raised); }
+    .contact-actions-label { padding: 2px 4px 6px; color: var(--ink-faint); font: 400 10px/1.25 var(--font-mono); letter-spacing: .06em; }
+    .contact-action-item {
+      appearance: none; -webkit-appearance: none;
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; min-height: 46px; padding: 0 14px;
+      border: 1px solid var(--line); border-radius: var(--radius-md);
+      background: var(--panel-solid); color: var(--ink-soft);
+      font: 500 12px/1 var(--font-mono); text-align: left;
+      box-shadow: var(--shadow-voxel);
+      transition: transform .14s var(--ease), border-color .14s ease, background .14s ease, color .14s ease, box-shadow .14s var(--ease);
+    }
+    .contact-action-main { display: inline-flex; align-items: center; gap: 10px; }
+    .contact-action-main .px-icon { width: 16px; height: 16px; }
+    .contact-action-item strong { color: var(--lime-ink); font-size: 15px; font-weight: 500; }
+    .contact-action-item:hover { transform: translate(-1px, -1px); border-color: var(--line-strong); background: var(--lime-soft); color: var(--ink); }
+    .contact-action-item:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--voxel-depth); }
+    .contact-action-item--primary { border-color: var(--lime); background: var(--lime); color: var(--lime-on); font-weight: 500; box-shadow: var(--shadow-voxel-lime); }
+    html[data-theme="light"] .contact-action-item--primary { border-color: var(--line); }
+    .contact-action-item--primary strong { color: var(--lime-on); }
+    .contact-action-item--primary:hover { background: var(--lime); color: var(--lime-on); filter: brightness(1.04); }
+    footer { padding: 26px 0 36px; border-top: 1px solid var(--line); color: var(--ink-faint); font: 400 11px/1.5 var(--font-mono); }
     .footer-row { display: flex; justify-content: space-between; gap: 18px; }
 
     .reveal { opacity: 1; transform: none; }
@@ -391,37 +624,32 @@
     html.motion-ready .word-reveal .motion-word { display: inline-block; opacity: 0; transform: translateY(.5em); transition: opacity .42s var(--ease), transform .42s var(--ease); transition-delay: calc(60ms + var(--word-index, 0) * 34ms); }
     html.motion-ready .word-reveal.is-motion-visible .motion-word { opacity: 1; transform: translateY(0); }
     html.motion-ready .decode-reveal { position: relative; }
-    html.motion-ready .decode-reveal::after { content: ""; display: inline-block; width: 1px; height: 1em; margin-left: 7px; vertical-align: -.18em; background: var(--lime); opacity: 0; transition: opacity .2s ease; }
+    html.motion-ready .decode-reveal::after { content: ""; display: inline-block; width: 2px; height: 1em; margin-left: 7px; vertical-align: -.18em; background: var(--lime-ink); opacity: 0; transition: opacity .2s ease; }
     html.motion-ready .decode-reveal.is-motion-visible::after { opacity: .7; }
     .typewriter-heading { position: relative; }
     .typewriter-measure, .typewriter-output { display: block; }
     .typewriter-measure { visibility: hidden; }
     .typewriter-output { position: absolute; inset: 0; }
-    .typewriter-cursor { display: inline-block; width: .06em; height: .82em; margin-left: .11em; background: var(--lime); vertical-align: -.06em; animation: typeCursorBlink 1s steps(1, end) infinite; }
+    .typewriter-cursor { display: inline-block; width: .08em; height: .86em; margin-left: .08em; background: var(--lime-ink); vertical-align: -.08em; animation: typeCursorBlink 1s steps(1, end) infinite; }
     html.motion-ready .count-up { font-variant-numeric: tabular-nums; }
     html.motion-ready .process-line::before { transform: scaleX(0); transform-origin: left; transition: transform .9s var(--ease); }
     html.motion-ready .process-wrap.is-motion-visible .process-line::before { transform: scaleX(1); }
-    .toast { position: fixed; right: 18px; bottom: 18px; z-index: 90; padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: 11px; background: var(--panel-solid); color: var(--ink); font: 400 11px/1 var(--font-mono); opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .2s ease, transform .2s var(--ease); }
+    .toast { position: fixed; right: 18px; bottom: 18px; z-index: 90; padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-md); background: var(--panel-solid); color: var(--ink); font: 400 11px/1 var(--font-mono); box-shadow: var(--shadow); opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .2s ease, transform .2s var(--ease); }
     .toast.is-visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 980px) {
       .container { width: min(var(--max), calc(100% - 36px)); }
-      .nav-shell { border-radius: 22px; }
-      .nav-links { position: fixed; top: 88px; left: auto; right: 18px; width: min(320px, calc(100vw - 36px)); max-height: calc(100svh - 112px); overflow-y: auto; z-index: 50; display: grid; justify-content: stretch; gap: 4px; padding: 12px; border: 1px solid var(--line); border-radius: 20px; background: var(--panel-solid); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: 0 24px 60px rgba(0, 0, 0, .32); isolation: isolate; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(.98); transform-origin: top right; transition: opacity .2s ease, transform .2s var(--ease), visibility .2s ease; }
-      html[data-theme="light"] .nav-links { background: var(--panel-solid); box-shadow: 0 24px 60px rgba(34, 45, 100, .18); }
+      .nav-links { position: fixed; top: 88px; left: auto; right: 18px; width: min(320px, calc(100vw - 36px)); max-height: calc(100svh - 112px); overflow-y: auto; z-index: 50; display: grid; justify-content: stretch; gap: 4px; padding: 12px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel-solid); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: var(--shadow); isolation: isolate; opacity: 0; visibility: hidden; transform: translateY(-8px) scale(.98); transform-origin: top right; transition: opacity .2s ease, transform .2s var(--ease), visibility .2s ease; }
+      html[data-theme="light"] .nav-links { background: var(--panel-solid); box-shadow: var(--shadow); }
       .nav-links.is-open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-      .nav-links a { padding: 13px 14px; border-radius: 11px; color: var(--ink-soft); font-size: 13px; }
+      .nav-links a { padding: 13px 14px; border-radius: 3px; color: var(--ink-soft); font-size: 12px; }
       .nav-links a:hover, .nav-links a:focus-visible { background: var(--lime-soft); color: var(--ink); }
       .nav-links a::after { display: none; }
       .nav-controls { margin-left: auto; }
       .menu-toggle { display: inline-flex; }
-      .hero-grid { grid-template-columns: 1fr; gap: 35px; }
-      .hero { min-height: auto; padding-top: 150px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+      .hero { min-height: auto; padding-top: 132px; }
       .hero-copy { max-width: 820px; }
-      .hero-visual { min-height: 510px; }
-      .visual-halo { width: min(62vw, 410px); }
-      .profile-frame { width: min(290px, 64vw); }
-      .visual-stamp { right: 14%; }
       .about-layout, .experience-layout { grid-template-columns: 1fr; }
       .experience-lead { position: static; }
       .now-card { grid-template-columns: 1fr; }
@@ -431,25 +659,23 @@
     @media (max-width: 680px) {
       .container { width: min(var(--max), calc(100% - 28px)); }
       .site-header { top: 10px; }
-      .nav-shell { min-height: 56px; padding-left: 10px; }
-      .nav-links { top: 76px; right: 14px; width: min(320px, calc(100vw - 28px)); margin-left: 0; padding: 12px; }
+      .nav-shell { min-height: 54px; padding-left: 10px; }
+      .nav-links { top: 74px; right: 14px; width: min(320px, calc(100vw - 28px)); margin-left: 0; padding: 12px; }
       .nav-controls { margin-left: auto; gap: 8px; }
-      .brand { font-size: 12px; }
-      .brand-mark { width: 34px; height: 34px; }
-      .theme-toggle { width: 36px; height: 36px; }
-      .menu-toggle { width: 36px; height: 36px; }
-      h1 { font-size: clamp(48px, 15vw, 72px); }
-      h2 { font-size: clamp(37px, 12vw, 58px); }
-      .hero { padding-top: 120px; }
-      .hero-lead { font-size: 18px; }
+      .brand { font-size: 13px; }
+      .brand-mark { height: 32px; padding: 0 8px; font-size: 10px; }
+      .theme-toggle, .menu-toggle { width: 34px; height: 34px; }
+      h1 { font-size: clamp(36px, 10.5vw, 56px); }
+      h2 { font-size: clamp(28px, 8.6vw, 44px); }
+      .hero { padding-top: 108px; }
+      .hero-lead { font-size: 17px; }
       .hero-actions { align-items: stretch; flex-direction: column; }
       .button { width: 100%; }
-      .hero-visual { min-height: 430px; }
-      .visual-halo { width: min(82vw, 350px); }
-      .profile-frame { width: min(245px, 64vw); }
-      .visual-stamp { right: 0; bottom: 26px; width: 132px; }
-      .visual-interaction { top: 24px; right: 0; }
-      .visual-index { left: 0; bottom: 20px; }
+      .voxel-canvas-wrap { height: 260px; }
+      .voxel-tab { flex-direction: column; gap: 4px; padding: 8px 4px; min-height: 52px; font-size: 9px; }
+      .operator-card { grid-template-columns: 56px 1fr; }
+      .profile-frame { width: 56px; height: 56px; }
+      .operator-badge { display: none; }
       .stat-row { grid-template-columns: repeat(2, 1fr); }
       .stat { min-height: 98px; }
       .work-grid { grid-template-columns: 1fr; }
@@ -457,11 +683,11 @@
       .work-card:not(.featured) { grid-template-rows: auto auto; align-content: start; gap: 18px; min-height: 0; }
       .work-card:not(.featured) .work-copy { align-content: start; gap: 14px; }
       .work-card.featured { grid-column: auto; grid-template-columns: 1fr; gap: 24px; min-height: 0; }
-      .field-note { min-height: 230px; }
-      .process-line { grid-template-columns: 1fr; gap: 23px; }
-      .process-line::before { left: 21px; right: auto; top: 22px; bottom: 22px; width: 1px; height: auto; background: linear-gradient(180deg, var(--lime), var(--violet), var(--cyan)); }
-      .process-step { grid-template-columns: 44px 1fr; gap: 16px; padding: 0; }
-      .process-step > div:last-child { padding-top: 6px; }
+      .field-note { min-height: 220px; }
+      .process-line { grid-template-columns: 1fr; gap: 22px; }
+      .process-line::before { left: 26px; right: auto; top: 26px; bottom: 26px; width: 1px; height: auto; background: linear-gradient(180deg, var(--lime-ink), var(--violet), var(--cyan)); }
+      .process-step { grid-template-columns: 52px 1fr; gap: 16px; padding: 0; }
+      .process-step > div:last-child { padding-top: 4px; }
       html.motion-ready .process-line::before { transform: scaleY(0); transform-origin: top; }
       html.motion-ready .process-wrap.is-motion-visible .process-line::before { transform: scaleY(1); }
       .experience-item { grid-template-columns: 1fr; gap: 8px; }
@@ -476,18 +702,50 @@
       html.motion-ready .process-line::before { transform: scaleX(1); }
       .typewriter-measure { visibility: visible; }
       .typewriter-output, .typewriter-cursor { display: none; }
-      .three-layer { display: none; }
+      .voxel-canvas-wrap, .voxel-tabs { display: none; }
       .work-card { transform: none !important; }
     }
   </style>
 </head>
 <body>
+  <svg id="pixel-sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="px-search-bug" viewBox="0 0 32 32"><path fill="currentColor" d="M29.715 23.62h-1.53V22.1h-1.52v-1.53h-1.52v-3.04h-1.53v3.04H22.1v1.53h-1.52v1.52h-3.05v1.52h3.05v1.53h1.52v1.52h1.52v1.53h1.53v1.52h4.57v-1.52h1.52v-4.58h-1.52Zm0 4.57h-1.53v-1.52h-1.52v-1.53h-1.52v-1.52h1.52v1.52h1.52v1.53h1.53Zm-4.57-18.28h1.52v7.62h-1.52Zm-1.53-3.05h1.53v3.05h-1.53Zm-1.52-1.53h1.52v1.53h-1.52Zm-1.52-1.52h1.52v1.52h-1.52Zm-1.53 3.05h1.53v3.05h-1.53Z"/><path fill="currentColor" d="M19.045 20.57h1.53v-3.04h-1.53v-3.05H22.1v-1.53h-3.05V9.91h-1.52V8.38H16v1.53h-4.57V8.38H9.9v1.53H8.375v3.04h-3.04v1.53h3.04v3.05h-1.52v3.04h1.52v-1.52h3.05v1.52H16v-1.52h3.05Zm-1.52-6.09h-3.05v4.57h-1.52v-4.57H9.9v-1.53h7.62Zm0-12.19h3.05v1.52h-3.05Zm-7.62 22.85h7.62v1.53h-7.62Zm6.09-16.76V6.86h1.53V5.33h-3.05v1.53h-1.52V5.33h-3.05v1.53h1.52v1.52zM9.905.76h7.62v1.53h-7.62Zm-3.05 22.86h3.05v1.52h-3.05Zm0-21.33h3.05v1.52h-3.05Z"/><path fill="currentColor" d="M6.855 6.86h1.52v3.05h-1.52ZM5.335 22.1h1.52v1.52h-1.52Zm0-18.29h1.52v1.52h-1.52Zm-1.53 16.76h1.53v1.53h-1.53Zm0-15.24h1.53v1.53h-1.53Zm-1.52 12.2h1.52v3.04h-1.52Zm0-10.67h1.52v3.05h-1.52ZM.765 9.91h1.52v7.62H.765Z"/></symbol>
+    <symbol id="px-bug" viewBox="0 0 32 32"><path fill="currentColor" d="M28.95 18.29v-3.05H25.9v-3.05h-1.52v-1.52h-1.52v1.52h-6.1v1.53h1.53v1.52h1.52v3.05h-1.52v1.52h-1.53v10.67h3.05v-1.52h1.52v-1.53h3.05v-1.52h1.52v3.05h1.53v-6.1H25.9v-6.09h1.53v3.04H32v-1.52Zm-9.14 9.14h-1.52v-1.52h1.52Zm4.57-4.57h-1.52v1.53h-1.53v-1.53h-1.52v-1.52h1.52v-1.53h1.53v1.53h1.52Zm0-7.62h-1.52v-1.52h1.52Z"/><path fill="currentColor" d="M27.43 6.1h3.05V4.58H25.9v4.57h-1.52v1.52h3.05zm-3.05 22.86h1.52V32h-1.52Zm-3.05-7.62h1.53v1.52h-1.53ZM22.86 6.1h-1.53v3.05H10.67V6.1H9.14v4.57h13.72zM21.33 0h1.53v1.53h-1.53Zm-1.52 4.58h1.52V6.1h-1.52Zm0-3.05h1.52v1.52h-1.52Zm-3.05 13.71h1.53v3.05h-1.53Z"/><path fill="currentColor" d="M16.76 6.1h1.53v1.52h-1.53Zm-3.05 9.14h1.53v3.05h-1.53Zm0-9.14h1.53v1.52h-1.53Zm-1.52-3.05h7.62v1.53h-7.62Zm-1.52 1.53h1.52V6.1h-1.52Zm0-3.05h1.52v1.52h-1.52ZM9.14 21.34h1.53v1.52H9.14ZM9.14 0h1.53v1.53H9.14Z"/><path fill="currentColor" d="M7.62 12.19H6.1v3.05H3.05v3.05H0v1.52h4.57v-3.04H6.1v6.09H4.57v6.1H6.1v-3.05h1.52v1.52h3.05v1.53h1.52v1.52h3.05V19.81h-1.53v-1.52h-1.52v-3.05h1.52v-1.52h1.53v-1.53h-6.1v-1.52H7.62Zm6.09 13.72v1.52h-1.52v-1.52Zm-3.04-6.1v1.53h1.52v1.52h-1.52v1.53H9.14v-1.53H7.62v-1.52h1.52v-1.53Zm-1.53-4.57H7.62v-1.52h1.52Z"/><path fill="currentColor" d="M6.1 28.96h1.52V32H6.1Zm0-19.81V4.58H1.52V6.1h3.05v4.57h3.05V9.15z"/></symbol>
+    <symbol id="px-shield" viewBox="0 0 32 32"><path fill="currentColor" d="M25.91 4.57V6.1h1.52v15.24h1.52V4.57h-1.52V3.05h-3.05v1.52zm0 16.77h1.52v3.04h-1.52Zm-1.53 3.04h1.53v1.53h-1.53Z"/><path fill="currentColor" d="M24.38 6.1h1.53v15.24h-1.53Zm-1.52 19.81h1.52v1.52h-1.52Zm0-4.57h1.52v3.04h-1.52Zm-1.52 6.09h1.52v1.53h-1.52Zm0-3.05h1.52v1.53h-1.52Zm0-19.81h3.04V6.1h-3.04Zm0-3.04h3.04v1.52h-3.04Zm-3.05 27.43h3.05v1.52h-3.05Zm0-3.05h3.05v1.52h-3.05Zm-4.57-12.19v-3.05h-1.53v3.05h-1.52v7.62h1.52v1.52h7.62v-1.52h1.53v-7.62h-1.53v-3.05h-1.52v3.05Zm3.04 4.57h-1.52v-3.05h1.52Zm-3.04 12.19h4.57V32h-4.57Zm0-3.05h4.57v1.53h-4.57Zm0-18.28h4.57v1.52h-4.57Zm-3.05 19.81h3.05v1.52h-3.05Zm0-3.05h3.05v1.52h-3.05Zm0-22.86h10.67v1.52H10.67Zm0-3.05h10.67v1.53H10.67ZM9.14 27.43h1.53v1.53H9.14Zm0-3.05h1.53v1.53H9.14ZM7.62 4.57h3.05V6.1H7.62Zm0-3.04h3.05v1.52H7.62Zm0 24.38h1.52v1.52H7.62Zm0-4.57h1.52v3.04H7.62ZM6.1 24.38h1.52v1.53H6.1Zm0-18.28h1.52v15.24H6.1ZM4.57 3.05h3.05v1.52H4.57Zm0 18.29H6.1v3.04H4.57ZM3.05 4.57h1.52v16.77H3.05Z"/></symbol>
+    <symbol id="px-database" viewBox="0 0 32 32"><path fill="currentColor" d="M28.19 27.43h1.53v-1.52h1.52V6.1h-1.52v1.52h-1.53v1.52h-4.57v1.53H8.38v1.52H22.1v7.62h1.52v-1.52h4.57v-1.53h1.53v1.53h-1.53v1.52h-4.57v1.52H22.1v7.62H8.38v1.53h15.24v-1.53h4.57zM26.67 4.57h3.05V6.1h-3.05ZM22.1 3.05h4.57v1.52H22.1Z"/><path fill="currentColor" d="M8.38 19.81H22.1v1.52H8.38Zm1.53 4.57h4.57v1.53H9.91Zm0-9.14h4.57v1.52H9.91Zm0-13.72H22.1v1.53H9.91Zm-6.1 25.91h4.57v1.52H3.81Zm0-9.14h4.57v1.52H3.81Zm0-9.15h4.57v1.53H3.81Zm1.52-6.09h4.58v1.52H5.33ZM3.81 21.33h3.05v3.05H3.81Zm0-9.14h3.05v3.05H3.81ZM2.29 4.57h3.04V6.1H2.29Zm0 21.34h1.52v1.52H2.29Zm0-7.62h1.52v-1.53H2.29V9.14h1.52V7.62H2.29V6.1H.76v19.81h1.53z"/></symbol>
+    <symbol id="px-robot" viewBox="0 0 32 32"><path fill="currentColor" d="M30.47 18.28V7.62h-1.52v9.14h-1.52v-1.52H25.9v12.19h1.53V25.9h3.04v-1.52H32v-6.1zm-6.09-6.09h1.52v3.05h-1.52ZM6.09 27.43v1.52h1.53v1.53h1.52v-1.53h13.71v1.53h1.53v-1.53h1.52v-1.52zm16.76-9.15h1.53v3.05h-1.53Zm0-7.61h1.53v1.52h-1.53Zm-3.04 6.09h3.04v1.52h-3.04ZM9.14 30.48h13.71V32H9.14Zm10.67-9.15h3.04v1.53h-3.04Zm-1.53-3.05h1.53v3.05h-1.53Zm0-16.76h1.53v1.53h-1.53Zm-4.57 22.86h4.57v1.52h-4.57Zm0-24.38h4.57v1.52h-4.57Zm-1.52 18.28h1.52v3.05h-1.52Zm0-16.76h1.52v1.53h-1.52ZM9.14 16.76h3.05v1.52H9.14Zm13.71-6.09V9.14h-6.09V4.57h1.52V3.05h-4.57v1.52h1.52v4.57H9.14v1.53z"/><path fill="currentColor" d="M9.14 21.33h3.05v1.53H9.14Zm-1.52-3.05h1.52v3.05H7.62Zm0-7.61h1.52v1.52H7.62Zm-1.53 1.52h1.53v3.05H6.09Zm0 3.05H4.57v1.52H3.04V7.62H1.52v10.66H0v6.1h1.52v1.52h3.05v1.53h1.52z"/></symbol>
+    <symbol id="px-sun" viewBox="0 0 32 32"><path fill="currentColor" d="M30.47 19.055H32v6.09h-1.53Zm-1.52-7.62H32v1.52h-3.05Zm0 13.71h1.52v1.53h-1.52Zm0-7.62h1.52v1.53h-1.52Zm0-13.71h1.52v1.52h-1.52Zm-1.52 22.86h1.52v1.52h-1.52Zm0-10.67h1.52v1.52h-1.52Zm0-10.67h1.52v1.53h-1.52ZM3.05 28.195h24.38v1.52H3.05Zm18.28-12.19h1.52v1.52h-1.52Zm0-13.72h1.52v3.05h-1.52Zm-1.52 15.24h1.52v1.53h-1.52Zm-4.57-12.19h1.52v1.53h-1.52Zm-1.53-1.52h1.53v1.52h-1.53Zm0 6.09h4.57v1.53h3.05v1.52h1.52v3.05h4.58v-6.1H25.9v-1.52h-1.52v-1.52h-4.57v1.52h-7.62v1.52h-1.53v1.53h3.05zm-3.05 9.15h1.53v1.52h-1.53Zm-1.52-1.53h1.52v1.53H9.14Zm0-6.09h1.52v1.52H9.14Zm0 6.09v-4.57H7.62v3.05H3.05v1.52zm-7.62 9.15h1.53v1.52H1.52Zm0-9.15h1.53v1.53H1.52ZM0 19.055h1.52v7.62H0Z"/></symbol>
+    <symbol id="px-moon" viewBox="0 0 32 32"><path fill="currentColor" d="M29.71 11.43h-1.52v1.52h-1.52v1.53h1.52V16h1.52v-1.52h1.53v-1.53h-1.53zM28.19 22.1h1.52v1.52h-1.52ZM26.67.76v1.53h-1.53v1.52h1.53v1.52h1.52V3.81h1.52V2.29h-1.52V.76zm-1.53 7.62h1.53v1.53h-1.53Zm0 18.29h-1.52v1.52h-1.53v1.53h1.53v1.52h1.52v-1.52h1.53v-1.53h-1.53zm-1.52-7.62h1.52v1.52h-1.52Zm-1.53 3.05h-9.14v1.52h7.62v1.52h1.52zM12.95 8.38v1.53h9.14V6.86h-1.52v1.52zm4.57 16.76h3.05v1.53h-3.05Zm1.53-6.09v-1.52h1.52V16h-1.52v-1.52h-1.53V16H16v1.53h1.52v1.52zM17.52 5.33h3.05v1.53h-3.05ZM9.9 26.67h7.62v1.52H9.9Zm1.53-6.1h1.52v1.53h-1.52Zm0-10.66h1.52v1.52h-1.52ZM9.9 3.81h7.62v1.52H9.9Zm0 7.62h1.53v9.14H9.9ZM6.86 25.14H9.9v1.53H6.86Zm0-19.81H9.9v1.53H6.86ZM5.33 23.62h1.53v1.52H5.33Zm0-16.76h1.53v1.52H5.33ZM3.81 20.57h1.52v3.05H3.81Zm0-12.19h1.52v3.05H3.81ZM2.29 29.72h1.52v1.52H2.29Zm0-18.29h1.52v9.14H2.29ZM.76 3.81h1.53v1.52H.76Z"/></symbol>
+    <symbol id="px-menu" viewBox="0 0 32 32"><path fill="currentColor" d="M29.71 3.81h1.53v24.38h-1.53Zm-1.52 24.38h1.52v1.52h-1.52Zm0-25.91h1.52v1.53h-1.52ZM3.81 29.71h24.38v1.53H3.81Zm19.81-10.67h3.05v-1.52h1.52v-3.05h-1.52v-1.52h-3.05v1.52H22.1v3.05h1.52zm-9.14 0h3.04v-1.52h1.53v-3.05h-1.53v-1.52h-3.04v1.52h-1.53v3.05h1.53zm-9.15-6.09v1.52H3.81v3.05h1.52v1.52h3.05v-1.52h1.53v-3.05H8.38v-1.52zM3.81.76h24.38v1.52H3.81ZM2.29 28.19h1.52v1.52H2.29Zm0-25.91h1.52v1.53H2.29ZM.76 3.81h1.53v24.38H.76Z"/></symbol>
+    <symbol id="px-glasses-3d" viewBox="0 0 32 32"><path fill="currentColor" d="M2.28 16.765h27.43v10.66h1.53v-13.71h-1.53v1.52h-3.05v-1.52h-1.52v1.52H6.85v-1.52H5.33v1.52H2.28v-1.52H.76v13.71h1.52zm25.91-4.58h1.52v1.53h-1.52Zm-9.15 15.24h10.67v1.53H19.04Zm7.62-16.76h1.53v1.52h-1.53Z"/><path fill="currentColor" d="M17.52 18.285v4.57h1.52v1.52h1.53v1.53h7.62v-7.62Zm9.14 6.09h-1.52v-1.52h-1.52v-1.52h-1.53v-1.53h4.57Zm-1.52-15.23h1.52v1.52h-1.52Zm-1.52 3.04h1.52v1.53h-1.52Zm0-4.57h1.52v1.53h-1.52Zm-1.53 3.05h1.53v1.52h-1.53Zm0-4.57h1.53v1.52h-1.53Zm-1.52 3.05h1.52v1.52h-1.52Zm0-4.57h1.52v1.52h-1.52Zm-1.53 3.04h1.53v1.53h-1.53Zm0-4.57h1.53v1.53h-1.53Zm-1.52 22.86h1.52v1.52h-1.52Zm0-21.33h1.52v3.04h-1.52Zm-3.05 19.8h3.05v1.53h-3.05Zm-1.52 1.53h1.52v1.52h-1.52Zm0-21.33h1.52v3.04h-1.52Zm-9.14 13.71v7.62h7.62v-1.53h1.52v-1.52h1.52v-4.57Zm6.09 3.05H8.38v1.52H6.85v1.52H5.33v-4.57H9.9Zm1.53-13.72h1.52v1.53h-1.52Zm0-4.57h1.52v1.53h-1.52Zm-9.15 24.38h10.67v1.53H2.28ZM9.9 9.145h1.53v1.52H9.9Zm0-4.57h1.53v1.52H9.9Zm-1.52 6.09H9.9v1.52H8.38Zm0-4.57H9.9v1.52H8.38Zm-1.53 6.09h1.53v1.53H6.85Zm0-4.57h1.53v1.53H6.85Zm-1.52 1.53h1.52v1.52H5.33Zm-1.52 1.52h1.52v1.52H3.81Zm-1.53 1.52h1.53v1.53H2.28Z"/></symbol>
+    <symbol id="px-pdf" viewBox="0 0 32 32"><path fill="currentColor" d="M30.472 6.1H25.9V1.525h1.53V0H6.092v12.2h-1.52v1.52h1.52v3.05h-1.52v-3.05h-1.52v12.19h1.52v1.52h1.52V32H32V4.575h-1.53ZM7.622 18.285h4.57v4.57h-3.05v3.05h-1.52Zm22.85 12.19H7.622v-3.05H25.9v-1.52h1.53v-7.62H25.9v-1.52H7.622V1.525h16.76v6.09h6.09Zm-12.19-10.67v4.58h-1.52v1.52h-3.05v-7.62h3.05v1.52Zm6.1 1.53v1.52h-3.05v3.05h-1.52v-7.62h4.57v1.52h-3.05v1.53Z"/><path fill="currentColor" d="M28.952 3.045h1.52v1.53h-1.52Zm-1.52-1.52h1.52v1.52h-1.52Zm-12.19 18.28h1.52v4.58h-1.52Zm-6.1 0h1.53v1.53h-1.53Z"/></symbol>
+    <symbol id="px-cursor" viewBox="0 0 32 32"><path fill="currentColor" d="M26.67 13.71h1.52v10.67h-1.52Zm-1.53 13.72H9.91v-1.52H8.38v1.52H6.86V32h21.33v-4.57h-1.52v-3.05h-1.53Zm0 3.05H22.1v-1.53h3.04Zm0-18.29h1.53v1.52h-1.53Zm-3.04 1.52h1.52v4.58H22.1Zm0-3.04h3.04v1.52H22.1Zm-4.57 3.04h1.52v4.58h-1.52Zm-4.58 0h1.53v4.58h-1.53Zm0-3.04h9.15V9.14h-7.62V1.52h-1.53zM9.91 0h3.04v1.52H9.91ZM8.38 19.81h1.53V1.52H8.38v10.67H6.86v1.52h1.52zm-1.52 4.57h1.52v1.53H6.86Zm-1.52-3.05h1.52v3.05H5.34Zm0-7.62h1.52v1.53H5.34Zm-1.53 1.53h1.53v6.09H3.81Z"/></symbol>
+    <symbol id="px-user-aim" viewBox="0 0 32 32"><path fill="currentColor" d="M30.47 12.19h-1.52v3.05h-1.52v1.52h1.52v3.05h1.52v-3.05H32v-1.52h-1.53zm-3.04 7.62h1.52v3.05h-1.52Z"/><path fill="currentColor" d="M27.43 9.14h1.52v3.05h-1.52ZM25.9 22.86h1.53v3.04H25.9Zm0-16.77h1.53v3.05H25.9Zm-1.52 18.29h-1.53v3.05h3.05V25.9h-1.52zM22.85 4.57h3.05v1.52h-3.05Zm-3.04 22.86h3.04v1.52h-3.04Zm0-4.57h3.04v1.52h-3.04Zm0-3.05h1.52v1.52h-1.52Zm0-16.76h3.04v1.52h-3.04Zm-1.53 10.66h1.53v3.05h-1.53Zm-1.52 13.72h-1.53v1.52h-3.04v1.53h3.04V32h1.53v-1.52h3.05v-1.53h-3.05zm-4.57-6.1h7.62v1.53h-7.62Zm1.52-3.05h4.57v1.53h-4.57Zm1.52-13.71h1.53V3.05h3.05V1.52h-3.05V0h-1.53v1.52h-3.04v1.53h3.04zm-3.04 9.14h1.52v3.05h-1.52ZM9.14 27.43h3.05v1.52H9.14Zm0-4.57h3.05v1.52H9.14Zm1.52-3.05h1.53v1.52h-1.53ZM9.14 3.05h3.05v1.52H9.14Z"/><path fill="currentColor" d="M10.66 12.19h1.53v-1.52h7.62v1.52h1.52v7.62h1.52V9.14h-1.52V7.62h-1.52V6.09h-7.62v1.53h-1.53v1.52H9.14v10.67h1.52zM7.62 24.38v1.52H6.09v1.53h3.05v-3.05zM6.09 4.57h3.05v1.52H6.09ZM4.57 22.86h1.52v3.04H4.57Zm0-16.77h1.52v3.05H4.57ZM3.04 19.81h1.53v3.05H3.04Zm0-10.67h1.53v3.05H3.04Z"/><path fill="currentColor" d="M4.57 16.76v-1.52H3.04v-3.05H1.52v3.05H0v1.52h1.52v3.05h1.52v-3.05z"/></symbol>
+    <symbol id="px-search-check" viewBox="0 0 32 32"><path fill="currentColor" d="M23.62 20.57H22.1v1.52h-1.53v1.53h-3.04v1.52h3.04v1.52h1.53v1.53h1.52v1.52h1.52v1.53h4.58v-1.53h1.52v-4.57h-1.52v-1.52h-1.53v-1.53h-1.52v-1.52h-1.53v-3.05h-1.52Zm1.52 3.05h1.53v1.52h1.52v1.52h1.53v1.53h-1.53v-1.53h-1.52v-1.52h-1.53Zm0-13.72h1.53v7.62h-1.53Zm-1.52-3.05h1.52V9.9h-1.52ZM22.1 5.33h1.52v1.52H22.1Zm-1.53-1.52h1.53v1.52h-1.53Zm-3.04-1.53h3.04v1.53h-3.04ZM5.34 16h1.52v1.52h1.52v1.52h1.53v1.53h3.04v-1.53h1.53v-1.52H16V16h1.53v-1.53h1.52v-1.52h1.52v-1.52h1.53V9.9h-1.53V8.38h-1.52V9.9h-1.52v1.53H16v1.52h-1.52v1.52h-1.53V16H9.91v-1.53H8.38v-1.52H6.86v1.52H5.34zm4.57 9.14h7.62v1.52H9.91Zm0-24.38h7.62v1.52H9.91ZM6.86 23.62h3.05v1.52H6.86Zm0-21.34h3.05v1.53H6.86ZM5.34 22.09h1.52v1.53H5.34Zm0-18.28h1.52v1.52H5.34ZM3.81 20.57h1.53v1.52H3.81Zm0-15.24h1.53v1.52H3.81ZM2.29 17.52h1.52v3.05H2.29Zm0-10.67h1.52V9.9H2.29ZM.76 9.9h1.53v7.62H.76Z"/></symbol>
+    <symbol id="px-trophy" viewBox="0 0 32 32"><path fill="currentColor" d="M29.715 5.34h1.52v7.61h-1.52Zm-3.05 0h3.05V3.81h-3.05V2.29h-1.52v15.24h1.52v-3.05h3.05v-1.53h-3.05zm-3.05 12.19h1.53v1.52h-1.53Zm-1.52 1.52h1.52v1.52h-1.52ZM9.905 29.72v-1.53h-1.52v1.53h-1.53v1.52h18.29v-1.52h-1.53v-1.53h-1.52v1.53z"/><path fill="currentColor" d="M19.045 26.67h3.05v1.52h-3.05Zm0-6.1h3.05v1.53h-3.05Zm-1.52-12.19V5.34h-3.05v3.04h-4.57v1.53h1.52v1.52h1.53v1.52h-1.53V16h3.05v-1.52h3.05V16h3.05v-3.05h-1.53v-1.52h1.53V9.91h1.52V8.38zm0 13.72h1.52v4.57h-1.52Zm-4.57 0h1.52v4.57h-1.52Zm-3.05 4.57h3.05v1.52h-3.05Zm0-6.1h3.05v1.53h-3.05Zm-1.52-1.52h1.52v1.52h-1.52ZM6.855.76h18.29v1.53H6.855Zm0 16.77h1.53v1.52h-1.53Zm0-15.24h-1.52v1.52h-3.05v1.53h3.05v7.61h-3.05v1.53h3.05v3.05h1.52zM.765 5.34h1.52v7.61H.765Z"/></symbol>
+    <symbol id="px-module" viewBox="0 0 32 32"><path fill="currentColor" d="M28.185 10.665h1.53v10.67h-1.53Zm-1.52 10.67h1.52v1.52h-1.52Zm0-12.19h1.52v1.52h-1.52Zm-3.05 1.52h3.05v1.52h-3.05Zm0 12.19h3.05v1.53h-3.05Zm1.53-13.71v-1.53h-1.53v-1.52h-3.04v1.52h-1.53v1.53h1.53v1.52h3.04v-1.52zm-4.57 3.04h3.04v1.53h-3.04Zm0 12.2h3.04v1.52h-3.04Zm-3.05 4.57v-1.53h3.05v-1.52h-3.05v-10.67h-3.05v1.53h1.52v10.66h-1.52v1.53z"/><path fill="currentColor" d="M17.525 13.715h3.05v1.52h-3.05Zm0-1.53h1.52v-1.52h-1.52v-1.52h-3.05v1.52h-1.52v1.52h1.52v1.53h3.05zm-3.05-9.14v1.53h-1.52v1.52h1.52v1.52h3.05v-1.52h1.52v-1.52h-1.52v-1.53zm-3.05 22.86h3.05v1.52h-3.05Zm0-12.19h3.05v1.52h-3.05Zm-3.04 10.67h3.04v1.52h-3.04Zm3.04-15.24h1.53v-1.53h-1.53v-1.52h-3.04v1.52h-1.53v1.53h1.53v1.52h3.04zm-3.04 3.04h3.04v1.53h-3.04Zm-3.05 10.67h3.05v1.53h-3.05Zm0-12.19h3.05v1.52h-3.05Zm-1.53 10.67h1.53v1.52h-1.53Zm0-12.19h1.53v1.52h-1.53Zm-1.52 1.52h1.52v10.67h-1.52Z"/></symbol>
+    <symbol id="px-notepad" viewBox="0 0 32 32"><path fill="currentColor" d="M12.955 0v1.52h-3.05v1.53h3.05v1.52h1.52V3.05h3.05v1.52h1.52V3.05h3.05v1.52h1.53V3.05h1.52V6.1h1.52V4.57h1.53v25.91h-16.76V32h18.28v-1.52h1.52V4.57h-1.52V3.05h-1.52V1.52h-4.57V0h-1.53v1.52h-3.05V0h-1.52v1.52h-3.05V0z"/><path fill="currentColor" d="M23.625 6.1h1.52v3.04h-1.52Zm-1.53 6.09h4.57v-1.52h-3.04V9.14h-1.53z"/><path fill="currentColor" d="M20.575 15.24h-1.53v3.05h1.53v-1.53h6.09v-1.52h-4.57v-3.05h-1.52zm-3.05 6.09h9.14v-1.52h-7.62v-1.52h-1.52zm-1.52-9.14h1.52v1.53h-1.52Zm0-3.05h1.52v1.53h-1.52Zm-3.05 15.24h13.71v1.53h-13.71Zm-1.52-10.66h4.57v1.52h-4.57Zm0-4.58h1.52v1.53h-1.52Z"/><path fill="currentColor" d="M11.435 22.86h6.09v-1.53H2.285v1.53h7.62v7.62h1.53zm-1.53-10.67h1.53v1.53h-1.53Zm-1.52-9.14h1.52V6.1h-1.52ZM6.855 6.1h1.53v3.04h-1.53Zm-1.52 3.04h1.52v3.05h-1.52Zm-1.52 3.05h1.52v3.05h-1.52Zm-1.53 3.05h1.53v3.05h-1.53Zm-1.52 3.05h1.52v3.04H.765Z"/></symbol>
+    <symbol id="px-flash" viewBox="0 0 32 32"><path fill="currentColor" d="M29.71 8.38h1.53V9.9h-1.53ZM28.19 9.9h1.52v1.53h-1.52Zm0-3.04h1.52v1.52h-1.52Zm-1.52 1.52h1.52V9.9h-1.52Zm0 19.81v-1.53h1.52v-1.52h-1.52v-1.52h-1.53v1.52h-1.52v1.52h1.52v1.53zm-1.53-15.24h1.53V16h-1.53ZM23.62 16h1.52v1.52h-1.52Zm0-12.19h1.52v1.52h-1.52Zm-1.53 13.71h1.53v1.53h-1.53Zm0-12.19h1.53v1.53h-1.53Zm-1.52 13.72h1.52v1.52h-1.52Zm0-12.19h1.52v1.52h-1.52Zm-1.52 13.71h1.52v1.52h-1.52Zm0-12.19h1.52V9.9h-1.52Zm-1.53 21.33h1.53v1.53h-1.53Zm0-7.62h1.53v1.53h-1.53Zm0-12.19v1.53H16v1.52h9.14v-1.52h-6.09V9.9zM16 23.62h1.52v1.52H16Zm9.14-21.34v1.53h1.53V.76H14.48v1.52zM14.48 25.14H16v1.52h-1.52Zm-1.53 1.52h1.53v1.53h-1.53Zm0-24.38h1.53v1.53h-1.53Zm-1.52 25.91h1.52v1.52h-1.52ZM12.95 16H3.81v1.52h7.62v3.05h1.52zM11.43 3.81h1.52v1.52h-1.52ZM9.9 29.71h1.53v1.53H9.9Zm0-9.14h1.53v4.57H9.9Zm0-15.24h1.53v1.53H9.9ZM8.38 25.14H9.9v4.57H8.38Zm0-18.28H9.9v1.52H8.38ZM6.86 8.38h1.52V9.9H6.86ZM5.33 9.9h1.53v1.53H5.33ZM3.81 22.09h1.52v1.53H3.81Zm0-10.66h1.52v1.52H3.81Zm0-10.67v1.52H2.29v1.53h1.52v1.52h1.52V3.81h1.53V2.28H5.33V.76zM2.29 23.62h1.52v1.52H2.29Zm0-3.05h1.52v1.52H2.29Zm0-7.62h1.52V16H2.29ZM.76 22.09h1.53v1.53H.76Z"/></symbol>
+    <symbol id="px-data-bars" viewBox="0 0 32 32"><path fill="currentColor" d="M27.43 6.09h-4.57V1.52h1.52V0H3.05v32h25.9V4.57h-1.52Zm0 24.39H4.57V1.52h16.76v6.1h6.1Z"/><path fill="currentColor" d="M25.91 3.05h1.52v1.52h-1.52Zm-1.53-1.53h1.53v1.53h-1.53Zm-3.05 21.34h-1.52v-9.15h-3.05v9.15h-1.52v-6.1h-3.05v6.1H7.62v-3.05h1.52v-1.52H7.62v-3.05h1.52v-1.53H7.62v-3.04H6.1v13.71h19.81v-1.52h-1.53v-7.62h-3.05z"/></symbol>
+    <symbol id="px-hierarchy" viewBox="0 0 32 32"><path fill="currentColor" d="M20.57 0v1.52h-1.52v1.53h-1.53v4.57h-3.04v1.52h3.04v4.57h10.67V0Zm6.1 12.19h-7.62V4.57h3.04V1.52h4.58Zm-6.1 6.1v1.52h-1.52v1.52h-1.53v4.57h-3.04v1.53h3.04V32h10.67V18.29Zm6.1 12.19h-7.62v-7.62h3.04v-3.05h4.58Z"/><path fill="currentColor" d="M23.62 24.38h1.52v1.52h-1.52Zm0-18.29h1.52v1.53h-1.52Zm-3.05 21.34h4.57v1.52h-4.57Zm0-18.29h4.57v1.53h-4.57Zm0 15.24h1.52v1.52h-1.52Zm0-18.29h1.52v1.53h-1.52ZM9.9 25.9h3.05v1.53H9.9Zm0-18.28h3.05v1.52H9.9ZM5.33 25.9h3.05v1.53H5.33Zm0-19.81H3.81v4.58h1.52V9.14h3.05V7.62H5.33zM3.81 24.38h1.52v1.52H3.81Zm0-6.09h1.52v4.57H3.81Zm0-6.1h1.52v4.57H3.81ZM3.81 0h1.52v4.57H3.81Z"/></symbol>
+    <symbol id="px-api-sync" viewBox="0 0 32 32"><path fill="currentColor" d="M30.47 12.19H32v7.62h-1.53Zm-1.52 7.62h1.52v3.05h-1.52Zm0-10.67h1.52v3.05h-1.52Zm-1.52 13.72h1.52v3.04h-1.52Zm0-16.77h1.52v3.05h-1.52Z"/><path fill="currentColor" d="M30.47 4.57V3.05h-6.09v6.09h1.52V6.09h1.53V4.57zM25.9 25.9h1.53v1.53H25.9Zm-3.05 1.53h3.05v1.52h-3.05Zm-1.52-7.62h1.52v1.52h-1.52Zm-1.52 9.14h3.04v1.53h-3.04Zm0-9.14h-4.57v1.52h-1.53v1.53h-1.52v1.52h7.62v-1.52h1.52v-1.53h-1.52zm-7.62 10.67h7.62V32h-7.62Zm7.62-21.34V7.62h-7.62v1.52h4.57v1.53h-1.52v1.52h1.52v1.52h3.05v3.05h1.52v-1.52h1.52v4.57h1.53v-7.62h-1.53v-1.52h-1.52V9.14zM12.19 0h7.62v1.52h-7.62Z"/><path fill="currentColor" d="M13.71 18.28v-1.52h1.53v-3.05h-1.53v-3.04h-1.52V9.14h-1.53v1.53H9.14v1.52H7.62v7.62h1.52v1.52h1.52v1.53h1.53v-4.58zM9.14 1.52h3.05v1.53H9.14ZM6.09 3.05h3.05v1.52H6.09ZM1.52 27.43v1.52h6.1v-6.09H6.09v3.04H4.57v1.53zM4.57 4.57h1.52v1.52H4.57Z"/><path fill="currentColor" d="M3.05 22.86h1.52v3.04H3.05Zm0-16.77h1.52v3.05H3.05ZM1.52 19.81h1.53v3.05H1.52Zm0-10.67h1.53v3.05H1.52ZM0 12.19h1.52v7.62H0Z"/></symbol>
+    <symbol id="px-browser" viewBox="0 0 32 32"><path fill="currentColor" d="M1.52 9.14h28.96v19.81H32V3.05h-1.52v4.57H1.52V3.05H0v25.9h1.52zm0 19.81h28.96v1.53H1.52Z"/><path fill="currentColor" d="M4.57 12.19v13.72h22.86V12.19Zm9.14 7.62h-1.52v1.52h-1.52v1.53H9.14v-1.53h1.53v-1.52h1.52v-1.52h-1.52v-1.53H9.14v-1.52h1.53v1.52h1.52v1.53h1.52Zm9.15 0h-6.1v-1.52h6.1ZM9.14 4.57h1.53V6.1H9.14Zm-3.04 0h1.52V6.1H6.1Zm-3.05 0h1.52V6.1H3.05ZM1.52 1.52h28.96v1.53H1.52Z"/></symbol>
+    <symbol id="px-live-status" viewBox="0 0 32 32"><path fill="currentColor" d="M1.52 30.475h28.96v-1.52H32v-10.67h-1.52v-1.52H1.52v1.52H0v10.67h1.52Zm24.38-10.66h3.05v3.05H25.9Zm-7.61 0h4.57v1.52h-3.05v1.53h3.05v1.52h-3.05v1.52h3.05v1.53h-4.57Zm-6.1 0h1.52v6.09h1.53v-6.09h1.52v6.09h-1.52v1.53h-1.53v-1.53h-1.52Zm-3.05 0h1.53v7.62H9.14Zm-6.09 0h1.52v6.09h3.05v1.53H3.05ZM25.9 7.625h1.53v1.52H25.9Zm-1.52-1.53h1.52v1.53h-1.52Zm-1.52 4.57h1.52v1.53h-1.52Zm-1.53-1.52h1.53v1.52h-1.53Zm0-4.57h3.05v1.52h-3.05Zm-3.04 3.05h3.04v1.52h-3.04Zm0 4.57h1.52v1.52h-1.52Zm0-9.14h3.04v1.52h-3.04Zm-4.58 7.61h4.58v1.53h-4.58Zm0-4.57h4.58v1.53h-4.58Zm0-4.57h4.58v1.53h-4.58Zm-1.52 10.67h1.52v1.52h-1.52Zm-1.52-9.14h3.04v1.52h-3.04Zm0 4.57h3.04v1.52h-3.04Zm-1.53 1.52h1.53v1.52H9.14Zm-1.52-4.57h3.05v1.52H7.62Zm0 6.09h1.52v1.53H7.62ZM6.1 6.095h1.52v1.53H6.1Zm-1.53 1.53H6.1v1.52H4.57Z"/></symbol>
+    <symbol id="px-lightbulb" viewBox="0 0 32 32"><path fill="currentColor" d="M27.43 6.1h1.52v12.19h-1.52ZM25.9 18.29h1.53v1.52H25.9Zm0-13.72h1.53V6.1H25.9Zm-1.52 15.24h1.52v1.52h-1.52Zm0-16.76h1.52v1.52h-1.52Zm-1.53 18.28h1.53v1.53h-1.53Zm0-19.81h1.53v1.53h-1.53Zm-4.57 21.34v-6.1h-1.52v6.1h-1.52v-6.1h-1.53v6.1H9.14v1.52h1.52v6.1h1.53v-1.53h7.62v1.53h1.52v-6.1h1.52v-1.52Zm1.53 3.04h-7.62v-1.52h7.62Zm0-15.23h1.52v3.04h-1.52Z"/><path fill="currentColor" d="M18.28 13.71h1.53v3.05h-1.53Zm-6.09 16.77h7.62V32h-7.62Zm0-16.77h1.52v3.05h-1.52Zm-1.53-3.04h1.53v3.04h-1.53ZM9.14 0h13.71v1.52H9.14ZM7.62 21.33h1.52v1.53H7.62Zm0-19.81h1.52v1.53H7.62ZM6.09 19.81h1.53v1.52H6.09Zm0-16.76h1.53v1.52H6.09ZM4.57 18.29h1.52v1.52H4.57Zm0-13.72h1.52V6.1H4.57ZM3.05 6.1h1.52v12.19H3.05Z"/></symbol>
+    <symbol id="px-browser-bugs" viewBox="0 0 32 32"><path fill="currentColor" d="M1.52 22.85h28.95v3.05H32V1.52h-1.53v19.81H1.52V1.52H0V25.9h1.52z"/><path fill="currentColor" d="M1.52 25.9v1.52h9.15v1.53h1.52v-1.53h7.62v1.53h1.52v-1.53h9.14V25.9zM21.33 6.09h1.53v3.05h-1.53ZM10.67 30.47v-1.52H9.14V32h13.72v-3.05h-1.53v1.52zm7.61-22.86V4.57h1.53V3.04h-3.05v3.05h-1.52V3.04h-3.05v1.53h1.52v3.04z"/><path fill="currentColor" d="M10.67 16.76H9.14v3.05h1.53v-1.53h3.04v1.53h4.57v-1.53h3.05v1.53h1.53v-3.05h-1.53v-3.05h3.05v-1.52h-3.05V9.14h-1.52V7.61h-1.53v1.53h-4.57V7.61h-1.52v1.53h-1.52v3.05H7.62v1.52h3.05Zm1.52-4.57h7.62v1.52h-3.05v4.57h-1.52v-4.57h-3.05Z"/><path fill="currentColor" d="M9.14 6.09h1.53v3.05H9.14ZM1.52 0h28.95v1.52H1.52Z"/></symbol>
+    <symbol id="px-refresh" viewBox="0 0 32 32"><path fill="currentColor" d="M27.43 12.19h1.52v7.62h-1.52Zm-1.52 7.62h1.52v3.05h-1.52Zm0-10.67h1.52v3.05h-1.52Zm1.52-1.52V6.1h1.52V4.57h-7.62v7.62h1.53v-1.52h1.52V9.14h1.53V7.62zm-3.05 15.24h1.53v1.52h-1.53Zm-1.52 1.52h1.52v1.53h-1.52Zm-3.05 1.53h3.05v1.52h-3.05Zm-6.1 1.52h6.1v1.52h-6.1ZM12.19 3.05h6.1v1.52h-6.1ZM9.14 4.57h3.05V6.1H9.14ZM7.62 6.1h1.52v1.52H7.62ZM6.1 7.62h1.52v1.52H6.1ZM4.57 24.38v1.53H3.05v1.52h7.62v-7.62H9.14v1.52H7.62v1.53H6.1v1.52z"/><path fill="currentColor" d="M4.57 19.81H6.1v3.05H4.57Zm0-10.67H6.1v3.05H4.57Zm-1.52 3.05h1.52v7.62H3.05Z"/></symbol>
+    <symbol id="px-medical" viewBox="0 0 32 32"><path fill="currentColor" d="M29.72 9.905h1.52v18.29h-1.52Zm-1.53 18.29h1.53v1.52h-1.53Zm0-19.81h1.53v1.52h-1.53ZM3.81 29.715h24.38v1.52H3.81Zm19.81-13.71h1.53v6.09h-1.53Zm-1.52 6.09h1.52v3.05H22.1Zm0-9.14h1.52v3.05H22.1Zm-3.05 12.19h3.05v1.52h-3.05Zm0-13.72h3.05v1.53h-3.05Zm-4.57 12.19h3.05v-3.04h3.04v-3.05h-3.04v-3.05h-3.05v3.05h-3.05v3.05h3.05zm-1.52 3.05h6.09v1.53h-6.09Zm0-16.76h6.09v1.52h-6.09Zm-3.05 15.24h3.05v1.52H9.91Zm0-13.72h3.05v1.53H9.91Zm-1.53 10.67h1.53v3.05H8.38Zm0-9.14h1.53v3.05H8.38Zm1.53-7.62H22.1v-1.53h3.05v-1.52h-4.58V.765h-9.14v1.52H6.86v1.52h3.05zm-3.05 10.67h1.52v6.09H6.86Z"/><path fill="currentColor" d="M28.19 8.385v-1.53h-1.52v-3.05h-1.52v3.05H6.86v-3.05H5.34v3.05H3.81v1.53zm-25.9 19.81h1.52v1.52H2.29Zm0-19.81h1.52v1.52H2.29ZM.76 9.905h1.53v18.29H.76Z"/></symbol>
+    <symbol id="px-solves" viewBox="0 0 32 32"><path fill="currentColor" d="M28.185 9.905h1.53v18.29h-1.53Zm-1.52 18.29h1.52v1.52h-1.52Zm0-19.81h1.52v1.52h-1.52Zm-21.33 21.33h21.33v1.52H5.335Zm15.23-22.86h6.1v1.53h-6.1Zm-1.52-3.05h1.52v3.05h-1.52Zm-1.52-1.52h1.52v1.52h-1.52Zm-3.05-1.52h3.05v1.52h-3.05Zm-1.53 1.52h1.53v1.52h-1.53Zm-1.52 1.52h1.52v3.05h-1.52Zm-3.05 13.72h1.53v3.05h-1.53Zm-1.52 3.05h1.52v1.52h-1.52Zm0-4.58h1.52v1.53h-1.52Zm-1.52-9.14h6.09v1.53h-6.09Zm-1.53 7.62v-4.57h-1.52v6.09h4.57v-1.52zm0 13.72h1.53v1.52h-1.53Zm0-19.81h1.53v1.52h-1.53Zm0 15.23h3.05v-1.52h-4.57v6.1h1.52z"/></symbol>
+    <symbol id="px-hold-code" viewBox="0 0 32 32"><path fill="currentColor" d="M30.48 16.005H32v7.62h-1.52Zm-1.53 7.62h1.53v3.04h-1.53Zm0-10.67h1.53v3.05h-1.53Zm-1.52 13.71h1.52v3.05h-1.52Zm0-15.24h1.52v1.53h-1.52Zm-1.53 18.29h1.53v1.52H25.9Zm0-9.14h1.53v3.05H25.9Zm0-4.57h1.53v3.04H25.9Zm0-6.1h1.53v1.52H25.9Zm-1.52 13.72h1.52v1.52h-1.52Zm0-12.2h1.52v4.58h-1.52Zm0-6.09h1.52v1.52h-1.52Zm-1.52 19.81h1.52v1.52h-1.52Zm0-6.1h3.04v1.53h-3.04Zm0-12.19h1.52v1.53h-1.52Zm0-3.04h1.52v1.52h-1.52Zm-1.53 16.76h1.53v1.52h-1.53Zm0-12.19h1.53v1.52h-1.53Zm0-6.1h1.53v1.53h-1.53Zm-1.52 27.43h1.52v1.52h-1.52Zm0-7.62h1.52v1.53h-1.52Zm0-12.19h1.52v1.52h-1.52Zm0-9.14h1.52v1.52h-1.52Zm-1.52 22.86h1.52v6.09h-1.52ZM16.76.765h1.53v3.05h-1.53Zm-1.52 3.05h1.52v4.57h-1.52Zm-1.53 4.57h1.53v3.04h-1.53Zm-1.52 15.24h1.52v6.09h-1.52Zm-1.52 6.09h1.52v1.52h-1.52Zm0-7.62h1.52v1.53h-1.52Zm0-12.19h1.52v1.52h-1.52Zm0-9.14h1.52v1.52h-1.52Zm-1.53 19.81h1.53v1.52H9.14Zm0-12.19h1.53v1.52H9.14Zm0-6.1h1.53v1.53H9.14Zm-1.52 22.86h1.52v1.52H7.62Zm-1.52-6.1h3.04v1.53H6.1Zm1.52-12.19h1.52v1.53H7.62Zm0-3.04h1.52v1.52H7.62ZM6.1 23.625h1.52v1.52H6.1Zm0-12.2h1.52v4.58H6.1Zm0-6.09h1.52v1.52H6.1Zm-1.53 24.38H6.1v1.52H4.57Zm0-9.14H6.1v3.05H4.57Zm0-4.57H6.1v3.04H4.57Zm0-6.1H6.1v1.52H4.57Zm-1.52 16.76h1.52v3.05H3.05Zm0-15.24h1.52v1.53H3.05Zm-1.53 12.2h1.53v3.04H1.52Zm0-10.67h1.53v3.05H1.52ZM0 16.005h1.52v7.62H0Z"/></symbol>
+    <symbol id="px-email" viewBox="0 0 32 32"><path fill="currentColor" d="M30.47 9.145h-1.52v1.53h1.52v1.52h-1.52v1.52h1.52v1.53h-1.52v1.52h1.52v1.52h-1.52v1.53h1.52v1.52h-1.52v1.53h1.52v1.52H32V7.625h-1.53zm-3.04 13.72H25.9v1.52h-1.52v-1.52h-1.52v1.52h-1.53v-1.52h-1.52v1.52h-1.53v-1.52h-1.52v1.52h-1.52v-1.52h-1.53v1.52h-1.52v-1.52h-1.53v1.52H9.14v-1.52H7.62v1.52H6.09v-1.52H4.57v1.52H1.52v1.52h28.95v-1.52h-3.04zm-1.53-12.19h-3.04v1.52h-1.53v3.05h1.53v1.52h3.04v-1.52h1.53v-3.05H25.9zm-21.33 9.14h9.14v1.52H4.57Zm0-3.05h6.09v1.52H4.57Zm0-7.62h1.52v-1.52h1.53v1.52h1.52v-1.52h1.52v1.52h1.53v-1.52h1.52v1.52h1.53v-1.52h1.52v1.52h1.52v-1.52h1.53v1.52h1.52v-1.52h1.53v1.52h1.52v-1.52h1.52v1.52h1.53v-1.52h3.04v-1.53H1.52v1.53h3.05z"/><path fill="currentColor" d="M3.05 22.865v-1.53H1.52v-1.52h1.53v-1.53H1.52v-1.52h1.53v-1.52H1.52v-1.53h1.53v-1.52H1.52v-1.52h1.53v-1.53H1.52v-1.52H0v16.76h1.52v-1.52z"/></symbol>
+    <symbol id="px-linkedin" viewBox="0 0 32 32"><path fill="currentColor" d="M30.47 3.05H32v25.9h-1.53Zm-1.52 25.9h1.52v1.53h-1.52Zm0-27.43h1.52v1.53h-1.52Zm-1.53 3.05h1.53v22.86h-1.53ZM3.04 30.48h25.91V32H3.04Zm1.53-3.05h22.85v1.52H4.57Zm18.28-12.19h-1.52v-1.53h-3.05v1.53h-1.52v-1.53h-3.05v9.15h3.05v-4.57h1.52v-1.53h1.53v1.53h1.52v4.57h3.05v-6.1h-1.53zM7.61 13.71h3.05v9.15H7.61Zm0-4.57h3.05v3.05H7.61ZM4.57 3.05h22.85v1.52H4.57ZM3.04 0h25.91v1.52H3.04Zm0 4.57h1.53v22.86H3.04ZM1.52 28.95h1.52v1.53H1.52Zm0-27.43h1.52v1.53H1.52ZM0 3.05h1.52v25.9H0Z"/></symbol>
+    <symbol id="px-clip" viewBox="0 0 32 32"><path fill="currentColor" d="M28.185 8.38h1.53v6.09h-1.53Zm-1.52 6.09h1.52v3.05h-1.52Zm0-7.61h1.52v1.52h-1.52Zm-1.52 10.66h1.52v1.53h-1.52Zm0-12.19h1.52v1.53h-1.52Zm-1.53 13.72h1.53v1.52h-1.53Zm0-9.15h1.53v4.57h-1.53Zm-4.57-6.09h6.1v1.52h-6.1Zm3.05 16.76h1.52v1.52h-1.52Zm0-6.1h1.52V16h-1.52Zm-3.05-6.09h4.57V9.9h-4.57Zm1.52 13.71h1.53v1.53h-1.53Zm0-6.09h1.53v1.52h-1.53Zm-1.52 7.62h1.52v1.52h-1.52Zm0-6.1h1.52v1.53h-1.52Zm-1.52 7.62h1.52v1.53h-1.52Zm0-6.09h1.52v1.52h-1.52Zm0-9.15h1.52v1.53h-1.52Zm-1.53 10.67h1.53v1.52h-1.53Zm0-9.14h1.53v1.52h-1.53Zm0-6.1h3.05v1.53h-3.05Zm-1.52 16.76h1.52v1.53h-1.52Zm0-9.14h1.52v1.52h-1.52Zm0-6.09h1.52v1.52h-1.52Zm-1.53 16.76h1.53v1.52h-1.53Zm0-9.15h1.53V16h-1.53Zm0-6.09h1.53V9.9h-1.53Zm-1.52 16.76h1.52v1.53h-1.52Zm0-9.14h1.52v1.52h-1.52Zm0-6.1h1.52v1.53h-1.52Zm-1.52 7.62h1.52v1.53h-1.52Zm0-6.09h1.52v1.52h-1.52Zm-1.53 1.52h1.53v1.52h-1.53Zm-1.52 1.52h1.52V16h-1.52Zm-1.52 12.2h6.09v1.52h-6.09Zm0-10.67h1.52v1.52h-1.52Zm-1.53 9.14h1.53v1.53h-1.53Zm0-7.62h1.53v1.53h-1.53Zm-1.52 1.53h1.52v6.09h-1.52Z"/></symbol>
+  </svg>
   <a class="skip-link" href="#main">Skip to content</a>
-  <div class="three-layer" aria-hidden="true"><canvas id="three-canvas"></canvas></div>
 
   <header class="site-header">
     <nav class="container nav-shell" aria-label="Primary navigation">
-      <a class="brand" href="#top" aria-label="Ezra portfolio home"><span class="brand-mark">EP</span><span>Ezra Piyachanokwong</span></a>
+      <a class="brand" href="#top" aria-label="Ezra portfolio home"><span class="brand-mark"><svg class="px-icon" aria-hidden="true"><use href="#px-shield" /></svg><span>EP</span></span><span>Ezra Piyachanokwong</span></a>
       <div class="nav-links" id="nav-links">
         <a href="#about">About</a>
         <a href="#work">Selected work</a>
@@ -497,10 +755,12 @@
       </div>
       <div class="nav-controls">
         <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+          <svg class="px-icon icon-sun" aria-hidden="true"><use href="#px-sun" /></svg>
+          <svg class="px-icon icon-moon" aria-hidden="true"><use href="#px-moon" /></svg>
         </button>
-        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span></button>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+          <svg class="px-icon" aria-hidden="true"><use href="#px-menu" /></svg>
+        </button>
       </div>
     </nav>
   </header>
@@ -509,23 +769,54 @@
     <section class="hero" id="top">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <span class="eyebrow reveal" style="--delay: 40ms">Bangkok · QA engineering / test automation</span>
+          <span class="eyebrow reveal" style="--delay: 40ms"><svg class="px-icon" aria-hidden="true"><use href="#px-search-bug" /></svg><span class="decode-text">Bangkok · QA engineering / test automation</span></span>
           <h1 class="hero-title reveal" style="--delay: 90ms"><span class="hero-title-measure" aria-hidden="true">I test the details that make software feel <em>trustworthy.</em></span><span class="hero-title-typed" aria-hidden="true"><span id="hero-title-prefix"></span><em id="hero-title-accent"></em><span class="typing-cursor"></span></span><span class="sr-only">I test the details that make software feel trustworthy.</span></h1>
           <p class="hero-lead reveal" style="--delay: 145ms">I’m Ezra, a QA engineer who turns unclear requirements into clear checks, useful bug reports, and releases people can rely on.</p>
           <p class="hero-note reveal" style="--delay: 195ms">Web apps, APIs, automation, data pipelines, and the edge cases hiding between them.</p>
           <div class="hero-actions reveal" style="--delay: 245ms">
-            <a class="button primary" href="#work">See selected work <span class="arrow">↘</span></a>
-            <a class="button" href="Resume_QA_Ezra_Piyachanokwong.pdf" target="_blank" rel="noreferrer">Read my resume</a>
+            <a class="button primary" href="#work"><svg class="px-icon" aria-hidden="true"><use href="#px-cursor" /></svg><span>See selected work</span> <span class="arrow">↘</span></a>
+            <a class="button" href="Resume_QA_Ezra_Piyachanokwong.pdf" target="_blank" rel="noreferrer"><svg class="px-icon" aria-hidden="true"><use href="#px-pdf" /></svg><span>Read my resume</span></a>
           </div>
           <div class="hero-bottom reveal" style="--delay: 300ms">Scroll to see how I work</div>
         </div>
 
-        <div class="hero-visual reveal" style="--delay: 180ms" aria-label="Ezra profile and QA focus">
-          <div class="visual-halo"></div>
-          <div class="profile-frame"><img src="profile.jpg" alt="Ezra Piyachanokwong" width="960" height="720" fetchpriority="high" decoding="async" /></div>
-          <div class="visual-stamp"><span class="stamp-dot"></span><span class="stamp-label">FIELD NOTE / 01</span><strong class="stamp-value">Find the mismatch before the user does.</strong></div>
-          <div class="visual-interaction"><i aria-hidden="true"></i><span>MOVE / CLICK TO EXPLORE</span></div>
-          <div class="visual-index">WEB · API · DATA · FLOW</div>
+        <div class="hero-visual reveal" style="--delay: 180ms" aria-label="Interactive 3D voxel QA stage and Ezra profile">
+          <div class="voxel-stage">
+            <div class="voxel-stage-bar">
+              <span class="voxel-stage-title"><span class="voxel-led" aria-hidden="true"></span><span>VOXEL INSPECTOR // 3D</span></span>
+              <button type="button" class="visual-interaction" id="voxel-morph-btn" aria-label="Cycle 3D pixel voxel model">
+                <svg class="px-icon" aria-hidden="true"><use href="#px-glasses-3d" /></svg>
+                <span id="voxel-mode-label">QA SCANNER · MORPH</span>
+              </button>
+            </div>
+            <div class="voxel-canvas-wrap">
+              <canvas id="three-canvas"></canvas>
+              <div class="voxel-hud-meta" aria-hidden="true">
+                <span id="voxel-hud-grid">GRID 21×21×2</span>
+                <span>MOVE / CLICK TO MORPH</span>
+              </div>
+            </div>
+            <div class="voxel-tabs" role="group" aria-label="Select 3D voxel model">
+              <button type="button" class="voxel-tab is-active" data-voxel-index="0" aria-pressed="true"><svg class="px-icon" aria-hidden="true"><use href="#px-search-bug" /></svg><span>01 Scan</span></button>
+              <button type="button" class="voxel-tab" data-voxel-index="1" aria-pressed="false"><svg class="px-icon" aria-hidden="true"><use href="#px-bug" /></svg><span>02 Bug</span></button>
+              <button type="button" class="voxel-tab" data-voxel-index="2" aria-pressed="false"><svg class="px-icon" aria-hidden="true"><use href="#px-shield" /></svg><span>03 Guard</span></button>
+              <button type="button" class="voxel-tab" data-voxel-index="3" aria-pressed="false"><svg class="px-icon" aria-hidden="true"><use href="#px-database" /></svg><span>04 SQL</span></button>
+              <button type="button" class="voxel-tab" data-voxel-index="4" aria-pressed="false"><svg class="px-icon" aria-hidden="true"><use href="#px-robot" /></svg><span>05 AI</span></button>
+            </div>
+          </div>
+
+          <div class="operator-card">
+            <div class="profile-frame"><img src="profile.jpg" alt="Ezra Piyachanokwong" width="960" height="720" fetchpriority="high" decoding="async" /></div>
+            <div class="operator-copy">
+              <div class="operator-top">
+                <span class="stamp-label">PERSON / QA-01</span>
+                <span class="operator-loc">BANGKOK, TH</span>
+              </div>
+              <strong class="stamp-value">Find the mismatch before the user does.</strong>
+              <span class="operator-sub">WEB · API · PLAYWRIGHT · SQL VALIDATION</span>
+            </div>
+            <span class="px-badge operator-badge" aria-hidden="true"><svg class="px-icon"><use href="#px-bug" /></svg></span>
+          </div>
         </div>
       </div>
     </section>
@@ -544,16 +835,25 @@
             <div class="about-signature">Ezra · Software QA Engineer</div>
           </article>
           <div class="principles">
-            <article class="principle reveal" style="--delay: 130ms"><span class="principle-number">01</span><div><h3>Start with the user</h3><p>Map the path a real person takes, including the awkward bits.</p></div></article>
-            <article class="principle reveal" style="--delay: 180ms"><span class="principle-number">02</span><div><h3>Follow the data</h3><p>The screen can look right while the database is wrong. I check both sides.</p></div></article>
-            <article class="principle reveal" style="--delay: 230ms"><span class="principle-number">03</span><div><h3>Leave evidence</h3><p>A useful bug report makes the next fix easier: steps, expected result, actual result, and proof.</p></div></article>
+            <article class="principle reveal" style="--delay: 130ms">
+              <div class="principle-meta"><span class="px-badge"><svg class="px-icon" aria-hidden="true"><use href="#px-user-aim" /></svg></span><span class="principle-number">01</span></div>
+              <div><h3>Start with the user</h3><p>Map the path a real person takes, including the awkward bits.</p></div>
+            </article>
+            <article class="principle reveal" style="--delay: 180ms">
+              <div class="principle-meta"><span class="px-badge"><svg class="px-icon" aria-hidden="true"><use href="#px-database" /></svg></span><span class="principle-number">02</span></div>
+              <div><h3>Follow the data</h3><p>The screen can look right while the database is wrong. I check both sides.</p></div>
+            </article>
+            <article class="principle reveal" style="--delay: 230ms">
+              <div class="principle-meta"><span class="px-badge"><svg class="px-icon" aria-hidden="true"><use href="#px-search-check" /></svg></span><span class="principle-number">03</span></div>
+              <div><h3>Leave evidence</h3><p>A useful bug report makes the next fix easier: steps, expected result, actual result, and proof.</p></div>
+            </article>
           </div>
         </div>
         <div class="stat-row reveal" style="--delay: 120ms" aria-label="Portfolio summary">
-          <div class="stat"><strong>3+</strong><span>years in hands-on QA</span></div>
-          <div class="stat"><strong>6</strong><span>delivery teams / domains</span></div>
-          <div class="stat"><strong>5</strong><span>case notes below</span></div>
-          <div class="stat"><strong>∞</strong><span>ways a release can surprise you</span></div>
+          <div class="stat"><div class="stat-head"><strong>3+</strong><svg class="px-icon stat-icon" aria-hidden="true"><use href="#px-trophy" /></svg></div><span>years in hands-on QA</span></div>
+          <div class="stat"><div class="stat-head"><strong>6</strong><svg class="px-icon stat-icon" aria-hidden="true"><use href="#px-module" /></svg></div><span>delivery teams / domains</span></div>
+          <div class="stat"><div class="stat-head"><strong>5</strong><svg class="px-icon stat-icon" aria-hidden="true"><use href="#px-notepad" /></svg></div><span>case notes below</span></div>
+          <div class="stat"><div class="stat-head"><strong>∞</strong><svg class="px-icon stat-icon" aria-hidden="true"><use href="#px-flash" /></svg></div><span>ways a release can surprise you</span></div>
         </div>
       </div>
     </section>
@@ -568,7 +868,7 @@
         <div class="work-grid">
           <article class="work-card featured reveal tilt-card" style="--delay: 80ms">
             <div class="work-copy">
-              <div class="work-top"><span>01 · Data-heavy web flow</span><span class="work-status">Shipped with confidence</span></div>
+              <div class="work-top"><span class="work-top-id"><span class="px-badge"><svg class="px-icon" aria-hidden="true"><use href="#px-data-bars" /></svg></span><span>01 · Data-heavy web flow</span></span><span class="work-status">Shipped with confidence</span></div>
               <h3>Upload Excel → Purchase Order</h3>
               <p>I tested the happy path, the messy path, and the data after the upload. When a duplicate SKU slipped through, I captured the evidence, helped define the expected behavior, and re-ran the regression after the fix.</p>
               <div class="work-meta"><span class="tag">Web testing</span><span class="tag">ClickUp</span><span class="tag">Regression</span><span class="tag">Claude Code</span></div>
@@ -576,10 +876,10 @@
             </div>
             <aside class="field-note"><span class="field-note-label">FIELD NOTE / 482</span><strong>Small data rules can decide whether a workflow feels safe.</strong><ul><li>Upload and mapping behavior</li><li>Duplicate SKU edge case</li><li>Fix verification + regression sweep</li></ul></aside>
           </article>
-          <article class="work-card reveal tilt-card" style="--delay: 130ms"><div class="work-top"><span>02 · Test data</span><span>Pipeline</span></div><div class="work-copy"><h3>Useful test data from messy source files.</h3><p>Explored a workflow that turns PDF, Excel, CSV, and TXT files into richer QA data with Gemini, n8n, PostgreSQL, and RAG.</p><div class="work-meta"><span class="tag">Gemini</span><span class="tag">n8n</span><span class="tag">PostgreSQL</span><span class="tag">RAG</span></div></div></article>
-          <article class="work-card reveal tilt-card" style="--delay: 180ms"><div class="work-top"><span>03 · API quality</span><span>Repeatable checks</span></div><div class="work-copy"><h3>Move API regression out of the manual queue.</h3><p>Built repeatable checks with Postman Collections, Newman CLI, and GitHub Actions so API behavior could be checked again after every meaningful change.</p><div class="work-meta"><span class="tag">Postman</span><span class="tag">Newman</span><span class="tag">GitHub Actions</span></div></div></article>
-          <article class="work-card reveal tilt-card" style="--delay: 230ms"><div class="work-top"><span>04 · E2E automation</span><span>Core journeys</span></div><div class="work-copy"><h3>Keep the important user journeys covered.</h3><p>Developed Playwright E2E tests around core web workflows, with attention to readable scenarios, stable selectors, and useful regression feedback.</p><div class="work-meta"><span class="tag">Playwright</span><span class="tag">TypeScript</span><span class="tag">E2E</span></div></div></article>
-          <article class="work-card quality-card reveal tilt-card" style="--delay: 280ms"><div class="work-top"><span>05 · QA in practice</span><span>Quality signal</span></div><div class="work-copy"><h3>Make the test run useful after it finishes.</h3><p>I care about the signal that comes after the check: what passed, what failed, what changed, and what the team should do next.</p><div class="quality-snapshot" aria-label="QA run snapshot"><div><strong>24</strong><span>tests</span></div><div><strong>3</strong><span>workflows</span></div><div><strong>1</strong><span>edge caught</span></div><div><strong>1</strong><span>fix verified</span></div></div><div class="work-meta"><span class="tag">Test reporting</span><span class="tag">Regression</span><span class="tag">Evidence</span></div></div></article>
+          <article class="work-card reveal tilt-card" style="--delay: 130ms"><div class="work-top"><span class="work-top-id"><span class="px-badge"><svg class="px-icon" aria-hidden="true"><use href="#px-hierarchy" /></svg></span><span>02 · Test data</span></span><span>Pipeline</span></div><div class="work-copy"><h3>Useful test data from messy source files.</h3><p>Explored a workflow that turns PDF, Excel, CSV, and TXT files into richer QA data with Gemini, n8n, PostgreSQL, and RAG.</p><div class="work-meta"><span class="tag">Gemini</span><span class="tag">n8n</span><span class="tag">PostgreSQL</span><span class="tag">RAG</span></div></div></article>
+          <article class="work-card reveal tilt-card" style="--delay: 180ms"><div class="work-top"><span class="work-top-id"><span class="px-badge"><svg class="px-icon" aria-hidden="true"><use href="#px-api-sync" /></svg></span><span>03 · API quality</span></span><span>Repeatable checks</span></div><div class="work-copy"><h3>Move API regression out of the manual queue.</h3><p>Built repeatable checks with Postman Collections, Newman CLI, and GitHub Actions so API behavior could be checked again after every meaningful change.</p><div class="work-meta"><span class="tag">Postman</span><span class="tag">Newman</span><span class="tag">GitHub Actions</span></div></div></article>
+          <article class="work-card reveal tilt-card" style="--delay: 230ms"><div class="work-top"><span class="work-top-id"><span class="px-badge"><svg class="px-icon" aria-hidden="true"><use href="#px-browser" /></svg></span><span>04 · E2E automation</span></span><span>Core journeys</span></div><div class="work-copy"><h3>Keep the important user journeys covered.</h3><p>Developed Playwright E2E tests around core web workflows, with attention to readable scenarios, stable selectors, and useful regression feedback.</p><div class="work-meta"><span class="tag">Playwright</span><span class="tag">TypeScript</span><span class="tag">E2E</span></div></div></article>
+          <article class="work-card quality-card reveal tilt-card" style="--delay: 280ms"><div class="work-top"><span class="work-top-id"><span class="px-badge"><svg class="px-icon" aria-hidden="true"><use href="#px-live-status" /></svg></span><span>05 · QA in practice</span></span><span>Quality signal</span></div><div class="work-copy"><h3>Make the test run useful after it finishes.</h3><p>I care about the signal that comes after the check: what passed, what failed, what changed, and what the team should do next.</p><div class="quality-snapshot" aria-label="QA run snapshot"><div><strong>24</strong><span>tests</span></div><div><strong>3</strong><span>workflows</span></div><div><strong>1</strong><span>edge caught</span></div><div><strong>1</strong><span>fix verified</span></div></div><div class="work-meta"><span class="tag">Test reporting</span><span class="tag">Regression</span><span class="tag">Evidence</span></div></div></article>
         </div>
       </div>
     </section>
@@ -593,10 +893,10 @@
         </div>
         <div class="process-wrap reveal" style="--delay: 100ms">
           <div class="process-line">
-            <article class="process-step"><span class="process-dot">01</span><div><h3>Understand</h3><p>Read the task, ask what success looks like, and map the real user flow.</p></div></article>
-            <article class="process-step"><span class="process-dot">02</span><div><h3>Challenge</h3><p>Test the edges: bad input, odd files, permissions, empty states, and data that repeats.</p></div></article>
-            <article class="process-step"><span class="process-dot">03</span><div><h3>Prove</h3><p>Report what happened with steps, evidence, expected behavior, and a clear priority.</p></div></article>
-            <article class="process-step"><span class="process-dot">04</span><div><h3>Repeat</h3><p>Verify the fix, run the regression sweep, and check that the change did not move the problem elsewhere.</p></div></article>
+            <article class="process-step"><span class="process-dot"><svg class="px-icon" aria-hidden="true"><use href="#px-lightbulb" /></svg><span>01</span></span><div><h3>Understand</h3><p>Read the task, ask what success looks like, and map the real user flow.</p></div></article>
+            <article class="process-step"><span class="process-dot"><svg class="px-icon" aria-hidden="true"><use href="#px-browser-bugs" /></svg><span>02</span></span><div><h3>Challenge</h3><p>Test the edges: bad input, odd files, permissions, empty states, and data that repeats.</p></div></article>
+            <article class="process-step"><span class="process-dot"><svg class="px-icon" aria-hidden="true"><use href="#px-search-check" /></svg><span>03</span></span><div><h3>Prove</h3><p>Report what happened with steps, evidence, expected behavior, and a clear priority.</p></div></article>
+            <article class="process-step"><span class="process-dot"><svg class="px-icon" aria-hidden="true"><use href="#px-refresh" /></svg><span>04</span></span><div><h3>Repeat</h3><p>Verify the fix, run the regression sweep, and check that the change did not move the problem elsewhere.</p></div></article>
           </div>
         </div>
       </div>
@@ -606,12 +906,12 @@
       <div class="container experience-layout">
         <div class="experience-lead reveal"><span class="section-kicker">04 / Experience</span><h2>Different products. The same question: can people trust what happens next?</h2><p>Wholesale and retail distribution, commerce, and digital product systems have taught me to look past the surface — from UI behavior to APIs, SQL, and delivery feedback.</p></div>
         <div class="experience-list">
-          <article class="experience-item reveal" style="--delay: 80ms"><span class="experience-year">CURRENT / MEDICAL DISTRIBUTION</span><div class="experience-role"><strong>Software Tester · Health Up</strong><span>Testing software used in the wholesale and retail distribution of medicines and medical supplies, including Playwright E2E, upload validation, AI-assisted development workflow, and ClickUp feedback.</span></div></article>
-          <article class="experience-item reveal" style="--delay: 130ms"><span class="experience-year">QA ENGINEERING</span><div class="experience-role"><strong>QA Engineer · CP Axtra</strong><span>API and E2E testing, Robot Framework, PostgreSQL validation, and Jira collaboration.</span></div></article>
-          <article class="experience-item reveal" style="--delay: 180ms"><span class="experience-year">QA ENGINEERING</span><div class="experience-role"><strong>QA Engineer · Ascend nano</strong><span>API testing, Robot Framework, GitHub Actions, and MySQL validation.</span></div></article>
-          <article class="experience-item reveal" style="--delay: 230ms"><span class="experience-year">QA ENGINEERING</span><div class="experience-role"><strong>QA Engineer · Central Food Wholesale</strong><span>Web/API testing, Postman automation, Playwright E2E, PostgreSQL, and test data generation.</span></div></article>
-          <article class="experience-item reveal" style="--delay: 280ms"><span class="experience-year">QA ENGINEERING</span><div class="experience-role"><strong>QA Engineer · Principal Healthcare</strong><span>Test planning, SQL validation, multi-system data consistency, and QA reporting.</span></div></article>
-          <article class="experience-item reveal" style="--delay: 330ms"><span class="experience-year">QA + DEVELOPMENT</span><div class="experience-role"><strong>QA Engineer &amp; Junior Developer · Chococard Enterprise</strong><span>Manual, GUI, functional, regression, and frontend/backend validation.</span></div></article>
+          <article class="experience-item reveal" style="--delay: 80ms"><span class="experience-year"><svg class="px-icon" aria-hidden="true"><use href="#px-medical" /></svg><span>CURRENT / MEDICAL DISTRIBUTION</span></span><div class="experience-role"><strong>Software Tester · Health Up</strong><span>Testing software used in the wholesale and retail distribution of medicines and medical supplies, including Playwright E2E, upload validation, AI-assisted development workflow, and ClickUp feedback.</span></div></article>
+          <article class="experience-item reveal" style="--delay: 130ms"><span class="experience-year"><svg class="px-icon" aria-hidden="true"><use href="#px-solves" /></svg><span>QA ENGINEERING</span></span><div class="experience-role"><strong>QA Engineer · CP Axtra</strong><span>API and E2E testing, Robot Framework, PostgreSQL validation, and Jira collaboration.</span></div></article>
+          <article class="experience-item reveal" style="--delay: 180ms"><span class="experience-year"><svg class="px-icon" aria-hidden="true"><use href="#px-solves" /></svg><span>QA ENGINEERING</span></span><div class="experience-role"><strong>QA Engineer · Ascend nano</strong><span>API testing, Robot Framework, GitHub Actions, and MySQL validation.</span></div></article>
+          <article class="experience-item reveal" style="--delay: 230ms"><span class="experience-year"><svg class="px-icon" aria-hidden="true"><use href="#px-solves" /></svg><span>QA ENGINEERING</span></span><div class="experience-role"><strong>QA Engineer · Central Food Wholesale</strong><span>Web/API testing, Postman automation, Playwright E2E, PostgreSQL, and test data generation.</span></div></article>
+          <article class="experience-item reveal" style="--delay: 280ms"><span class="experience-year"><svg class="px-icon" aria-hidden="true"><use href="#px-solves" /></svg><span>QA ENGINEERING</span></span><div class="experience-role"><strong>QA Engineer · Principal Healthcare</strong><span>Test planning, SQL validation, multi-system data consistency, and QA reporting.</span></div></article>
+          <article class="experience-item reveal" style="--delay: 330ms"><span class="experience-year"><svg class="px-icon" aria-hidden="true"><use href="#px-hold-code" /></svg><span>QA + DEVELOPMENT</span></span><div class="experience-role"><strong>QA Engineer &amp; Junior Developer · Chococard Enterprise</strong><span>Manual, GUI, functional, regression, and frontend/backend validation.</span></div></article>
         </div>
       </div>
     </section>
@@ -619,7 +919,7 @@
     <section class="section">
       <div class="container">
         <div class="now-card reveal">
-          <div class="now-copy"><span class="eyebrow">Currently learning</span><h3>Getting better at the tools around good QA — without losing the human judgment in the middle.</h3><p>I’m studying LLM applications, RAG, prompt engineering, workflow design, and AI evaluation so I can ask sharper questions of both the product and the process.</p></div>
+          <div class="now-copy"><span class="eyebrow"><svg class="px-icon" aria-hidden="true"><use href="#px-robot" /></svg><span class="decode-text">Currently learning</span></span><h3>Getting better at the tools around good QA — without losing the human judgment in the middle.</h3><p>I’m studying LLM applications, RAG, prompt engineering, workflow design, and AI evaluation so I can ask sharper questions of both the product and the process.</p></div>
           <div class="learning-list" aria-label="Current learning topics"><span>LLM applications</span><span>RAG concepts</span><span>Prompt engineering</span><span>AI evaluation</span><span>Workflow design</span></div>
         </div>
       </div>
@@ -628,8 +928,13 @@
     <section class="section contact-section" id="contact">
       <div class="container">
         <div class="contact-box reveal">
-          <div class="contact-copy"><span class="eyebrow">05 / Say hello</span><h2 class="typewriter-heading" data-typewriter>If you’re building something, let’s make it harder to break.</h2><p>For QA Engineer, QA Automation Engineer, Software Tester, or product quality conversations, send me a note. I’m based in Bangkok, Thailand.</p></div>
-          <div class="contact-actions"><span class="contact-actions-label">OPEN TO A GOOD CONVERSATION</span><a class="contact-action-item contact-action-item--primary" href="mailto:ezrapiya.th@gmail.com"><span>Email Ezra</span><strong>↗</strong></a><a class="contact-action-item" href="https://www.linkedin.com/in/ezra-piyachanokwong/" target="_blank" rel="me noopener noreferrer"><span>LinkedIn</span><strong>↗</strong></a><button class="contact-action-item" id="copy-email" type="button" data-email="ezrapiya.th@gmail.com"><span>Copy email</span><strong>＋</strong></button></div>
+          <div class="contact-copy"><span class="eyebrow"><svg class="px-icon" aria-hidden="true"><use href="#px-email" /></svg><span class="decode-text">05 / Say hello</span></span><h2 class="typewriter-heading" data-typewriter>If you’re building something, let’s make it harder to break.</h2><p>For QA Engineer, QA Automation Engineer, Software Tester, or product quality conversations, send me a note. I’m based in Bangkok, Thailand.</p></div>
+          <div class="contact-actions">
+            <span class="contact-actions-label">OPEN TO A GOOD CONVERSATION</span>
+            <a class="contact-action-item contact-action-item--primary" href="mailto:ezrapiya.th@gmail.com"><span class="contact-action-main"><svg class="px-icon" aria-hidden="true"><use href="#px-email" /></svg><span>Email Ezra</span></span><strong>↗</strong></a>
+            <a class="contact-action-item" href="https://www.linkedin.com/in/ezra-piyachanokwong/" target="_blank" rel="me noopener noreferrer"><span class="contact-action-main"><svg class="px-icon" aria-hidden="true"><use href="#px-linkedin" /></svg><span>LinkedIn</span></span><strong>↗</strong></a>
+            <button class="contact-action-item" id="copy-email" type="button" data-email="ezrapiya.th@gmail.com"><span class="contact-action-main"><svg class="px-icon" aria-hidden="true"><use href="#px-clip" /></svg><span>Copy email</span></span><strong>＋</strong></button>
+          </div>
         </div>
       </div>
     </section>
@@ -645,195 +950,374 @@
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const saveData = Boolean(navigator.connection && navigator.connection.saveData);
     const canvas = document.getElementById('three-canvas');
-    const threeLayer = document.querySelector('.three-layer');
-    const hero = document.querySelector('.hero');
+    const voxelStage = document.querySelector('.voxel-stage');
 
-    function createSignalField() {
-      if (!canvas || reduceMotion || saveData || !window.WebGLRenderingContext) return;
+    const VOXEL_MODELS = [
+      { id: 'scanner', symbolId: 'px-search-bug', label: 'QA SCANNER · MORPH', primary: '#d7ff55', secondary: '#6ee7ff', depthColor: '#253166' },
+      { id: 'bug', symbolId: 'px-bug', label: 'DEFECT CAUGHT · MORPH', primary: '#ff7585', secondary: '#d7ff55', depthColor: '#3a1d3e' },
+      { id: 'shield', symbolId: 'px-shield', label: 'RELEASE GUARD · MORPH', primary: '#6ee7ff', secondary: '#d7ff55', depthColor: '#1b355a' },
+      { id: 'database', symbolId: 'px-database', label: 'SQL & DATA · MORPH', primary: '#9b8cff', secondary: '#6ee7ff', depthColor: '#2a2356' },
+      { id: 'robot', symbolId: 'px-robot', label: 'AI AUTOMATION · MORPH', primary: '#d7ff55', secondary: '#9b8cff', depthColor: '#283058' }
+    ];
+
+    function createVoxelWorld() {
+      const wrap = canvas ? canvas.parentElement : null;
+      const morphBtn = document.getElementById('voxel-morph-btn');
+      const modeLabel = document.getElementById('voxel-mode-label');
+      const hudGrid = document.getElementById('voxel-hud-grid');
+      const tabs = [...document.querySelectorAll('.voxel-tab')];
+      if (!canvas || !wrap || reduceMotion || saveData || !window.WebGLRenderingContext) return;
       let renderer;
       try {
         renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'low-power' });
       } catch (error) {
         return;
       }
-      const pixelRatioCap = root.dataset.theme === 'light' ? 1 : 1.1;
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, pixelRatioCap));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.35));
       renderer.setClearColor(0x000000, 0);
+
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(42, 1, .1, 40);
-      camera.position.z = 8;
-      const group = new THREE.Group();
-      scene.add(group);
+      const camera = new THREE.PerspectiveCamera(36, 1, .1, 40);
+      camera.position.set(0, .15, 6.2);
+      camera.lookAt(0, .02, 0);
 
-      const mobile = window.matchMedia('(max-width: 680px)').matches;
-      const count = mobile ? 56 : 108;
-      const points = new Float32Array(count * 3);
-      const colors = new Float32Array(count * 3);
-      const pointColorA = new THREE.Color('#70e8ff');
-      const pointColorB = new THREE.Color('#d7ff55');
-      const random = (min, max) => min + Math.random() * (max - min);
-      for (let i = 0; i < count; i += 1) {
-        const radius = Math.pow(Math.random(), .64) * 4.5;
-        const angle = Math.random() * Math.PI * 2;
-        points[i * 3] = Math.cos(angle) * radius * 1.35;
-        points[i * 3 + 1] = Math.sin(angle) * radius * .73;
-        points[i * 3 + 2] = random(-2.6, 1.8);
-        const color = pointColorA.clone().lerp(pointColorB, Math.random());
-        colors[i * 3] = color.r;
-        colors[i * 3 + 1] = color.g;
-        colors[i * 3 + 2] = color.b;
+      const ambientLight = new THREE.AmbientLight(0xffffff, .92);
+      const keyLight = new THREE.DirectionalLight(0xffffff, 1.45);
+      keyLight.position.set(4, 6, 7);
+      const rimLight = new THREE.DirectionalLight(0x6ee7ff, 1.0);
+      rimLight.position.set(-5, -4, 4);
+      const bounceLight = new THREE.DirectionalLight(0x9b8cff, .5);
+      bounceLight.position.set(0, -6, 3);
+      scene.add(ambientLight, keyLight, rimLight, bounceLight);
+
+      const hitCanvas = document.createElement('canvas');
+      hitCanvas.width = 32;
+      hitCanvas.height = 32;
+      const hitCtx = hitCanvas.getContext('2d');
+
+      const extractVoxelsFromSymbol = (symbolId) => {
+        const symbol = document.getElementById(symbolId);
+        if (!symbol || !hitCtx) return [];
+        const paths = [...symbol.querySelectorAll('path')]
+          .map((p) => p.getAttribute('d'))
+          .filter(Boolean)
+          .map((d) => new Path2D(d));
+        if (!paths.length) return [];
+        const voxels = [];
+        const cell = 32 / 21;
+        const step = 0.145;
+        for (let gy = 0; gy < 21; gy += 1) {
+          for (let gx = 0; gx < 21; gx += 1) {
+            const cx = (gx + 0.55) * cell;
+            const cy = (gy + 0.55) * cell;
+            if (!paths.some((path2d) => hitCtx.isPointInPath(path2d, cx, cy))) continue;
+            const x = (gx - 10) * step;
+            const y = (10 - gy) * step;
+            voxels.push({ x, y, z: 0.11, layer: 'front', gx, gy });
+            voxels.push({ x, y, z: -0.11, layer: 'back', gx, gy });
+          }
+        }
+        return voxels;
+      };
+
+      const preparedModels = VOXEL_MODELS.map((model) => ({
+        ...model,
+        voxels: extractVoxelsFromSymbol(model.symbolId)
+      }));
+
+      // Ambient perimeter voxel cubes confined to the dedicated 3D stage
+      const bgCount = 28;
+      const bgMesh = new THREE.InstancedMesh(
+        new THREE.BoxGeometry(.11, .11, .11),
+        new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: .48 }),
+        bgCount
+      );
+      bgMesh.frustumCulled = false;
+      const bgMeta = [];
+      const bgPalette = [new THREE.Color('#d7ff55'), new THREE.Color('#6ee7ff'), new THREE.Color('#9b8cff')];
+      const dummy = new THREE.Object3D();
+      for (let i = 0; i < bgCount; i += 1) {
+        const angle = (i / bgCount) * Math.PI * 2 + (Math.random() - .5) * .25;
+        const radius = 1.85 + Math.random() * .95;
+        const ax = Math.cos(angle) * radius * 1.25;
+        const ay = Math.sin(angle) * radius * .72;
+        const az = -1.5 + Math.random() * 1.1;
+        const scale = .6 + (i % 3) * .22;
+        bgMeta.push({ ax, ay, az, scale, phase: Math.random() * Math.PI * 2, speed: .45 + Math.random() * .65 });
+        dummy.position.set(ax, ay, az);
+        dummy.scale.setScalar(scale);
+        dummy.updateMatrix();
+        bgMesh.setMatrixAt(i, dummy.matrix);
+        bgMesh.setColorAt(i, bgPalette[i % bgPalette.length]);
       }
-      const pointGeometry = new THREE.BufferGeometry();
-      pointGeometry.setAttribute('position', new THREE.BufferAttribute(points, 3));
-      pointGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-      const pointMaterial = new THREE.PointsMaterial({ size: mobile ? .045 : .055, vertexColors: true, transparent: true, opacity: .78, depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
-      const pointCloud = new THREE.Points(pointGeometry, pointMaterial);
-      group.add(pointCloud);
+      bgMesh.instanceMatrix.needsUpdate = true;
+      if (bgMesh.instanceColor) bgMesh.instanceColor.needsUpdate = true;
+      scene.add(bgMesh);
 
-      // A small 3D "signal orb" gives the hero a focal point without turning the
-      // background into a heavy scene. Everything is one draw-light group and
-      // remains decorative, so it never competes with the readable HTML layer.
-      const signalOrb = new THREE.Group();
-      const orbCore = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(.92, 1),
-        new THREE.MeshBasicMaterial({ color: 0x252b68, transparent: true, opacity: .9 })
+      // Centered Hero 3D Voxel Sculpture + Stepped Isometric Pedestal Ring
+      const sculptureGroup = new THREE.Group();
+      sculptureGroup.position.set(0, .18, 0);
+      scene.add(sculptureGroup);
+
+      const MAX_VOXELS = 420;
+      const sculptureMesh = new THREE.InstancedMesh(
+        new THREE.BoxGeometry(.132, .132, .21),
+        new THREE.MeshLambertMaterial({ color: 0xffffff }),
+        MAX_VOXELS
       );
-      const orbWire = new THREE.LineSegments(
-        new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.04, 1)),
-        new THREE.LineBasicMaterial({ color: 0xd7ff55, transparent: true, opacity: .62, blending: THREE.AdditiveBlending })
+      sculptureMesh.frustumCulled = false;
+      sculptureGroup.add(sculptureMesh);
+
+      const pedestalOffsets = [];
+      for (let ix = -4; ix <= 4; ix += 1) {
+        for (let iz = -4; iz <= 4; iz += 1) {
+          const edge = Math.max(Math.abs(ix), Math.abs(iz));
+          if (edge === 4 || edge === 3) {
+            const isCorner = Math.abs(ix) === 4 && Math.abs(iz) === 4;
+            pedestalOffsets.push({ x: ix * .22, y: isCorner ? .12 : 0, z: iz * .22, accent: isCorner || (ix + iz) % 3 === 0 });
+          }
+        }
+      }
+      const pedestalMesh = new THREE.InstancedMesh(
+        new THREE.BoxGeometry(.19, .14, .19),
+        new THREE.MeshLambertMaterial({ color: 0xffffff }),
+        pedestalOffsets.length
       );
-      signalOrb.add(orbCore, orbWire);
-      const orbitRings = [
-        { radius: 1.28, tube: .012, color: 0x70e8ff, opacity: .56, rotation: [Math.PI * .18, Math.PI * .12, 0] },
-        { radius: 1.52, tube: .009, color: 0x9b8cff, opacity: .42, rotation: [Math.PI * .58, 0, Math.PI * .18] },
-        { radius: 1.78, tube: .007, color: 0xd7ff55, opacity: .34, rotation: [0, Math.PI * .62, Math.PI * .38] }
-      ].map((config) => {
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(config.radius, config.tube, 6, 48), new THREE.MeshBasicMaterial({ color: config.color, transparent: true, opacity: config.opacity, blending: THREE.AdditiveBlending, depthWrite: false }));
-        ring.rotation.set(...config.rotation);
-        signalOrb.add(ring);
-        return ring;
+      const pedBaseColor = new THREE.Color('#252f5a');
+      const pedAccentColor = new THREE.Color('#6ee7ff');
+      pedestalOffsets.forEach((cell, idx) => {
+        dummy.position.set(cell.x, cell.y, cell.z);
+        dummy.rotation.set(0, 0, 0);
+        dummy.scale.setScalar(1);
+        dummy.updateMatrix();
+        pedestalMesh.setMatrixAt(idx, dummy.matrix);
+        pedestalMesh.setColorAt(idx, cell.accent ? pedAccentColor : pedBaseColor);
       });
-      const glowCanvas = document.createElement('canvas');
-      glowCanvas.width = glowCanvas.height = 128;
-      const glowContext = glowCanvas.getContext('2d');
-      if (glowContext) {
-        const glowGradient = glowContext.createRadialGradient(64, 64, 0, 64, 64, 64);
-        glowGradient.addColorStop(0, 'rgba(112, 232, 255, .38)');
-        glowGradient.addColorStop(.42, 'rgba(155, 140, 255, .15)');
-        glowGradient.addColorStop(1, 'rgba(112, 232, 255, 0)');
-        glowContext.fillStyle = glowGradient;
-        glowContext.fillRect(0, 0, 128, 128);
+      pedestalMesh.instanceMatrix.needsUpdate = true;
+      if (pedestalMesh.instanceColor) pedestalMesh.instanceColor.needsUpdate = true;
+      pedestalMesh.position.y = -1.78;
+      sculptureGroup.add(pedestalMesh);
+
+      const curPos = new Float32Array(MAX_VOXELS * 3);
+      const targetPos = new Float32Array(MAX_VOXELS * 3);
+      const curScale = new Float32Array(MAX_VOXELS);
+      const targetScale = new Float32Array(MAX_VOXELS);
+      const scatterDir = new Float32Array(MAX_VOXELS * 3);
+      for (let i = 0; i < MAX_VOXELS; i += 1) {
+        const theta = Math.random() * Math.PI * 2;
+        const phi = (Math.random() - .5) * Math.PI;
+        scatterDir[i * 3] = Math.cos(theta) * Math.cos(phi);
+        scatterDir[i * 3 + 1] = Math.sin(phi);
+        scatterDir[i * 3 + 2] = Math.sin(theta) * Math.cos(phi);
+        curPos[i * 3 + 2] = -0.4;
+        curScale[i] = 0;
+        dummy.position.set(0, 0, -0.4);
+        dummy.scale.setScalar(0);
+        dummy.updateMatrix();
+        sculptureMesh.setMatrixAt(i, dummy.matrix);
+        sculptureMesh.setColorAt(i, bgPalette[0]);
       }
-      const glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(glowCanvas), transparent: true, opacity: .8, depthWrite: false, blending: THREE.AdditiveBlending }));
-      glowSprite.scale.set(4.6, 4.6, 1);
-      glowSprite.position.z = -1.2;
-      signalOrb.add(glowSprite);
-      group.add(signalOrb);
+      sculptureMesh.instanceMatrix.needsUpdate = true;
+      if (sculptureMesh.instanceColor) sculptureMesh.instanceColor.needsUpdate = true;
 
-      const orbBase = { x: 2.15, y: .18 };
-      const setOrbPosition = () => {
-        orbBase.x = window.innerWidth > 980 ? 2.15 : .9;
-        orbBase.y = window.innerWidth > 980 ? .18 : .78;
-        signalOrb.position.set(orbBase.x, orbBase.y, .15);
-      };
-      setOrbPosition();
-
-      const linePositions = [];
-      const lineCount = mobile ? 8 : 18;
-      for (let i = 0; i < lineCount; i += 1) {
-        const a = Math.floor(Math.random() * count);
-        let b = Math.floor(Math.random() * count);
-        if (a === b) b = (b + 1) % count;
-        linePositions.push(points[a * 3], points[a * 3 + 1], points[a * 3 + 2], points[b * 3], points[b * 3 + 1], points[b * 3 + 2]);
-      }
-      const lineGeometry = new THREE.BufferGeometry();
-      lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-      const lineMaterial = new THREE.LineBasicMaterial({ color: 0x9b8cff, transparent: true, opacity: .15, depthWrite: false, blending: THREE.AdditiveBlending });
-      const networkLines = new THREE.LineSegments(lineGeometry, lineMaterial);
-      group.add(networkLines);
-
-      let width = 0;
-      let height = 0;
-      let frame = 0;
-      let lastFrame = 0;
-      let frameInterval = root.dataset.theme === 'light' ? 1000 / 18 : 1000 / 26;
-      let active = true;
-      let hidden = document.hidden;
-      let visibilityTarget = 1;
-      const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+      let modelIndex = 0;
+      let activeVoxelCount = 0;
       let pulse = 0;
-      const updateSceneVisibility = () => {
-        if (!threeLayer || !hero) return;
-        const distanceScrolled = Math.max(0, -hero.getBoundingClientRect().top);
-        const fadeDistance = Math.max(360, hero.offsetHeight * .72);
-        visibilityTarget = Math.max(0, Math.min(1, 1 - distanceScrolled / fadeDistance));
-        const baseOpacity = root.dataset.theme === 'light' ? .22 : .9;
-        threeLayer.style.opacity = (baseOpacity * visibilityTarget).toFixed(3);
-        threeLayer.classList.toggle('is-away', visibilityTarget < .02);
-      };
-      let visibilityFrame = 0;
-      const scheduleVisibilityUpdate = () => {
-        if (visibilityFrame) return;
-        visibilityFrame = requestAnimationFrame(() => {
-          visibilityFrame = 0;
-          updateSceneVisibility();
+      let lastMorphAt = performance.now();
+
+      const applyVoxelModel = (idx, withBurst) => {
+        const model = preparedModels[idx];
+        if (!model) return;
+        const primaryColor = new THREE.Color(model.primary);
+        const secondaryColor = new THREE.Color(model.secondary);
+        const depthColor = new THREE.Color(model.depthColor);
+        const voxels = model.voxels;
+        activeVoxelCount = Math.min(MAX_VOXELS, voxels.length);
+
+        for (let i = 0; i < MAX_VOXELS; i += 1) {
+          if (i < activeVoxelCount) {
+            const v = voxels[i];
+            targetPos[i * 3] = v.x;
+            targetPos[i * 3 + 1] = v.y;
+            targetPos[i * 3 + 2] = v.z;
+            targetScale[i] = 1;
+            if (withBurst) {
+              curPos[i * 3] += scatterDir[i * 3] * .5;
+              curPos[i * 3 + 1] += scatterDir[i * 3 + 1] * .5;
+              curPos[i * 3 + 2] += scatterDir[i * 3 + 2] * .5;
+            } else {
+              curPos[i * 3] = v.x;
+              curPos[i * 3 + 1] = v.y;
+              curPos[i * 3 + 2] = v.z;
+              curScale[i] = 1;
+            }
+            const distFromCenter = Math.hypot(v.gx - 10, v.gy - 10);
+            const useSecondary = v.layer === 'front' && ((v.gx + v.gy) % 5 === 0 || distFromCenter < 3.4);
+            const color = v.layer === 'back' ? depthColor : (useSecondary ? secondaryColor : primaryColor);
+            sculptureMesh.setColorAt(i, color);
+          } else {
+            targetPos[i * 3] = 0;
+            targetPos[i * 3 + 1] = 0;
+            targetPos[i * 3 + 2] = -0.4;
+            targetScale[i] = 0;
+          }
+        }
+        if (sculptureMesh.instanceColor) sculptureMesh.instanceColor.needsUpdate = true;
+        if (modeLabel) modeLabel.textContent = model.label;
+        if (hudGrid) hudGrid.textContent = `${activeVoxelCount} VOXELS · 21×21×2`;
+        tabs.forEach((tab, tabIdx) => {
+          const isActive = tabIdx === idx;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-pressed', String(isActive));
         });
       };
+
+      const setVoxelModel = (idx, withBurst = true) => {
+        const nextIdx = ((idx % preparedModels.length) + preparedModels.length) % preparedModels.length;
+        modelIndex = nextIdx;
+        lastMorphAt = performance.now();
+        if (withBurst) pulse = 1;
+        applyVoxelModel(modelIndex, withBurst);
+      };
+
+      const cycleVoxelModel = (withBurst = true) => {
+        setVoxelModel(modelIndex + 1, withBurst);
+      };
+
+      applyVoxelModel(0, false);
+
+      window.__voxelScene = {
+        getActiveModel: () => preparedModels[modelIndex].id,
+        getActiveVoxelCount: () => activeVoxelCount,
+        cycle: () => cycleVoxelModel(true),
+        setModel: (i) => setVoxelModel(i, true)
+      };
+
+      let width = 1;
+      let height = 1;
+      let frame = 0;
+      let lastFrame = 0;
+      const frameInterval = 1000 / 32;
+      let active = true;
+      let hidden = document.hidden;
+      const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+
       const resize = () => {
-        width = window.innerWidth;
-        height = window.innerHeight;
+        const w = Math.max(1, wrap.clientWidth);
+        const h = Math.max(1, wrap.clientHeight);
+        width = w;
+        height = h;
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height, false);
-        setOrbPosition();
-        scheduleVisibilityUpdate();
       };
+
       const render = (now) => {
         frame = 0;
         if (!active || hidden) return;
         if (now - lastFrame < frameInterval) { frame = requestAnimationFrame(render); return; }
         lastFrame = now;
-        pointer.x += (pointer.targetX - pointer.x) * .035;
-        pointer.y += (pointer.targetY - pointer.y) * .035;
-        group.rotation.y = now * .000045 + pointer.x * .06;
-        group.rotation.x = pointer.y * .035;
-        pointCloud.position.x += (pointer.x * .24 - pointCloud.position.x) * .045;
-        pointCloud.position.y += (pointer.y * .16 - pointCloud.position.y) * .045;
-        networkLines.position.x += (pointer.x * .1 - networkLines.position.x) * .035;
-        networkLines.position.y += (pointer.y * .07 - networkLines.position.y) * .035;
-        pointCloud.rotation.z = now * .000018;
-        signalOrb.rotation.y = now * .00024 + pointer.x * .28;
-        signalOrb.rotation.x = now * .00013 + pointer.y * .18;
-        orbitRings[0].rotation.z = now * .00034;
-        orbitRings[1].rotation.x = now * -.00026;
-        orbitRings[2].rotation.y = now * .00021;
-        signalOrb.position.x += (orbBase.x + pointer.x * .28 - signalOrb.position.x) * .055;
-        signalOrb.position.y += (orbBase.y + pointer.y * .18 - signalOrb.position.y) * .055;
-        pulse += (0 - pulse) * .08;
-        signalOrb.scale.setScalar(1 + pulse * .065);
-        orbCore.material.opacity = .84 + pulse * .12;
+
+        if (now - lastMorphAt > 6500) {
+          cycleVoxelModel(true);
+        }
+
+        pointer.x += (pointer.targetX - pointer.x) * .06;
+        pointer.y += (pointer.targetY - pointer.y) * .06;
+
+        for (let i = 0; i < bgCount; i += 1) {
+          const m = bgMeta[i];
+          const bob = Math.sin(now * .001 * m.speed + m.phase) * .14;
+          dummy.position.set(m.ax + pointer.x * .14, m.ay + bob + pointer.y * .1, m.az);
+          dummy.rotation.set(now * .00028 * m.speed, now * .00036 * m.speed, 0);
+          dummy.scale.setScalar(m.scale);
+          dummy.updateMatrix();
+          bgMesh.setMatrixAt(i, dummy.matrix);
+        }
+        bgMesh.instanceMatrix.needsUpdate = true;
+
+        for (let i = 0; i < MAX_VOXELS; i += 1) {
+          const ix = i * 3;
+          curPos[ix] += (targetPos[ix] - curPos[ix]) * .14;
+          curPos[ix + 1] += (targetPos[ix + 1] - curPos[ix + 1]) * .14;
+          curPos[ix + 2] += (targetPos[ix + 2] - curPos[ix + 2]) * .14;
+          curScale[i] += (targetScale[i] - curScale[i]) * .14;
+          dummy.position.set(curPos[ix], curPos[ix + 1], curPos[ix + 2]);
+          dummy.rotation.set(0, 0, 0);
+          dummy.scale.setScalar(curScale[i]);
+          dummy.updateMatrix();
+          sculptureMesh.setMatrixAt(i, dummy.matrix);
+        }
+        sculptureMesh.instanceMatrix.needsUpdate = true;
+
+        sculptureGroup.rotation.y = Math.sin(now * .0006) * .42 + pointer.x * .42;
+        sculptureGroup.rotation.x = Math.cos(now * .00042) * .12 + pointer.y * .24;
+        pedestalMesh.rotation.y = now * .00024;
+
+        pulse += (0 - pulse) * .09;
+        sculptureGroup.scale.setScalar(1 + pulse * .07);
+
         renderer.render(scene, camera);
         frame = requestAnimationFrame(render);
       };
+
       const start = () => { if (!frame && active && !hidden) frame = requestAnimationFrame(render); };
-      const onPointerMove = (event) => { pointer.targetX = (event.clientX / width - .5) * 2; pointer.targetY = (event.clientY / height - .5) * -2; start(); };
+      const onWrapPointerMove = (event) => {
+        const rect = wrap.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        pointer.targetX = ((event.clientX - rect.left) / rect.width - .5) * 2;
+        pointer.targetY = ((event.clientY - rect.top) / rect.height - .5) * -2;
+        start();
+      };
+
+      if (morphBtn) {
+        morphBtn.addEventListener('click', (event) => {
+          event.stopPropagation();
+          cycleVoxelModel(true);
+          start();
+        });
+      }
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const idx = Number(tab.dataset.voxelIndex);
+          if (!Number.isNaN(idx)) {
+            setVoxelModel(idx, true);
+            start();
+          }
+        });
+      });
+      wrap.addEventListener('click', () => {
+        cycleVoxelModel(true);
+        start();
+      });
+      wrap.addEventListener('pointermove', onWrapPointerMove, { passive: true });
+      wrap.addEventListener('pointerleave', () => { pointer.targetX = 0; pointer.targetY = 0; }, { passive: true });
+
+      document.querySelectorAll('.work-card').forEach((card) => {
+        card.addEventListener('pointerenter', () => { pulse = Math.max(pulse, .4); start(); }, { passive: true });
+      });
+
       resize();
       window.addEventListener('resize', resize, { passive: true });
-      window.addEventListener('scroll', scheduleVisibilityUpdate, { passive: true });
-      window.addEventListener('pointermove', onPointerMove, { passive: true });
-      window.addEventListener('pointerdown', () => { pulse = 1; start(); }, { passive: true });
-      window.addEventListener('pointerleave', () => { pointer.targetX = 0; pointer.targetY = 0; }, { passive: true });
-      document.addEventListener('visibilitychange', () => { hidden = document.hidden; if (!hidden) start(); });
-      if ('IntersectionObserver' in window && hero) {
-        const observer = new IntersectionObserver((entries) => { active = entries[0].isIntersecting; scheduleVisibilityUpdate(); if (active) start(); else if (frame) { cancelAnimationFrame(frame); frame = 0; } }, { threshold: 0 });
-        observer.observe(hero);
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(resize).observe(wrap);
       }
-      new MutationObserver(() => { frameInterval = root.dataset.theme === 'light' ? 1000 / 18 : 1000 / 26; renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, root.dataset.theme === 'light' ? 1 : 1.1)); scheduleVisibilityUpdate(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-      updateSceneVisibility();
+      document.addEventListener('visibilitychange', () => { hidden = document.hidden; if (!hidden) start(); });
+
+      if ('IntersectionObserver' in window && voxelStage) {
+        const observer = new IntersectionObserver((entries) => {
+          active = entries[0].isIntersecting;
+          if (active) start();
+          else if (frame) { cancelAnimationFrame(frame); frame = 0; }
+        }, { threshold: 0 });
+        observer.observe(voxelStage);
+      }
+
       canvas.addEventListener('webglcontextlost', (event) => { event.preventDefault(); active = false; if (frame) cancelAnimationFrame(frame); }, { passive: false });
       start();
     }
-    createSignalField();
+    createVoxelWorld();
 
     function typeHeroTitle() {
       const prefixEl = document.getElementById('hero-title-prefix');
@@ -910,7 +1394,7 @@
     document.querySelectorAll('.section-intro h2, .experience-lead h2, .about-statement h3, .work-card h3, .process-step h3, .now-copy h3').forEach(prepareWordReveal);
     document.querySelectorAll('.section-kicker, .eyebrow, .stamp-label, .field-note-label').forEach((element) => { element.classList.add('decode-reveal'); addMotionTarget(element, 'decode'); });
     document.querySelectorAll('[data-typewriter]').forEach(prepareTypewriter);
-      document.querySelectorAll('.stat strong, .quality-snapshot strong').forEach((element) => { if (/^\d/.test(element.textContent.trim())) { element.classList.add('count-up'); addMotionTarget(element, 'count'); } });
+    document.querySelectorAll('.stat strong, .quality-snapshot strong').forEach((element) => { if (/^\d/.test(element.textContent.trim())) { element.classList.add('count-up'); addMotionTarget(element, 'count'); } });
     document.querySelectorAll('.process-wrap').forEach((element) => { element.classList.add('motion-process'); addMotionTarget(element, 'process'); });
     root.classList.add('motion-ready');
 
@@ -919,10 +1403,19 @@
       element.classList.add('is-motion-visible');
       const type = element.dataset.motionType;
       if (type === 'decode') {
-        const text = element.dataset.decodeText || element.textContent.trim(); element.dataset.decodeText = text;
-        if (reduceMotion || saveData) { element.textContent = text; return; }
+        const targetEl = element.querySelector('.decode-text') || element;
+        const text = element.dataset.decodeText || targetEl.textContent.trim();
+        element.dataset.decodeText = text;
+        if (reduceMotion || saveData) { targetEl.textContent = text; return; }
         let started = 0;
-        const decode = (now) => { if (!started) started = now; const progress = Math.min(1, (now - started) / 520); const visible = Math.floor(progress * text.length); element.textContent = [...text].map((char, index) => char === ' ' ? ' ' : index < visible ? char : motionNoise[(index + Math.floor(now / 70)) % motionNoise.length]).join(''); if (progress < 1) requestAnimationFrame(decode); else element.textContent = text; };
+        const decode = (now) => {
+          if (!started) started = now;
+          const progress = Math.min(1, (now - started) / 520);
+          const visible = Math.floor(progress * text.length);
+          targetEl.textContent = [...text].map((char, index) => char === ' ' ? ' ' : index < visible ? char : motionNoise[(index + Math.floor(now / 70)) % motionNoise.length]).join('');
+          if (progress < 1) requestAnimationFrame(decode);
+          else targetEl.textContent = text;
+        };
         requestAnimationFrame(decode);
       } else if (type === 'typewriter') {
         const output = element.querySelector('.typewriter-output'); const text = element.dataset.typewriterText || ''; if (reduceMotion || saveData) { output.textContent = text; return; }

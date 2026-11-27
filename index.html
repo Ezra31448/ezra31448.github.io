@@ -448,6 +448,18 @@
     html[data-theme="light"] .music-volume-slider::-moz-range-thumb { border-color: var(--ink); }
     .music-volume-val { min-width: 34px; text-align: right; color: var(--ink-faint); font: 400 11px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
     .music-list { border-top: 1px solid var(--line); padding: 6px; display: grid; gap: 4px; max-height: 184px; overflow-y: auto; }
+    .music-album { display: grid; gap: 4px; min-width: 0; }
+    .music-album + .music-album { margin-top: 6px; }
+    .music-album-head {
+      position: sticky; top: -6px; z-index: 1;
+      display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+      padding: 8px 9px 6px;
+      background: var(--panel-solid); border-bottom: 1px dashed var(--line);
+      font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .08em;
+    }
+    .music-album-title { color: var(--lime-ink); font-size: 10px; font-weight: 600; white-space: nowrap; }
+    .music-album-title::before { content: '// '; color: var(--ink-faint); }
+    .music-album-note { color: var(--ink-faint); font-size: 9px; white-space: nowrap; }
     .music-track-item {
       display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 8px; align-items: center;
       width: 100%; padding: 8px 9px;
@@ -2095,10 +2107,28 @@
     syncTheme();
 
     // Add future tracks here; optional `cover: 'file.jpg'` overrides the built-in pixel SVG.
+    // Albums are list sections only; playback is still one track on loop.
+    const MUSIC_ALBUMS = [
+      { id: 'prelude', title: 'Prelude', note: 'where it started' },
+      { id: 'night-build', title: 'Night Build', note: 'late-night tech noir' }
+    ];
+
     const MUSIC_TRACKS = [
-      { id: 'lofi-noir', num: '01', title: 'Lo-Fi Noir', meta: 'TECH-NOIR · 82 BPM', src: 'music-lofi-noir.mp3', cover: '', art: 'noir' },
-      { id: 'late-night-soul', num: '02', title: 'Late Night Soul', meta: 'CHILL SOUL · 76 BPM', src: 'music-late-night-soul.mp3', cover: '', art: 'soul' },
-      { id: 'midnight-circuit', num: '03', title: 'Midnight Circuit', meta: 'AMBIENT NOIR · 82 BPM', src: 'music-midnight-circuit.mp3', cover: '', art: 'circuit' }
+      { album: 'prelude', id: 'lofi-noir', num: '01', title: 'Lo-Fi Noir', meta: 'TECH-NOIR · 82 BPM', src: 'music-lofi-noir.mp3', cover: '', art: 'noir' },
+      { album: 'prelude', id: 'late-night-soul', num: '02', title: 'Late Night Soul', meta: 'CHILL SOUL · 76 BPM', src: 'music-late-night-soul.mp3', cover: '', art: 'soul' },
+      { album: 'prelude', id: 'midnight-circuit', num: '03', title: 'Midnight Circuit', meta: 'AMBIENT NOIR · 82 BPM', src: 'music-midnight-circuit.mp3', cover: '', art: 'circuit' },
+      { album: 'night-build', id: 'voxel-scanner-groove', num: '01', title: 'Voxel Scanner Groove', meta: 'TECH JAZZ · 79 BPM', src: 'music-voxel-scanner-groove.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'midnight-terminal', num: '02', title: 'Midnight Terminal', meta: 'DEEP NOIR · 74 BPM', src: 'music-midnight-terminal.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'neon-lime-lounge', num: '03', title: 'Neon Lime Lounge', meta: 'JAZZ LOUNGE · 82 BPM', src: 'music-neon-lime-lounge.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'silent-debugger', num: '04', title: 'Silent Debugger', meta: 'MINIMAL NOIR · 72 BPM', src: 'music-silent-debugger.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'edge-case-noir', num: '05', title: 'Edge Case Noir', meta: 'DETECTIVE JAZZ · 76 BPM', src: 'music-edge-case-noir.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'rainy-regression', num: '06', title: 'Rainy Regression', meta: 'NEO-SOUL · 75 BPM', src: 'music-rainy-regression.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'api-after-hours', num: '07', title: 'API After Hours', meta: 'ACID JAZZ · 84 BPM', src: 'music-api-after-hours.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'dark-payload', num: '08', title: 'Dark Payload', meta: 'DEEP AMBIENT · 70 BPM', src: 'music-dark-payload.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'cassette-stacktrace', num: '09', title: 'Cassette Stacktrace', meta: 'TAPE NOIR · 78 BPM', src: 'music-cassette-stacktrace.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'sql-midnight-query', num: '10', title: 'SQL Midnight Query', meta: 'ARP SOUL · 80 BPM', src: 'music-sql-midnight-query.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'zero-day-velvet', num: '11', title: 'Zero-Day Velvet', meta: 'DARK R&B · 73 BPM', src: 'music-zero-day-velvet.mp3', cover: '', art: '' },
+      { album: 'night-build', id: 'production-green', num: '12', title: 'Production Green', meta: 'JAZZ FUSION · 85 BPM', src: 'music-production-green.mp3', cover: '', art: '' }
     ];
 
     const musicCoverArt = document.getElementById('music-cover-art');
@@ -2214,7 +2244,8 @@
 
     const renderTrackDeck = () => {
       const track = getSelectedTrack();
-      musicTrackCode.textContent = `TRACK ${track.num}`;
+      const album = MUSIC_ALBUMS.find((a) => a.id === track.album);
+      musicTrackCode.textContent = album ? `${album.title.toUpperCase()} · ${track.num}` : `TRACK ${track.num}`;
       musicTrackTitle.textContent = track.title;
       musicTrackMeta.textContent = track.meta;
       musicCoverArt.replaceChildren(buildCoverArtSvg(track));
@@ -2240,7 +2271,7 @@
     };
 
     const renderTrackList = () => {
-      const items = MUSIC_TRACKS.map((track) => {
+      const buildItem = (track) => {
         const btn = document.createElement('button');
         const selected = track.id === selectedTrackId;
         btn.type = 'button';
@@ -2275,8 +2306,27 @@
 
         btn.append(idx, copy, state);
         return btn;
+      };
+      const groups = MUSIC_ALBUMS.map((album) => {
+        const tracks = MUSIC_TRACKS.filter((track) => track.album === album.id);
+        const group = document.createElement('div');
+        group.className = 'music-album';
+        group.setAttribute('role', 'group');
+        group.setAttribute('aria-label', `${album.title}: ${album.note}, ${tracks.length} tracks`);
+        const head = document.createElement('div');
+        head.className = 'music-album-head';
+        head.setAttribute('aria-hidden', 'true');
+        const name = document.createElement('span');
+        name.className = 'music-album-title';
+        name.textContent = album.title;
+        const note = document.createElement('span');
+        note.className = 'music-album-note';
+        note.textContent = `${String(tracks.length).padStart(2, '0')} TRACKS`;
+        head.append(name, note);
+        group.append(head, ...tracks.map(buildItem));
+        return group;
       });
-      musicListEl.replaceChildren(...items);
+      musicListEl.replaceChildren(...groups);
     };
 
     const syncVolumeUI = () => {

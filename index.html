@@ -2093,7 +2093,8 @@
     // Add future tracks here; optional `cover: 'file.jpg'` overrides the built-in pixel SVG.
     const MUSIC_TRACKS = [
       { id: 'lofi-noir', num: '01', title: 'Lo-Fi Noir', meta: 'TECH-NOIR · 82 BPM', src: 'music-lofi-noir.mp3', cover: '', art: 'noir' },
-      { id: 'late-night-soul', num: '02', title: 'Late Night Soul', meta: 'CHILL SOUL · 76 BPM', src: 'music-late-night-soul.mp3', cover: '', art: 'soul' }
+      { id: 'late-night-soul', num: '02', title: 'Late Night Soul', meta: 'CHILL SOUL · 76 BPM', src: 'music-late-night-soul.mp3', cover: '', art: 'soul' },
+      { id: 'midnight-circuit', num: '03', title: 'Midnight Circuit', meta: 'AMBIENT NOIR · 82 BPM', src: 'music-midnight-circuit.mp3', cover: '', art: 'circuit' }
     ];
 
     const musicCoverArt = document.getElementById('music-cover-art');
@@ -2176,6 +2177,17 @@
         rect(24, 4, 2, 2, '#d7ff55');
         rect(25, 6, 1, 4, '#d7ff55');
         rect(23, 9, 2, 2, '#d7ff55');
+      } else if (track.art === 'circuit') {
+        rect(0, 0, 32, 32, '#080b14');
+        [[2,2,'#6ee7ff',.5],[29,3,'#9b8cff',.55],[5,29,'#9b8cff',.4],[27,28,'#6ee7ff',.45],[16,1,'#6ee7ff',.3]].forEach(([x,y,c,o]) => rect(x, y, 1, 1, c, o));
+        rect(4, 5, 24, 22, '#1b2644');
+        rect(5, 6, 22, 20, '#0e1528');
+        [[7,17,7,'#9b8cff'],[10,14,10,'#9b8cff'],[13,16,8,'#6ee7ff'],[16,12,12,'#9b8cff'],[19,15,9,'#6ee7ff'],[22,18,6,'#9b8cff']].forEach(([x,y,h,c]) => rect(x, y, 2, h, c, .55));
+        [[5,13],[6,13],[7,12],[8,12],[9,11],[10,11],[11,12],[12,13],[13,13],[14,12],[15,10],[16,9],[17,10],[18,12],[19,13],[20,13],[21,12],[22,11],[23,11],[24,12],[25,13],[26,13]].forEach(([x,y]) => rect(x, y, 1, 1, '#d7ff55'));
+        rect(15, 8, 3, 3, '#d7ff55', .35);
+        rect(16, 9, 1, 1, '#f2f5fc');
+        [[6,8,'#6ee7ff',.7],[24,8,'#9b8cff',.7],[12,23,'#6ee7ff',.6],[21,22,'#d7ff55',.6]].forEach(([x,y,c,o]) => rect(x, y, 2, 1, c, o));
+        rect(5, 26, 22, 1, '#6ee7ff', .4);
       } else {
         rect(0, 0, 32, 32, '#0a0f1e');
         let h = 2166136261;

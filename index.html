@@ -171,12 +171,6 @@
         radial-gradient(circle at 93% 12%, rgba(85, 72, 200, .06), transparent 28rem),
         var(--bg);
     }
-    html[data-theme="light"] body::before {
-      opacity: .55;
-      background-image:
-        linear-gradient(rgba(15, 20, 36, .05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 20, 36, .05) 1px, transparent 1px);
-    }
     html[data-theme="light"] .button:not(.primary) { background: var(--bg-raised); }
     html[data-theme="light"] .voxel-stage-bar { background: rgba(15, 20, 36, .03); }
 
@@ -197,28 +191,16 @@
       overflow-x: hidden;
       transition: background-color .25s ease, color .25s ease;
     }
-    body::before {
-      content: "";
+    #space-bg {
       position: fixed;
       inset: 0;
-      z-index: -3;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
       pointer-events: none;
-      opacity: .42;
-      background-image:
-        linear-gradient(rgba(148, 163, 208, .06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 208, .06) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: linear-gradient(to bottom, #000, transparent 84%);
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
     }
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -4;
-      pointer-events: none;
-      background: linear-gradient(180deg, transparent 0, rgba(8, 11, 20, .25) 65%, var(--bg) 100%);
-    }
-    html[data-theme="light"] body::after { background: linear-gradient(180deg, transparent 0, rgba(245, 244, 239, .12) 65%, var(--bg) 100%); }
     a { color: inherit; text-decoration: none; }
     button { color: inherit; font: inherit; cursor: pointer; }
     img { display: block; max-width: 100%; }
@@ -262,6 +244,7 @@
 
     .site-header { position: fixed; top: 16px; left: 0; right: 0; z-index: 40; pointer-events: none; }
     .nav-shell {
+      position: relative;
       min-height: 60px;
       display: flex;
       align-items: center;
@@ -304,6 +287,7 @@
     html[data-theme="dark"] .icon-sun, html[data-theme="light"] .icon-moon { display: none; }
     .menu-toggle { display: none; }
     .menu-toggle[aria-expanded="true"] { background: var(--lime); color: var(--lime-on); border-color: var(--line-strong); }
+    .music-toggle[aria-expanded="true"] { border-color: var(--line-strong); background: var(--panel-solid); }
     html:not(.js) .music-toggle { display: none; }
     .music-toggle .icon-music, .music-toggle .icon-music-off, .music-eq { display: none; }
     html[data-music="off"] .music-toggle .icon-music-off, html[data-music="idle"] .music-toggle .icon-music { display: inline-block; }
@@ -314,6 +298,152 @@
     .music-eq i:nth-child(2) { animation-delay: -.24s; }
     .music-eq i:nth-child(3) { animation-delay: -.48s; }
     @keyframes musicEq { 0% { height: 4px; } 25% { height: 12px; } 50% { height: 6px; } 75% { height: 14px; } }
+
+    .music-popover {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: min(304px, 100%);
+      max-height: calc(100svh - 96px);
+      overflow-y: auto;
+      z-index: 55;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--panel-solid);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .06);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-8px) scale(.98);
+      transform-origin: top right;
+      transition: opacity .2s ease, transform .2s var(--ease), visibility .2s ease;
+    }
+    .music-popover.is-open { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0) scale(1); }
+    .music-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(8, 11, 20, .36);
+    }
+    html[data-theme="light"] .music-bar { background: rgba(15, 20, 36, .03); }
+    .music-bar-title {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--ink-soft);
+      font: 500 11px/1 var(--font-mono);
+      letter-spacing: .06em;
+    }
+    .music-led {
+      width: 7px; height: 7px; border-radius: 1px;
+      background: var(--ink-faint);
+      transition: background .18s ease, box-shadow .18s ease;
+    }
+    html[data-music="idle"] .music-led, html[data-music="playing"] .music-led {
+      background: var(--lime-ink);
+      box-shadow: 0 0 0 3px var(--lime-soft);
+    }
+    .music-loop-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 7px;
+      border: 1px solid var(--line-strong); border-radius: 3px;
+      background: var(--lime-soft); color: var(--lime-ink);
+      font: 500 10px/1 var(--font-mono); letter-spacing: .05em;
+      user-select: none;
+    }
+    .music-loop-badge .px-icon { width: 12px; height: 12px; }
+    .music-deck { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px; }
+    .music-cover {
+      width: 64px; height: 64px; padding: 2px;
+      border: 1px solid var(--line-strong); border-radius: 4px;
+      background: var(--bg-raised); overflow: hidden;
+    }
+    .music-cover-art { width: 100%; height: 100%; border-radius: 2px; overflow: hidden; }
+    .music-cover-art svg { width: 100%; height: 100%; display: block; }
+    .music-cover-img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; display: block; }
+    .music-cover-art[hidden], .music-cover-img[hidden] { display: none !important; }
+    .music-info { display: grid; gap: 3px; min-width: 0; }
+    .music-track-code { color: var(--lime-ink); font: 500 10px/1.1 var(--font-mono); letter-spacing: .06em; }
+    .music-track-title { color: var(--ink); font-family: var(--font-body); font-size: 14px; font-weight: 700; line-height: 1.25; letter-spacing: -.015em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .music-track-meta { color: var(--ink-faint); font: 400 11px/1.2 var(--font-mono); letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .music-play-btn {
+      display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
+      width: 38px; height: 38px;
+      border: 1px solid var(--lime); border-radius: 3px;
+      background: var(--lime); color: var(--lime-on);
+      box-shadow: var(--shadow-voxel-lime), inset 0 1px 0 rgba(255, 255, 255, .35);
+      transition: transform .12s var(--ease), box-shadow .12s var(--ease), filter .14s ease;
+    }
+    html[data-theme="light"] .music-play-btn { border-color: var(--line-strong); }
+    .music-play-btn:hover { transform: translate(-1px, -1px); filter: brightness(1.04); box-shadow: 4px 4px 0 var(--voxel-lime-depth); }
+    .music-play-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--voxel-lime-depth); }
+    .music-play-btn .px-icon { width: 16px; height: 16px; }
+    .music-play-btn .icon-pause { display: none; }
+    .music-play-btn[data-playing="true"] .icon-play { display: none; }
+    .music-play-btn[data-playing="true"] .icon-pause { display: inline-block; }
+    .music-volume-row {
+      display: grid; grid-template-columns: auto 1fr auto; gap: 9px; align-items: center;
+      padding: 8px 12px 10px;
+      border-top: 1px solid var(--line);
+    }
+    .music-mute-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px;
+      border: 1px solid var(--line); border-radius: 3px;
+      background: var(--bg-raised); color: var(--ink-soft);
+      transition: border-color .14s ease, color .14s ease, background .14s ease;
+    }
+    .music-mute-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+    .music-mute-btn .px-icon { width: 14px; height: 14px; }
+    .music-mute-btn .icon-vol-mute { display: none; }
+    .music-mute-btn[data-muted="true"] { color: var(--red); border-color: var(--line-strong); }
+    .music-mute-btn[data-muted="true"] .icon-vol { display: none; }
+    .music-mute-btn[data-muted="true"] .icon-vol-mute { display: inline-block; }
+    .music-volume-slider {
+      appearance: none; -webkit-appearance: none;
+      width: 100%; height: 4px; margin: 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--lime-ink) var(--vol-pct, 60%), var(--line) var(--vol-pct, 60%));
+      cursor: pointer;
+    }
+    .music-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 11px; height: 13px;
+      border: 1px solid var(--line-strong); border-radius: 2px;
+      background: var(--lime);
+      box-shadow: 1px 1px 0 var(--voxel-depth);
+    }
+    .music-volume-slider::-moz-range-thumb {
+      width: 11px; height: 13px;
+      border: 1px solid var(--line-strong); border-radius: 2px;
+      background: var(--lime);
+      box-shadow: 1px 1px 0 var(--voxel-depth);
+    }
+    html[data-theme="light"] .music-volume-slider::-webkit-slider-thumb,
+    html[data-theme="light"] .music-volume-slider::-moz-range-thumb { border-color: var(--ink); }
+    .music-volume-val { min-width: 34px; text-align: right; color: var(--ink-faint); font: 400 11px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+    .music-list { border-top: 1px solid var(--line); padding: 6px; display: grid; gap: 4px; max-height: 184px; overflow-y: auto; }
+    .music-track-item {
+      display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 8px; align-items: center;
+      width: 100%; padding: 8px 9px;
+      border: 1px solid transparent; border-radius: 3px;
+      background: transparent; color: var(--ink-soft); text-align: left;
+      transition: background .14s ease, border-color .14s ease, color .14s ease;
+    }
+    .music-track-item:hover { background: var(--bg-raised); border-color: var(--line); color: var(--ink); }
+    .music-track-item.is-selected { background: var(--lime-soft); border-color: var(--line-strong); color: var(--ink); }
+    .music-track-idx { color: var(--ink-faint); font: 500 11px/1 var(--font-mono); }
+    .music-track-item.is-selected .music-track-idx { color: var(--lime-ink); }
+    .music-track-row-copy { display: grid; gap: 2px; min-width: 0; }
+    .music-track-row-title { font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .music-track-row-sub { color: var(--ink-faint); font: 400 10.5px/1.2 var(--font-mono); letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .music-track-state { display: inline-flex; align-items: center; justify-content: flex-end; min-width: 16px; }
+    .music-row-eq { display: none; align-items: flex-end; gap: 2px; width: 12px; height: 12px; color: var(--lime-ink); }
+    .music-row-eq i { width: 2.5px; height: 3px; background: currentColor; animation: musicEq .72s steps(1, end) infinite; }
+    .music-row-eq i:nth-child(2) { animation-delay: -.24s; }
+    .music-row-eq i:nth-child(3) { animation-delay: -.48s; }
+    html[data-music="playing"] .music-track-item.is-selected .music-row-eq { display: inline-flex; }
+    .music-row-dot { display: none; width: 6px; height: 6px; border-radius: 1px; background: var(--lime-ink); opacity: .8; }
+    .music-track-item.is-selected .music-row-dot { display: inline-block; }
+    html[data-music="playing"] .music-track-item.is-selected .music-row-dot { display: none; }
 
     .section { position: relative; padding: clamp(88px, 10vw, 144px) 0; }
     .hero { min-height: min(880px, 100svh); display: flex; align-items: center; padding: 132px 0 72px; }
@@ -693,6 +823,10 @@
       .brand > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .brand-mark { height: 32px; padding: 0 8px; font-size: 11px; }
       .theme-toggle, .menu-toggle, .music-toggle { width: 34px; height: 34px; }
+      .music-popover { top: calc(100% + 8px); max-height: calc(100svh - 82px); }
+      .music-deck { grid-template-columns: 56px minmax(0, 1fr) auto; gap: 10px; padding: 10px 12px; }
+      .music-cover { width: 56px; height: 56px; }
+      .music-play-btn { width: 34px; height: 34px; }
       h1 { font-size: clamp(36px, 10.5vw, 56px); }
       h2 { font-size: clamp(28px, 8.6vw, 44px); }
       .hero { padding-top: 108px; }
@@ -738,8 +872,7 @@
         --shadow: none; --shadow-voxel: none; --shadow-voxel-lime: none;
       }
       body { background: #fff; font-size: 11pt; }
-      body::before, body::after { display: none; }
-      .site-header, .skip-link, .voxel-stage, .hero-bottom, .hero-actions, .work-arrow, #copy-email, .toast, .work-card::before { display: none !important; }
+      .site-header, .skip-link, #space-bg, .voxel-stage, .hero-bottom, .hero-actions, .work-arrow, #copy-email, .toast, .work-card::before { display: none !important; }
       .hero { display: block; min-height: 0; padding: 0 0 8mm; }
       .section { padding: 8mm 0; }
       .contact-section { padding-bottom: 0; }
@@ -774,6 +907,7 @@
   </style>
 </head>
 <body>
+  <canvas id="space-bg" aria-hidden="true"></canvas>
   <svg id="pixel-sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
     <symbol id="px-search-bug" viewBox="0 0 32 32"><path fill="currentColor" d="M29.715 23.62h-1.53V22.1h-1.52v-1.53h-1.52v-3.04h-1.53v3.04H22.1v1.53h-1.52v1.52h-3.05v1.52h3.05v1.53h1.52v1.52h1.52v1.53h1.53v1.52h4.57v-1.52h1.52v-4.58h-1.52Zm0 4.57h-1.53v-1.52h-1.52v-1.53h-1.52v-1.52h1.52v1.52h1.52v1.53h1.53Zm-4.57-18.28h1.52v7.62h-1.52Zm-1.53-3.05h1.53v3.05h-1.53Zm-1.52-1.53h1.52v1.53h-1.52Zm-1.52-1.52h1.52v1.52h-1.52Zm-1.53 3.05h1.53v3.05h-1.53Z"/><path fill="currentColor" d="M19.045 20.57h1.53v-3.04h-1.53v-3.05H22.1v-1.53h-3.05V9.91h-1.52V8.38H16v1.53h-4.57V8.38H9.9v1.53H8.375v3.04h-3.04v1.53h3.04v3.05h-1.52v3.04h1.52v-1.52h3.05v1.52H16v-1.52h3.05Zm-1.52-6.09h-3.05v4.57h-1.52v-4.57H9.9v-1.53h7.62Zm0-12.19h3.05v1.52h-3.05Zm-7.62 22.85h7.62v1.53h-7.62Zm6.09-16.76V6.86h1.53V5.33h-3.05v1.53h-1.52V5.33h-3.05v1.53h1.52v1.52zM9.905.76h7.62v1.53h-7.62Zm-3.05 22.86h3.05v1.52h-3.05Zm0-21.33h3.05v1.52h-3.05Z"/><path fill="currentColor" d="M6.855 6.86h1.52v3.05h-1.52ZM5.335 22.1h1.52v1.52h-1.52Zm0-18.29h1.52v1.52h-1.52Zm-1.53 16.76h1.53v1.53h-1.53Zm0-15.24h1.53v1.53h-1.53Zm-1.52 12.2h1.52v3.04h-1.52Zm0-10.67h1.52v3.05h-1.52ZM.765 9.91h1.52v7.62H.765Z"/></symbol>
     <symbol id="px-bug" viewBox="0 0 32 32"><path fill="currentColor" d="M28.95 18.29v-3.05H25.9v-3.05h-1.52v-1.52h-1.52v1.52h-6.1v1.53h1.53v1.52h1.52v3.05h-1.52v1.52h-1.53v10.67h3.05v-1.52h1.52v-1.53h3.05v-1.52h1.52v3.05h1.53v-6.1H25.9v-6.09h1.53v3.04H32v-1.52Zm-9.14 9.14h-1.52v-1.52h1.52Zm4.57-4.57h-1.52v1.53h-1.53v-1.53h-1.52v-1.52h1.52v-1.53h1.53v1.53h1.52Zm0-7.62h-1.52v-1.52h1.52Z"/><path fill="currentColor" d="M27.43 6.1h3.05V4.58H25.9v4.57h-1.52v1.52h3.05zm-3.05 22.86h1.52V32h-1.52Zm-3.05-7.62h1.53v1.52h-1.53ZM22.86 6.1h-1.53v3.05H10.67V6.1H9.14v4.57h13.72zM21.33 0h1.53v1.53h-1.53Zm-1.52 4.58h1.52V6.1h-1.52Zm0-3.05h1.52v1.52h-1.52Zm-3.05 13.71h1.53v3.05h-1.53Z"/><path fill="currentColor" d="M16.76 6.1h1.53v1.52h-1.53Zm-3.05 9.14h1.53v3.05h-1.53Zm0-9.14h1.53v1.52h-1.53Zm-1.52-3.05h7.62v1.53h-7.62Zm-1.52 1.53h1.52V6.1h-1.52Zm0-3.05h1.52v1.52h-1.52ZM9.14 21.34h1.53v1.52H9.14ZM9.14 0h1.53v1.53H9.14Z"/><path fill="currentColor" d="M7.62 12.19H6.1v3.05H3.05v3.05H0v1.52h4.57v-3.04H6.1v6.09H4.57v6.1H6.1v-3.05h1.52v1.52h3.05v1.53h1.52v1.52h3.05V19.81h-1.53v-1.52h-1.52v-3.05h1.52v-1.52h1.53v-1.53h-6.1v-1.52H7.62Zm6.09 13.72v1.52h-1.52v-1.52Zm-3.04-6.1v1.53h1.52v1.52h-1.52v1.53H9.14v-1.53H7.62v-1.52h1.52v-1.53Zm-1.53-4.57H7.62v-1.52h1.52Z"/><path fill="currentColor" d="M6.1 28.96h1.52V32H6.1Zm0-19.81V4.58H1.52V6.1h3.05v4.57h3.05V9.15z"/></symbol>
@@ -808,6 +942,10 @@
     <symbol id="px-clip" viewBox="0 0 32 32"><path fill="currentColor" d="M28.185 8.38h1.53v6.09h-1.53Zm-1.52 6.09h1.52v3.05h-1.52Zm0-7.61h1.52v1.52h-1.52Zm-1.52 10.66h1.52v1.53h-1.52Zm0-12.19h1.52v1.53h-1.52Zm-1.53 13.72h1.53v1.52h-1.53Zm0-9.15h1.53v4.57h-1.53Zm-4.57-6.09h6.1v1.52h-6.1Zm3.05 16.76h1.52v1.52h-1.52Zm0-6.1h1.52V16h-1.52Zm-3.05-6.09h4.57V9.9h-4.57Zm1.52 13.71h1.53v1.53h-1.53Zm0-6.09h1.53v1.52h-1.53Zm-1.52 7.62h1.52v1.52h-1.52Zm0-6.1h1.52v1.53h-1.52Zm-1.52 7.62h1.52v1.53h-1.52Zm0-6.09h1.52v1.52h-1.52Zm0-9.15h1.52v1.53h-1.52Zm-1.53 10.67h1.53v1.52h-1.53Zm0-9.14h1.53v1.52h-1.53Zm0-6.1h3.05v1.53h-3.05Zm-1.52 16.76h1.52v1.53h-1.52Zm0-9.14h1.52v1.52h-1.52Zm0-6.09h1.52v1.52h-1.52Zm-1.53 16.76h1.53v1.52h-1.53Zm0-9.15h1.53V16h-1.53Zm0-6.09h1.53V9.9h-1.53Zm-1.52 16.76h1.52v1.53h-1.52Zm0-9.14h1.52v1.52h-1.52Zm0-6.1h1.52v1.53h-1.52Zm-1.52 7.62h1.52v1.53h-1.52Zm0-6.09h1.52v1.52h-1.52Zm-1.53 1.52h1.53v1.52h-1.53Zm-1.52 1.52h1.52V16h-1.52Zm-1.52 12.2h6.09v1.52h-6.09Zm0-10.67h1.52v1.52h-1.52Zm-1.53 9.14h1.53v1.53h-1.53Zm0-7.62h1.53v1.53h-1.53Zm-1.52 1.53h1.52v6.09h-1.52Z"/></symbol>
     <symbol id="px-music" viewBox="0 0 32 32"><path fill="currentColor" d="M7.619 4.571h21.333v4.571h-21.333zM7.619 9.143h3.048v15.238h-3.048zM25.905 9.143h3.048v15.238h-3.048zM4.571 21.333h7.619v3.048h-7.619zM22.857 21.333h7.619v3.048h-7.619zM3.048 22.857h9.143v1.524h-9.143zM21.333 22.857h9.143v1.524h-9.143zM1.524 24.381h7.619v1.524h-7.619zM19.810 24.381h7.619v1.524h-7.619zM1.524 25.905h6.095v1.524h-6.095zM19.810 25.905h6.095v1.524h-6.095z"/></symbol>
     <symbol id="px-music-off" viewBox="0 0 32 32"><path fill="currentColor" d="M15.238 4.571h1.524v22.857h-1.524zM13.714 6.095h3.048v19.810h-3.048zM12.190 7.619h4.571v16.762h-4.571zM10.667 9.143h6.095v13.714h-6.095zM18.286 9.143h1.524v4.571h-1.524zM28.952 9.143h1.524v4.571h-1.524zM9.143 10.667h7.619v10.667h-7.619zM19.810 10.667h1.524v4.571h-1.524zM27.429 10.667h3.048v3.048h-3.048zM3.048 12.190h13.714v7.619h-13.714zM21.333 12.190h1.524v9.143h-1.524zM25.905 12.190h4.571v1.524h-4.571zM22.857 13.714h6.095v1.524h-6.095zM22.857 15.238h4.571v4.571h-4.571zM19.810 18.286h9.143v1.524h-9.143zM18.286 19.810h4.571v1.524h-4.571zM25.905 19.810h4.571v1.524h-4.571zM18.286 21.333h3.048v1.524h-3.048zM27.429 21.333h3.048v1.524h-3.048zM18.286 22.857h1.524v1.524h-1.524zM28.952 22.857h1.524v1.524h-1.524z"/></symbol>
+    <symbol id="px-play" viewBox="0 0 32 32"><path fill="currentColor" d="M8 6h4v2h4v2h4v2h4v2h2v4h-2v2h-4v2h-4v2h-4v2H8V6z"/></symbol>
+    <symbol id="px-pause" viewBox="0 0 32 32"><path fill="currentColor" d="M8 6h6v20H8zm10 0h6v20h-6z"/></symbol>
+    <symbol id="px-volume" viewBox="0 0 32 32"><path fill="currentColor" d="M4 12h6v-2h2V8h2V6h2v20h-2v-2h-2v-2h-2v-2H4v-8zm14 0h2v2h2v4h-2v2h-2v-2h2v-4h-2v-2zm4-4h2v2h2v2h2v8h-2v2h-2v2h-2v-2h2v-2h2v-8h-2v-2h-2V8z"/></symbol>
+    <symbol id="px-volume-mute" viewBox="0 0 32 32"><path fill="currentColor" d="M4 12h6v-2h2V8h2V6h2v20h-2v-2h-2v-2h-2v-2H4v-8zm16 0h2v2h-2zm6 0h2v2h-2zm-4 2h4v4h-4zm-2 4h2v2h-2zm6 0h2v2h-2z"/></symbol>
   </svg>
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -826,7 +964,7 @@
           <svg class="px-icon icon-sun" aria-hidden="true"><use href="#px-sun" /></svg>
           <svg class="px-icon icon-moon" aria-hidden="true"><use href="#px-moon" /></svg>
         </button>
-        <button class="music-toggle" id="music-toggle" type="button" aria-label="Background music" aria-pressed="true">
+        <button class="music-toggle" id="music-toggle" type="button" aria-label="Music player" aria-expanded="false" aria-controls="music-popover" aria-haspopup="dialog">
           <svg class="px-icon icon-music" aria-hidden="true"><use href="#px-music" /></svg>
           <svg class="px-icon icon-music-off" aria-hidden="true"><use href="#px-music-off" /></svg>
           <span class="music-eq" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -834,6 +972,36 @@
         <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
           <svg class="px-icon" aria-hidden="true"><use href="#px-menu" /></svg>
         </button>
+      </div>
+      <div class="music-popover" id="music-popover" role="region" aria-label="Music player">
+        <div class="music-bar">
+          <span class="music-bar-title"><span class="music-led" aria-hidden="true"></span><span>SOUND // DECK</span></span>
+          <span class="music-loop-badge" title="Loops selected track only"><svg class="px-icon" aria-hidden="true"><use href="#px-refresh" /></svg><span>LOOP 1</span></span>
+        </div>
+        <div class="music-deck">
+          <div class="music-cover">
+            <div class="music-cover-art" id="music-cover-art" aria-hidden="true"></div>
+            <img class="music-cover-img" id="music-cover-img" alt="" decoding="async" hidden />
+          </div>
+          <div class="music-info">
+            <span class="music-track-code" id="music-track-code">TRACK 01</span>
+            <strong class="music-track-title" id="music-track-title">Lo-Fi Noir</strong>
+            <span class="music-track-meta" id="music-track-meta">TECH-NOIR · 82 BPM</span>
+          </div>
+          <button class="music-play-btn" id="music-play-btn" type="button" aria-label="Play music">
+            <svg class="px-icon icon-play" aria-hidden="true"><use href="#px-play" /></svg>
+            <svg class="px-icon icon-pause" aria-hidden="true"><use href="#px-pause" /></svg>
+          </button>
+        </div>
+        <div class="music-volume-row">
+          <button class="music-mute-btn" id="music-mute-btn" type="button" aria-label="Mute music">
+            <svg class="px-icon icon-vol" aria-hidden="true"><use href="#px-volume" /></svg>
+            <svg class="px-icon icon-vol-mute" aria-hidden="true"><use href="#px-volume-mute" /></svg>
+          </button>
+          <input class="music-volume-slider" id="music-volume" type="range" min="0" max="100" step="1" value="60" aria-label="Music volume" />
+          <span class="music-volume-val" id="music-volume-val">60%</span>
+        </div>
+        <div class="music-list" id="music-list" role="listbox" aria-label="Select track (single-track loop)"></div>
       </div>
     </nav>
   </header>
@@ -1019,7 +1187,8 @@
 
   <script type="module">
     const root = document.documentElement;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reduceMotion = reduceMotionQuery.matches;
     const saveData = Boolean(navigator.connection && navigator.connection.saveData);
     const canvas = document.getElementById('three-canvas');
     const voxelStage = document.querySelector('.voxel-stage');
@@ -1402,6 +1571,438 @@
     }
     createVoxelWorld();
 
+    function createPixelSpaceBg() {
+      const spaceCanvas = document.getElementById('space-bg');
+      const ctx = spaceCanvas ? spaceCanvas.getContext('2d', { alpha: true }) : null;
+      if (!spaceCanvas || !ctx) return { setTheme() {}, syncPower() {}, getState: () => null };
+
+      const FRAME_MS = 1000 / 15;
+      const BAYER4 = [
+        [0, 8, 2, 10],
+        [12, 4, 14, 6],
+        [3, 11, 1, 9],
+        [15, 7, 13, 5]
+      ];
+      const bayerAt = (x, y) => (BAYER4[y & 3][x & 3] + 0.5) / 16;
+
+      const mulberry32 = (seed) => {
+        let a = seed >>> 0;
+        return () => {
+          a = (a + 0x6D2B79F5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      };
+
+      const SPACE_PALETTES = {
+        dark: {
+          nebulaA: { inner: 'rgba(155, 140, 255, 0.10)', outer: 'rgba(92, 78, 196, 0.055)' },
+          nebulaB: { inner: 'rgba(110, 231, 255, 0.085)', outer: 'rgba(42, 124, 168, 0.045)' },
+          planetShades: ['#0a0e1d', '#131833', '#23204f', '#304274', '#3b7f99'],
+          ringShadow: '#211e48',
+          ringMain: '#564d96',
+          ringBright: '#3c809c',
+          ringGlint: '#8eae35',
+          moonShades: ['#0a0e1c', '#141932', '#353161', '#636c91'],
+          starColors: ['#2e3756', '#3e3668', '#214559', '#5d6685', '#4ca8c4', '#766ac9', '#8f99b8', '#a8c93e', '#cc5c6b'],
+          crossCore: '#d8e0f5',
+          meteor: { head: '#f2f5fc', accent: '#d7ff55', mid: '#6ee7ff', tail: '#384264' }
+        },
+        light: {
+          nebulaA: { inner: 'rgba(85, 72, 200, 0.07)', outer: 'rgba(85, 72, 200, 0.035)' },
+          nebulaB: { inner: 'rgba(0, 116, 148, 0.07)', outer: 'rgba(0, 116, 148, 0.035)' },
+          planetShades: ['rgba(15, 20, 36, 0.06)', 'rgba(61, 70, 99, 0.14)', 'rgba(85, 72, 200, 0.22)', 'rgba(0, 116, 148, 0.26)', 'rgba(0, 116, 148, 0.34)'],
+          ringShadow: 'rgba(61, 70, 99, 0.18)',
+          ringMain: 'rgba(85, 72, 200, 0.26)',
+          ringBright: 'rgba(0, 116, 148, 0.28)',
+          ringGlint: 'rgba(59, 80, 0, 0.45)',
+          moonShades: ['rgba(15, 20, 36, 0.05)', 'rgba(100, 110, 143, 0.14)', 'rgba(85, 72, 200, 0.22)', 'rgba(61, 70, 99, 0.30)'],
+          starColors: ['rgba(100, 110, 143, 0.25)', 'rgba(85, 72, 200, 0.22)', 'rgba(0, 116, 148, 0.22)', 'rgba(61, 70, 99, 0.34)', 'rgba(0, 116, 148, 0.38)', 'rgba(85, 72, 200, 0.36)', 'rgba(15, 20, 36, 0.42)', 'rgba(59, 80, 0, 0.48)', 'rgba(201, 59, 75, 0.38)'],
+          crossCore: 'rgba(15, 20, 36, 0.52)',
+          meteor: { head: 'rgba(15, 20, 36, 0.55)', accent: 'rgba(59, 80, 0, 0.52)', mid: 'rgba(0, 116, 148, 0.32)', tail: 'rgba(100, 110, 143, 0.16)' }
+        }
+      };
+
+      const makeSprite = (w, h) => {
+        const c = document.createElement('canvas');
+        c.width = w;
+        c.height = h;
+        const sctx = c.getContext('2d');
+        sctx.imageSmoothingEnabled = false;
+        return { canvas: c, ctx: sctx, w, h };
+      };
+
+      const nebulaA = makeSprite(112, 68);
+      const nebulaB = makeSprite(96, 60);
+      const planetSprite = makeSprite(56, 34);
+      const moonSprite = makeSprite(20, 20);
+
+      const NEBULA_A_LOBES = [
+        { cx: 40, cy: 34, rx: 32, ry: 20, w: 0.92 },
+        { cx: 66, cy: 28, rx: 28, ry: 18, w: 0.84 },
+        { cx: 82, cy: 40, rx: 22, ry: 14, w: 0.68 }
+      ];
+      const NEBULA_B_LOBES = [
+        { cx: 34, cy: 30, rx: 26, ry: 17, w: 0.88 },
+        { cx: 58, cy: 34, rx: 28, ry: 18, w: 0.85 },
+        { cx: 46, cy: 20, rx: 18, ry: 13, w: 0.64 }
+      ];
+
+      const drawDitheredNebula = (sprite, lobes, palette) => {
+        const { ctx: sctx, w, h } = sprite;
+        sctx.clearRect(0, 0, w, h);
+        for (let py = 0; py < h; py += 1) {
+          for (let px = 0; px < w; px += 1) {
+            let intensity = 0;
+            for (let i = 0; i < lobes.length; i += 1) {
+              const l = lobes[i];
+              const dx = (px - l.cx) / l.rx;
+              const dy = (py - l.cy) / l.ry;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < 1) intensity = Math.min(1, intensity + (1 - d2) * l.w);
+            }
+            if (intensity <= 0.08) continue;
+            const threshold = bayerAt(px, py);
+            if (intensity > threshold * 0.92 + 0.09) {
+              sctx.fillStyle = intensity > 0.56 + (threshold - 0.5) * 0.34 ? palette.inner : palette.outer;
+              sctx.fillRect(px, py, 1, 1);
+            }
+          }
+        }
+      };
+
+      const pickDitheredShade = (shade, shades, x, y) => {
+        const clamped = Math.max(0, Math.min(0.9999, shade));
+        const scaled = clamped * (shades.length - 1);
+        const base = Math.floor(scaled);
+        const idx = Math.min(shades.length - 1, base + (scaled - base > bayerAt(x, y) ? 1 : 0));
+        return shades[idx];
+      };
+
+      const drawRingedPlanet = (sprite, palette) => {
+        const { ctx: sctx, w, h } = sprite;
+        sctx.clearRect(0, 0, w, h);
+        const cx = 28, cy = 17, r = 11;
+        const tilt = -0.26;
+        const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
+        const rx = 24, ry = 5.5;
+        const lx = -0.66, ly = -0.56, lz = 0.50;
+
+        const drawRingHalf = (isFront) => {
+          for (let py = 0; py < h; py += 1) {
+            for (let px = 0; px < w; px += 1) {
+              const dx = px - cx, dy = py - cy;
+              const u = dx * cosT + dy * sinT;
+              const v = -dx * sinT + dy * cosT;
+              if ((v >= 0) !== isFront) continue;
+              const er = Math.hypot(u / rx, v / ry);
+              if (er < 0.56 || er > 1.0 || (er > 0.77 && er < 0.83)) continue;
+              if ((px === 49 && py === 11) || (px === 8 && py === 22)) {
+                sctx.fillStyle = palette.ringGlint;
+              } else {
+                const ringShade = 0.54 - (u / rx) * 0.34 + (isFront ? 0.14 : -0.14);
+                const threshold = bayerAt(px, py);
+                sctx.fillStyle = ringShade > threshold + 0.22
+                  ? palette.ringBright
+                  : ringShade > threshold - 0.16 ? palette.ringMain : palette.ringShadow;
+              }
+              sctx.fillRect(px, py, 1, 1);
+            }
+          }
+        };
+
+        drawRingHalf(false);
+        for (let py = cy - r; py <= cy + r; py += 1) {
+          for (let px = cx - r; px <= cx + r; px += 1) {
+            const dx = px - cx, dy = py - cy;
+            const d2 = (dx * dx + dy * dy) / (r * r);
+            if (d2 > 1) continue;
+            const nx = dx / r, ny = dy / r;
+            const nz = Math.sqrt(Math.max(0, 1 - d2));
+            const ndotl = nx * lx + ny * ly + nz * lz;
+            const band = Math.sin((ny * cosT - nx * sinT) * 7.5) * 0.11;
+            const shade = ndotl * 0.82 + 0.18 + band;
+            sctx.fillStyle = pickDitheredShade(shade, palette.planetShades, px, py);
+            sctx.fillRect(px, py, 1, 1);
+          }
+        }
+        drawRingHalf(true);
+      };
+
+      const drawCrescentMoon = (sprite, palette) => {
+        const { ctx: sctx, w, h } = sprite;
+        sctx.clearRect(0, 0, w, h);
+        const cx = 10, cy = 10, r = 6;
+        const lx = 0.74, ly = -0.48, lz = 0.46;
+        for (let py = cy - r; py <= cy + r; py += 1) {
+          for (let px = cx - r; px <= cx + r; px += 1) {
+            const dx = px - cx, dy = py - cy;
+            const d2 = (dx * dx + dy * dy) / (r * r);
+            if (d2 > 1) continue;
+            const nz = Math.sqrt(Math.max(0, 1 - d2));
+            const ndotl = (dx / r) * lx + (dy / r) * ly + nz * lz;
+            const shade = ndotl * 0.78 + 0.16;
+            const isCrater = shade > 0.45 && ((dx === 2 && dy === -2) || (dx === 3 && dy === 1));
+            sctx.fillStyle = isCrater ? palette.moonShades[1] : pickDitheredShade(shade, palette.moonShades, px, py);
+            sctx.fillRect(px, py, 1, 1);
+          }
+        }
+      };
+
+      let theme = root.dataset.theme === 'light' ? 'light' : 'dark';
+      let palette = SPACE_PALETTES[theme];
+
+      const bakeSprites = (nextTheme) => {
+        theme = nextTheme === 'light' ? 'light' : 'dark';
+        palette = SPACE_PALETTES[theme];
+        drawDitheredNebula(nebulaA, NEBULA_A_LOBES, palette.nebulaA);
+        drawDitheredNebula(nebulaB, NEBULA_B_LOBES, palette.nebulaB);
+        drawRingedPlanet(planetSprite, palette);
+        drawCrescentMoon(moonSprite, palette);
+      };
+      bakeSprites(theme);
+
+      const rng = mulberry32(901994);
+      const REG_COUNT = 85;
+      const CROSS_COUNT = 7;
+      const STAR_COUNT = REG_COUNT + CROSS_COUNT;
+      const LAYER_VX = [-0.055, -0.11, -0.19];
+      const LAYER_VY = [-0.008, -0.016, -0.026];
+      const LAYER_SCROLL = [0.014, 0.032, 0.056];
+
+      const farColors = [0, 0, 0, 1, 1, 2, 2, 3];
+      const midColors = [3, 3, 4, 4, 5, 5, 6];
+      const nearColors = [4, 5, 6, 6, 4, 5, 7];
+
+      const rawStars = [];
+      for (let i = 0; i < REG_COUNT; i += 1) {
+        let layer = 0, colorIdx = 0;
+        if (i < 48) {
+          layer = 0;
+          colorIdx = farColors[Math.floor(rng() * farColors.length)];
+        } else if (i < 78) {
+          layer = 1;
+          colorIdx = (i === 55 || i === 69) ? 7 : midColors[Math.floor(rng() * midColors.length)];
+        } else {
+          layer = 2;
+          colorIdx = nearColors[i - 78];
+        }
+        rawStars.push({ nx: rng(), ny: rng(), layer, colorIdx });
+      }
+      rawStars.sort((a, b) => a.colorIdx - b.colorIdx);
+
+      const regNX = new Float32Array(REG_COUNT);
+      const regNY = new Float32Array(REG_COUNT);
+      const regLayer = new Uint8Array(REG_COUNT);
+      const regColor = new Uint8Array(REG_COUNT);
+      for (let i = 0; i < REG_COUNT; i += 1) {
+        regNX[i] = rawStars[i].nx;
+        regNY[i] = rawStars[i].ny;
+        regLayer[i] = rawStars[i].layer;
+        regColor[i] = rawStars[i].colorIdx;
+      }
+
+      const crossNX = new Float32Array(CROSS_COUNT);
+      const crossNY = new Float32Array(CROSS_COUNT);
+      const crossColor = new Uint8Array([7, 4, 5, 8, 4, 7, 5]);
+      const crossPhase = new Uint8Array(CROSS_COUNT);
+      for (let i = 0; i < CROSS_COUNT; i += 1) {
+        crossNX[i] = (i + 0.18 + rng() * 0.64) / CROSS_COUNT;
+        crossNY[i] = 0.08 + rng() * 0.84;
+        crossPhase[i] = Math.floor(rng() * 8);
+      }
+
+      const CELESTIALS = [
+        { sprite: nebulaA, nx: 0.16, ny: 0.20, vx: -0.025, vy: -0.004, scroll: 0.008 },
+        { sprite: nebulaB, nx: 0.78, ny: 0.72, vx: -0.030, vy: -0.005, scroll: 0.010 },
+        { sprite: moonSprite, nx: 0.06, ny: 0.86, vx: -0.035, vy: -0.005, scroll: 0.014 },
+        { sprite: planetSprite, nx: 0.88, ny: 0.14, vx: -0.048, vy: -0.007, scroll: 0.020 }
+      ];
+
+      const meteor = { active: false, x: 0, y: 0, vx: 0, vy: 0, age: 0, maxAge: 18, cooldown: 85 };
+
+      let width = 1;
+      let height = 1;
+      let pixelScale = 3;
+      let drift = 0;
+      let rafId = 0;
+      let lastTickAt = 0;
+
+      const wrapCoord = (val, span) => ((val % span) + span) % span;
+      const isStaticMode = () => reduceMotionQuery.matches || saveData || root.classList.contains('bg-calm');
+      const isPaused = () => document.hidden || isStaticMode();
+
+      const drawCrossStar = (sx, sy, colorIdx, phase) => {
+        const step = ((drift >> 3) + phase) & 7;
+        const color = palette.starColors[colorIdx];
+        if (step <= 3) {
+          ctx.fillStyle = color;
+          ctx.fillRect(sx, sy, 1, 1);
+          return;
+        }
+        ctx.fillStyle = palette.crossCore;
+        ctx.fillRect(sx, sy, 1, 1);
+        ctx.fillStyle = color;
+        ctx.fillRect(sx - 1, sy, 1, 1);
+        ctx.fillRect(sx + 1, sy, 1, 1);
+        ctx.fillRect(sx, sy - 1, 1, 1);
+        ctx.fillRect(sx, sy + 1, 1, 1);
+        if (step === 5 || step === 6) {
+          ctx.fillRect(sx - 2, sy, 1, 1);
+          ctx.fillRect(sx + 2, sy, 1, 1);
+          ctx.fillRect(sx, sy - 2, 1, 1);
+          ctx.fillRect(sx, sy + 2, 1, 1);
+        }
+      };
+
+      const renderFrame = (tickValue, scrollPx) => {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < CELESTIALS.length; i += 1) {
+          const body = CELESTIALS[i];
+          const spanX = width + body.sprite.w;
+          const spanY = height + body.sprite.h;
+          const sx = wrapCoord(body.nx * spanX + tickValue * body.vx, spanX) - body.sprite.w;
+          const sy = wrapCoord(body.ny * spanY + tickValue * body.vy - scrollPx * body.scroll, spanY) - body.sprite.h;
+          ctx.drawImage(body.sprite.canvas, sx | 0, sy | 0);
+        }
+
+        let lastColor = -1;
+        for (let i = 0; i < REG_COUNT; i += 1) {
+          const c = regColor[i];
+          if (c !== lastColor) {
+            ctx.fillStyle = palette.starColors[c];
+            lastColor = c;
+          }
+          const layer = regLayer[i];
+          const sx = wrapCoord(regNX[i] * width + tickValue * LAYER_VX[layer], width) | 0;
+          const sy = wrapCoord(regNY[i] * height + tickValue * LAYER_VY[layer] - scrollPx * LAYER_SCROLL[layer], height) | 0;
+          ctx.fillRect(sx, sy, 1, 1);
+        }
+
+        for (let i = 0; i < CROSS_COUNT; i += 1) {
+          const sx = wrapCoord(crossNX[i] * width + tickValue * LAYER_VX[2], width) | 0;
+          const sy = wrapCoord(crossNY[i] * height + tickValue * LAYER_VY[2] - scrollPx * LAYER_SCROLL[2], height) | 0;
+          drawCrossStar(sx, sy, crossColor[i], crossPhase[i]);
+        }
+
+        if (meteor.active) {
+          const m = palette.meteor;
+          const trailColors = [m.head, m.accent, m.mid, m.mid, m.tail, m.tail];
+          for (let k = 0; k < trailColors.length; k += 1) {
+            if (k > meteor.age + 1) break;
+            ctx.fillStyle = trailColors[k];
+            ctx.fillRect((meteor.x - k * meteor.vx * 0.45) | 0, (meteor.y - k * meteor.vy * 0.45) | 0, 1, 1);
+          }
+        }
+      };
+
+      const stepTick = () => {
+        drift += 1;
+        if (!meteor.active) {
+          meteor.cooldown -= 1;
+          if (meteor.cooldown <= 0) {
+            meteor.active = true;
+            meteor.x = width * (0.48 + rng() * 0.48);
+            meteor.y = height * (0.04 + rng() * 0.42);
+            meteor.vx = -(3.0 + rng() * 1.1);
+            meteor.vy = 1.15 + rng() * 0.55;
+            meteor.age = 0;
+            meteor.maxAge = 15 + Math.floor(rng() * 7);
+          }
+        } else {
+          meteor.x += meteor.vx;
+          meteor.y += meteor.vy;
+          meteor.age += 1;
+          if (meteor.age >= meteor.maxAge || meteor.x < -12 || meteor.y > height + 12) {
+            meteor.active = false;
+            meteor.cooldown = 150 + Math.floor(rng() * 105);
+          }
+        }
+      };
+
+      const drawCurrentFrame = () => {
+        if (isStaticMode()) {
+          meteor.active = false;
+          renderFrame(0, 0);
+        } else {
+          const scrollPx = window.scrollY || window.pageYOffset || 0;
+          renderFrame(drift, scrollPx);
+        }
+      };
+
+      const loop = (now) => {
+        rafId = 0;
+        if (isPaused()) return;
+        if (!lastTickAt || now - lastTickAt >= FRAME_MS) {
+          lastTickAt = now;
+          stepTick();
+          drawCurrentFrame();
+        }
+        rafId = requestAnimationFrame(loop);
+      };
+
+      const syncPower = () => {
+        if (isPaused()) {
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = 0;
+          }
+          if (!document.hidden) drawCurrentFrame();
+        } else if (!rafId) {
+          lastTickAt = 0;
+          drawCurrentFrame();
+          rafId = requestAnimationFrame(loop);
+        }
+      };
+
+      const resize = () => {
+        pixelScale = Math.max(3, Math.round(window.innerWidth / 640));
+        width = Math.max(1, Math.ceil(window.innerWidth / pixelScale));
+        height = Math.max(1, Math.ceil(window.innerHeight / pixelScale));
+        spaceCanvas.width = width;
+        spaceCanvas.height = height;
+        ctx.imageSmoothingEnabled = false;
+        drawCurrentFrame();
+      };
+
+      const setTheme = (nextTheme) => {
+        const normalized = nextTheme === 'light' ? 'light' : 'dark';
+        if (normalized === theme) return;
+        bakeSprites(normalized);
+        drawCurrentFrame();
+      };
+
+      window.addEventListener('resize', resize, { passive: true });
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) lastTickAt = 0;
+        syncPower();
+      });
+      if (reduceMotionQuery.addEventListener) {
+        reduceMotionQuery.addEventListener('change', syncPower);
+      }
+
+      resize();
+      syncPower();
+
+      return {
+        setTheme,
+        syncPower,
+        getState: () => ({
+          width,
+          height,
+          pixelScale,
+          theme,
+          paused: isPaused(),
+          running: Boolean(rafId),
+          starCount: STAR_COUNT
+        })
+      };
+    }
+    const spaceBg = createPixelSpaceBg();
+    window.__spaceBg = { getState: spaceBg.getState };
+
     function typeHeroTitle() {
       const prefixEl = document.getElementById('hero-title-prefix');
       const accentEl = document.getElementById('hero-title-accent');
@@ -1437,76 +2038,405 @@
     const navLinks = [...document.querySelectorAll('.nav-links a')];
     const nav = document.getElementById('nav-links');
     const menuToggle = document.getElementById('menu-toggle');
+    const musicToggle = document.getElementById('music-toggle');
+    const musicPopover = document.getElementById('music-popover');
     const closeMenu = () => { nav.classList.remove('is-open'); menuToggle.setAttribute('aria-expanded', 'false'); menuToggle.setAttribute('aria-label', 'Open menu'); };
-    menuToggle.addEventListener('click', () => { const open = nav.classList.toggle('is-open'); menuToggle.setAttribute('aria-expanded', String(open)); menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); });
+    const closeMusicPopover = () => { if (!musicPopover || !musicToggle) return; musicPopover.classList.remove('is-open'); musicToggle.setAttribute('aria-expanded', 'false'); };
+    menuToggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('is-open');
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      if (open) closeMusicPopover();
+    });
     navLinks.forEach((link) => link.addEventListener('click', closeMenu));
-    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
 
     const themeToggle = document.getElementById('theme-toggle');
     const themeColor = document.querySelector('meta[name="theme-color"]');
-    const syncTheme = () => { const dark = root.dataset.theme === 'dark'; themeToggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme'); if (themeColor) themeColor.setAttribute('content', dark ? '#080b14' : '#f5f4ef'); };
+    const syncTheme = () => { const dark = root.dataset.theme === 'dark'; themeToggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme'); if (themeColor) themeColor.setAttribute('content', dark ? '#080b14' : '#f5f4ef'); spaceBg.setTheme(root.dataset.theme); };
     themeToggle.addEventListener('click', () => { const next = root.dataset.theme === 'dark' ? 'light' : 'dark'; root.dataset.theme = next; try { localStorage.setItem('theme', next); } catch (error) {} syncTheme(); });
     syncTheme();
 
-    const musicToggle = document.getElementById('music-toggle');
-    const musicSrc = 'music-lofi-noir.mp3';
-    const musicLevel = .6;
+    // Add future tracks here; optional `cover: 'file.jpg'` overrides the built-in pixel SVG.
+    const MUSIC_TRACKS = [
+      { id: 'lofi-noir', num: '01', title: 'Lo-Fi Noir', meta: 'TECH-NOIR · 82 BPM', src: 'music-lofi-noir.mp3', cover: '', art: 'noir' },
+      { id: 'late-night-soul', num: '02', title: 'Late Night Soul', meta: 'CHILL SOUL · 76 BPM', src: 'music-late-night-soul.mp3', cover: '', art: 'soul' }
+    ];
+
+    const musicCoverArt = document.getElementById('music-cover-art');
+    const musicCoverImg = document.getElementById('music-cover-img');
+    const musicTrackCode = document.getElementById('music-track-code');
+    const musicTrackTitle = document.getElementById('music-track-title');
+    const musicTrackMeta = document.getElementById('music-track-meta');
+    const musicPlayBtn = document.getElementById('music-play-btn');
+    const musicMuteBtn = document.getElementById('music-mute-btn');
+    const musicVolumeInput = document.getElementById('music-volume');
+    const musicVolumeVal = document.getElementById('music-volume-val');
+    const musicListEl = document.getElementById('music-list');
+
+    const safeGetStorage = (key) => { try { return localStorage.getItem(key); } catch (error) { return null; } };
+    const safeSetStorage = (key, val) => { try { localStorage.setItem(key, val); } catch (error) {} };
+
+    const savedTrackId = safeGetStorage('musicTrack');
+    let selectedTrackId = MUSIC_TRACKS.some((t) => t.id === savedTrackId) ? savedTrackId : MUSIC_TRACKS[0].id;
+    const savedVol = Number.parseFloat(safeGetStorage('musicVolume'));
+    let musicVolume = Number.isFinite(savedVol) ? Math.min(1, Math.max(0, savedVol)) : 0.6;
+    let lastNonZeroVolume = musicVolume > 0 ? musicVolume : 0.6;
     let musicWanted = root.dataset.music !== 'off';
-    let musicCtx = null, musicBus = null, musicVoice = null, musicBuffer = null, musicLoad = null, musicPending = false;
-    const syncMusic = () => { root.dataset.music = !musicWanted ? 'off' : musicVoice && musicCtx.state === 'running' ? 'playing' : 'idle'; musicToggle.setAttribute('aria-pressed', String(musicWanted)); };
-    const stopMusic = () => {
+    let musicCtx = null, musicBus = null, musicVoice = null;
+    let playToken = 0, pendingTrackId = null;
+    const bufferCache = new Map();
+    const loadCache = new Map();
+
+    const getSelectedTrack = () => MUSIC_TRACKS.find((t) => t.id === selectedTrackId) || MUSIC_TRACKS[0];
+
+    const buildCoverArtSvg = (track) => {
+      const ns = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('viewBox', '0 0 32 32');
+      svg.setAttribute('shape-rendering', 'crispEdges');
+      svg.setAttribute('aria-hidden', 'true');
+      const rect = (x, y, w, h, fill, op) => {
+        const el = document.createElementNS(ns, 'rect');
+        el.setAttribute('x', x);
+        el.setAttribute('y', y);
+        el.setAttribute('width', w);
+        el.setAttribute('height', h);
+        el.setAttribute('fill', fill);
+        if (op !== undefined) el.setAttribute('opacity', op);
+        svg.appendChild(el);
+      };
+
+      if (track.art === 'noir') {
+        rect(0, 0, 32, 32, '#090d1a');
+        [[3,4,'#253159'],[9,7,'#6ee7ff',.5],[14,3,'#253159'],[20,6,'#9b8cff',.55],[6,11,'#6ee7ff',.35]].forEach(([x,y,c,o]) => rect(x, y, 1, 1, c, o));
+        rect(23, 4, 4, 4, '#d7ff55');
+        rect(22, 5, 1, 2, '#d7ff55');
+        rect(27, 5, 1, 2, '#d7ff55');
+        rect(24, 5, 2, 2, '#090d1a');
+        rect(2, 16, 5, 11, '#121933');
+        rect(8, 12, 6, 15, '#172142');
+        rect(15, 14, 5, 13, '#10172e');
+        rect(21, 10, 6, 17, '#1a2548');
+        rect(28, 17, 3, 10, '#121933');
+        rect(10, 8, 1, 4, '#6ee7ff');
+        rect(10, 7, 1, 1, '#d7ff55');
+        [[4,18,'#6ee7ff'],[4,21,'#d7ff55'],[9,14,'#d7ff55'],[11,16,'#6ee7ff'],[10,19,'#d7ff55'],[12,22,'#6ee7ff'],[17,17,'#9b8cff'],[23,13,'#d7ff55'],[25,15,'#6ee7ff'],[23,19,'#6ee7ff'],[25,22,'#d7ff55']].forEach(([x,y,c]) => rect(x, y, 1, 1, c));
+        rect(0, 26, 32, 1, '#6ee7ff', .65);
+        rect(0, 27, 32, 5, '#060913');
+        [[4,28,'#6ee7ff',.4],[9,29,'#d7ff55',.7],[12,28,'#6ee7ff',.45],[22,28,'#d7ff55',.6],[25,30,'#6ee7ff',.5]].forEach(([x,y,c,o]) => rect(x, y, 3, 1, c, o));
+      } else if (track.art === 'soul') {
+        rect(0, 0, 32, 32, '#120f24');
+        [[4,5,'#9b8cff',.55],[27,6,'#d7ff55',.7],[5,25,'#ff7585',.6],[26,26,'#6ee7ff',.55],[15,2,'#9b8cff',.35]].forEach(([x,y,c,o]) => rect(x, y, 1, 1, c, o));
+        rect(8, 5, 16, 22, '#080b14');
+        rect(6, 7, 20, 18, '#080b14');
+        rect(5, 9, 22, 14, '#080b14');
+        rect(9, 7, 14, 1, '#232846');
+        rect(9, 24, 14, 1, '#232846');
+        rect(7, 10, 1, 12, '#232846');
+        rect(24, 10, 1, 12, '#232846');
+        rect(11, 10, 10, 12, '#9b8cff');
+        rect(10, 11, 12, 10, '#9b8cff');
+        rect(12, 12, 8, 8, '#ff7585');
+        rect(14, 14, 4, 4, '#d7ff55');
+        rect(15, 15, 2, 2, '#080b14');
+        rect(24, 4, 2, 2, '#d7ff55');
+        rect(25, 6, 1, 4, '#d7ff55');
+        rect(23, 9, 2, 2, '#d7ff55');
+      } else {
+        rect(0, 0, 32, 32, '#0a0f1e');
+        let h = 2166136261;
+        for (let i = 0; i < track.id.length; i += 1) { h ^= track.id.charCodeAt(i); h = Math.imul(h, 16777619); }
+        const palette = ['#d7ff55', '#6ee7ff', '#9b8cff', '#ff7585'];
+        const c1 = palette[Math.abs(h) % palette.length];
+        const c2 = palette[(Math.abs(h) + 1) % palette.length];
+        for (let gy = 1; gy < 7; gy += 1) {
+          for (let gx = 1; gx < 4; gx += 1) {
+            if ((h >>> ((gy * 3 + gx) % 24)) & 1) {
+              const col = (gx + gy) % 3 === 0 ? c2 : c1;
+              rect(gx * 4, gy * 4, 4, 4, col);
+              rect((7 - gx) * 4, gy * 4, 4, 4, col);
+            }
+          }
+        }
+      }
+      return svg;
+    };
+
+    const renderTrackDeck = () => {
+      const track = getSelectedTrack();
+      musicTrackCode.textContent = `TRACK ${track.num}`;
+      musicTrackTitle.textContent = track.title;
+      musicTrackMeta.textContent = track.meta;
+      musicCoverArt.replaceChildren(buildCoverArtSvg(track));
+      musicCoverArt.hidden = false;
+      if (track.cover) {
+        musicCoverImg.hidden = false;
+        musicCoverImg.alt = `${track.title} cover art`;
+        musicCoverImg.onload = () => {
+          if (getSelectedTrack().id === track.id) musicCoverArt.hidden = true;
+        };
+        musicCoverImg.onerror = () => {
+          musicCoverImg.hidden = true;
+          musicCoverArt.hidden = false;
+        };
+        musicCoverImg.src = track.cover;
+        if (musicCoverImg.complete && musicCoverImg.naturalWidth > 0) musicCoverArt.hidden = true;
+      } else {
+        musicCoverImg.onload = null;
+        musicCoverImg.onerror = null;
+        musicCoverImg.removeAttribute('src');
+        musicCoverImg.hidden = true;
+      }
+    };
+
+    const renderTrackList = () => {
+      const items = MUSIC_TRACKS.map((track) => {
+        const btn = document.createElement('button');
+        const selected = track.id === selectedTrackId;
+        btn.type = 'button';
+        btn.className = `music-track-item${selected ? ' is-selected' : ''}`;
+        btn.setAttribute('role', 'option');
+        btn.setAttribute('aria-selected', String(selected));
+        btn.dataset.trackId = track.id;
+
+        const idx = document.createElement('span');
+        idx.className = 'music-track-idx';
+        idx.textContent = track.num;
+
+        const copy = document.createElement('span');
+        copy.className = 'music-track-row-copy';
+        const title = document.createElement('span');
+        title.className = 'music-track-row-title';
+        title.textContent = track.title;
+        const sub = document.createElement('span');
+        sub.className = 'music-track-row-sub';
+        sub.textContent = track.meta;
+        copy.append(title, sub);
+
+        const state = document.createElement('span');
+        state.className = 'music-track-state';
+        state.setAttribute('aria-hidden', 'true');
+        const eq = document.createElement('span');
+        eq.className = 'music-row-eq';
+        eq.append(document.createElement('i'), document.createElement('i'), document.createElement('i'));
+        const dot = document.createElement('span');
+        dot.className = 'music-row-dot';
+        state.append(eq, dot);
+
+        btn.append(idx, copy, state);
+        return btn;
+      });
+      musicListEl.replaceChildren(...items);
+    };
+
+    const syncVolumeUI = () => {
+      const pct = Math.round(musicVolume * 100);
+      musicVolumeInput.value = String(pct);
+      musicVolumeInput.style.setProperty('--vol-pct', `${pct}%`);
+      musicVolumeVal.textContent = `${pct}%`;
+      const muted = pct === 0;
+      musicMuteBtn.dataset.muted = String(muted);
+      musicMuteBtn.setAttribute('aria-label', muted ? 'Unmute music' : 'Mute music');
+    };
+
+    const syncMusicUI = () => {
+      const isPlaying = Boolean(musicWanted && musicVoice && musicCtx && musicCtx.state === 'running');
+      root.dataset.music = !musicWanted ? 'off' : isPlaying ? 'playing' : 'idle';
+      musicPlayBtn.dataset.playing = String(isPlaying);
+      musicPlayBtn.setAttribute('aria-label', musicWanted ? 'Pause music' : 'Play music');
+    };
+
+    const ensureAudioContext = () => {
+      if (!musicCtx) {
+        musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+        musicCtx.onstatechange = syncMusicUI;
+        musicBus = musicCtx.createGain();
+        musicBus.gain.value = musicVolume;
+        musicBus.connect(musicCtx.destination);
+      }
+    };
+
+    const applyVolume = (nextVolume) => {
+      musicVolume = Math.min(1, Math.max(0, nextVolume));
+      if (musicVolume > 0) lastNonZeroVolume = musicVolume;
+      safeSetStorage('musicVolume', String(musicVolume));
+      if (musicBus && musicCtx) {
+        const now = musicCtx.currentTime;
+        musicBus.gain.cancelScheduledValues(now);
+        if (musicCtx.state === 'running') musicBus.gain.setTargetAtTime(musicVolume, now, 0.04);
+        else musicBus.gain.value = musicVolume;
+      }
+      syncVolumeUI();
+    };
+
+    const loadTrackBuffer = async (track) => {
+      if (bufferCache.has(track.id)) return bufferCache.get(track.id);
+      if (!loadCache.has(track.id)) {
+        const promise = fetch(track.src)
+          .then((response) => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.arrayBuffer(); })
+          .then((data) => new Promise((resolve, reject) => musicCtx.decodeAudioData(data, resolve, reject)))
+          .then((buffer) => {
+            // Some decoders keep the encoder's silent padding; loop only the audible part.
+            const data = buffer.getChannelData(0);
+            const edge = (from, step) => { for (let i = from; i >= 0 && i < data.length; i += step) if (Math.abs(data[i]) > 1e-3) return i; return from; };
+            const entry = {
+              buffer,
+              loopStart: edge(0, 1) / buffer.sampleRate,
+              loopEnd: (edge(data.length - 1, -1) + 1) / buffer.sampleRate
+            };
+            bufferCache.set(track.id, entry);
+            loadCache.delete(track.id);
+            return entry;
+          })
+          .catch((error) => {
+            loadCache.delete(track.id);
+            throw error;
+          });
+        loadCache.set(track.id, promise);
+      }
+      return loadCache.get(track.id);
+    };
+
+    const stopVoice = (fadeSec = 0.45) => {
       const voice = musicVoice;
       musicVoice = null;
-      if (!voice) return;
+      if (!voice || !musicCtx) return;
       const now = musicCtx.currentTime;
       voice.gain.gain.cancelScheduledValues(now);
       voice.gain.gain.setValueAtTime(voice.gain.gain.value, now);
-      voice.gain.gain.linearRampToValueAtTime(0, now + .5);
-      setTimeout(() => voice.source.stop(), 600);
+      voice.gain.gain.linearRampToValueAtTime(0, now + fadeSec);
+      window.setTimeout(() => {
+        try { voice.source.stop(); } catch (error) {}
+        try { voice.source.disconnect(); voice.gain.disconnect(); } catch (error) {}
+      }, Math.round(fadeSec * 1000) + 80);
     };
+
     // Browsers only allow audio after a gesture, so playback starts from the first click or key press.
-    const playMusic = async () => {
-      if (musicPending) return;
-      if (musicVoice) { musicCtx.resume().catch(() => {}); return; }
-      musicPending = true;
+    const playSelectedTrack = async () => {
+      const track = getSelectedTrack();
+      if (!musicWanted) { syncMusicUI(); return; }
+      if (musicVoice && musicVoice.trackId === track.id) {
+        if (musicCtx && musicCtx.state !== 'running') await musicCtx.resume().catch(() => {});
+        syncMusicUI();
+        return;
+      }
+      if (pendingTrackId === track.id) {
+        if (musicCtx && musicCtx.state !== 'running') await musicCtx.resume().catch(() => {});
+        return;
+      }
+      const token = ++playToken;
+      pendingTrackId = track.id;
       try {
-        if (!musicCtx) { musicCtx = new (window.AudioContext || window.webkitAudioContext)(); musicCtx.onstatechange = syncMusic; musicBus = musicCtx.createGain(); musicBus.gain.value = musicLevel; musicBus.connect(musicCtx.destination); }
+        ensureAudioContext();
         if (musicCtx.state !== 'running') await musicCtx.resume();
-        if (!musicBuffer) {
-          if (!musicLoad) musicLoad = fetch(musicSrc).then((response) => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.arrayBuffer(); }).then((data) => new Promise((resolve, reject) => musicCtx.decodeAudioData(data, resolve, reject)));
-          try { musicBuffer = await musicLoad; } catch (error) { musicLoad = null; throw error; }
-        }
-        if (!musicWanted) return;
-        // Some decoders keep the encoder's silent padding; loop only the audible part.
-        const data = musicBuffer.getChannelData(0);
-        const edge = (from, step) => { for (let i = from; i >= 0 && i < data.length; i += step) if (Math.abs(data[i]) > 1e-3) return i; return from; };
+        const entry = await loadTrackBuffer(track);
+        if (token !== playToken || !musicWanted || selectedTrackId !== track.id) return;
+        stopVoice(0.22);
         const source = musicCtx.createBufferSource();
         const gain = musicCtx.createGain();
-        source.buffer = musicBuffer;
-        source.loop = true;
-        source.loopStart = edge(0, 1) / musicBuffer.sampleRate;
-        source.loopEnd = (edge(data.length - 1, -1) + 1) / musicBuffer.sampleRate;
+        source.buffer = entry.buffer;
+        source.loop = true; // Single-track loop only; never advances to another track.
+        source.loopStart = entry.loopStart;
+        source.loopEnd = entry.loopEnd;
         gain.gain.value = 0;
         source.connect(gain);
         gain.connect(musicBus);
         source.start();
-        gain.gain.setTargetAtTime(1, musicCtx.currentTime, .5);
-        musicVoice = { source, gain };
+        gain.gain.setTargetAtTime(1, musicCtx.currentTime, 0.35);
+        musicVoice = { trackId: track.id, source, gain };
       } catch (error) {
-        if (musicWanted) { musicWanted = false; console.warn('Background music unavailable:', error); }
+        if (token === playToken && musicWanted) {
+          musicWanted = false;
+          console.warn('Background music unavailable:', error);
+        }
       } finally {
-        musicPending = false;
-        syncMusic();
+        if (token === playToken) pendingTrackId = null;
+        syncMusicUI();
       }
     };
-    musicToggle.addEventListener('click', () => { musicWanted = !musicWanted; try { localStorage.setItem('music', musicWanted ? 'on' : 'off'); } catch (error) {} syncMusic(); if (musicWanted) playMusic(); else stopMusic(); });
-    const unlockMusic = (event) => { if (musicWanted && !(event.target instanceof Element && event.target.closest('#music-toggle'))) playMusic(); };
+
+    const selectTrack = (trackId) => {
+      const track = MUSIC_TRACKS.find((t) => t.id === trackId);
+      if (!track) return;
+      if (track.id !== selectedTrackId) {
+        selectedTrackId = track.id;
+        safeSetStorage('musicTrack', selectedTrackId);
+        musicWanted = true;
+        safeSetStorage('music', 'on');
+        playToken += 1;
+        pendingTrackId = null;
+        stopVoice(0.28);
+        renderTrackDeck();
+        renderTrackList();
+        playSelectedTrack();
+      } else if (!musicWanted || !musicVoice) {
+        musicWanted = true;
+        safeSetStorage('music', 'on');
+        playSelectedTrack();
+      }
+    };
+
+    musicToggle.addEventListener('click', () => {
+      const open = musicPopover.classList.toggle('is-open');
+      musicToggle.setAttribute('aria-expanded', String(open));
+      if (open) closeMenu();
+      if (musicWanted && (!musicVoice || (musicCtx && musicCtx.state !== 'running'))) playSelectedTrack();
+    });
+
+    musicPlayBtn.addEventListener('click', () => {
+      musicWanted = !musicWanted;
+      safeSetStorage('music', musicWanted ? 'on' : 'off');
+      playToken += 1;
+      pendingTrackId = null;
+      syncMusicUI();
+      if (musicWanted) playSelectedTrack();
+      else stopVoice();
+    });
+
+    musicMuteBtn.addEventListener('click', () => {
+      applyVolume(musicVolume > 0 ? 0 : (lastNonZeroVolume > 0 ? lastNonZeroVolume : 0.6));
+    });
+
+    musicVolumeInput.addEventListener('input', (event) => {
+      applyVolume(Number(event.target.value) / 100);
+    });
+
+    musicListEl.addEventListener('click', (event) => {
+      const item = event.target instanceof Element ? event.target.closest('.music-track-item') : null;
+      if (item && item.dataset.trackId) selectTrack(item.dataset.trackId);
+    });
+
+    document.addEventListener('pointerdown', (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      if (nav.classList.contains('is-open') && (!target || (!target.closest('#nav-links') && !target.closest('#menu-toggle')))) closeMenu();
+      if (musicPopover.classList.contains('is-open') && (!target || (!target.closest('#music-popover') && !target.closest('#music-toggle')))) closeMusicPopover();
+    }, { passive: true });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      closeMenu();
+      if (musicPopover.classList.contains('is-open')) {
+        const focusInside = document.activeElement && musicPopover.contains(document.activeElement);
+        closeMusicPopover();
+        if (focusInside) musicToggle.focus();
+      }
+    });
+
+    const unlockMusic = (event) => {
+      if (!musicWanted) return;
+      if (event.target instanceof Element && event.target.closest('#music-toggle, #music-play-btn, .music-track-item')) return;
+      playSelectedTrack();
+    };
     document.addEventListener('pointerdown', unlockMusic, { passive: true });
     document.addEventListener('keydown', unlockMusic);
     document.addEventListener('click', unlockMusic);
-    window.addEventListener('pageshow', (event) => { if (event.persisted && musicWanted) playMusic(); });
-    document.addEventListener('visibilitychange', () => { if (!document.hidden && musicWanted && musicVoice) playMusic(); });
-    syncMusic();
+    window.addEventListener('pageshow', (event) => { if (event.persisted && musicWanted) playSelectedTrack(); });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && musicWanted && musicVoice) playSelectedTrack(); });
+
+    renderTrackDeck();
+    renderTrackList();
+    syncVolumeUI();
+    syncMusicUI();
 
     const revealItems = [...document.querySelectorAll('.reveal')];
     if (reduceMotion || !('IntersectionObserver' in window)) revealItems.forEach((item) => item.classList.add('is-visible'));
@@ -1609,7 +2539,10 @@
     try {
       const connection = navigator.connection;
       const battery = navigator.getBattery ? await navigator.getBattery() : null;
-      const calm = () => root.classList.toggle('bg-calm', Boolean(connection && connection.saveData) || Boolean(battery && !battery.charging && battery.level < .2));
+      const calm = () => {
+        root.classList.toggle('bg-calm', Boolean(connection && connection.saveData) || Boolean(battery && !battery.charging && battery.level < .2));
+        spaceBg.syncPower();
+      };
       calm();
       if (connection) connection.addEventListener('change', calm);
       if (battery) { battery.addEventListener('levelchange', calm); battery.addEventListener('chargingchange', calm); }

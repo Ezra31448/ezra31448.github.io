@@ -205,6 +205,14 @@
     button { color: inherit; font: inherit; cursor: pointer; }
     img { display: block; max-width: 100%; }
     :focus-visible { outline: 2px solid var(--lime-ink); outline-offset: 3px; }
+    ::selection { background: var(--lime, #d7ff55); color: var(--lime-on, #080b14); text-shadow: none; }
+    ::-moz-selection { background: var(--lime, #d7ff55); color: var(--lime-on, #080b14); text-shadow: none; }
+    html[data-theme="light"]::selection, html[data-theme="light"] ::selection { background: var(--lime, #cdf235); color: var(--lime-on, #0f1424); }
+    html[data-theme="light"]::-moz-selection, html[data-theme="light"] ::-moz-selection { background: var(--lime, #cdf235); color: var(--lime-on, #0f1424); }
+    :is(.brand-mark, .button.primary, .contact-action-item--primary, .voxel-tab.is-active, .skip-link)::selection,
+    :is(.brand-mark, .button.primary, .contact-action-item--primary, .voxel-tab.is-active, .skip-link) ::selection { background: var(--lime-on, #080b14); color: var(--lime, #d7ff55); }
+    :is(.brand-mark, .button.primary, .contact-action-item--primary, .voxel-tab.is-active, .skip-link)::-moz-selection,
+    :is(.brand-mark, .button.primary, .contact-action-item--primary, .voxel-tab.is-active, .skip-link) ::-moz-selection { background: var(--lime-on, #080b14); color: var(--lime, #d7ff55); }
     .container { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
     .skip-link {
       position: fixed; left: 16px; top: 12px; z-index: 100;

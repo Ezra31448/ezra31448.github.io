@@ -392,6 +392,25 @@
       padding: 8px 12px 10px;
       border-top: 1px solid var(--line);
     }
+    .music-visual {
+      padding: 6px 12px 2px;
+      border-top: none;
+      background: transparent;
+    }
+    html[data-theme="light"] .music-visual { background: transparent; }
+    .music-visual-canvas {
+      display: block;
+      width: 100%;
+      height: 36px;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      background-image: none;
+      opacity: .6;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .music-visual-foot { display: none; }
     .music-mute-btn {
       display: inline-flex; align-items: center; justify-content: center;
       width: 26px; height: 26px;
@@ -1000,6 +1019,10 @@
             <svg class="px-icon icon-play" aria-hidden="true"><use href="#px-play" /></svg>
             <svg class="px-icon icon-pause" aria-hidden="true"><use href="#px-pause" /></svg>
           </button>
+        </div>
+        <div class="music-visual" aria-hidden="true">
+          <canvas class="music-visual-canvas" id="music-eq-canvas" width="248" height="36"></canvas>
+          <div class="music-visual-foot"><span>EQ</span><span>56</span></div>
         </div>
         <div class="music-volume-row">
           <button class="music-mute-btn" id="music-mute-btn" type="button" aria-label="Mute music">
@@ -2090,7 +2113,7 @@
     let musicVolume = Number.isFinite(savedVol) ? Math.min(1, Math.max(0, savedVol)) : 0.6;
     let lastNonZeroVolume = musicVolume > 0 ? musicVolume : 0.6;
     let musicWanted = root.dataset.music !== 'off';
-    let musicCtx = null, musicBus = null, musicVoice = null;
+    let musicCtx = null, musicBus = null, musicVoice = null, musicAnalyser = null, musicTimeData = null, musicFreqData = null;
     let playToken = 0, pendingTrackId = null;
     const bufferCache = new Map();
     const loadCache = new Map();
@@ -2254,6 +2277,7 @@
       const btnPlaying = isAudioRunning();
       musicPlayBtn.dataset.playing = String(btnPlaying);
       musicPlayBtn.setAttribute('aria-label', btnPlaying ? 'Pause music' : 'Play music');
+      if (typeof syncEqLoop === 'function') syncEqLoop();
     };
 
     const ensureAudioContext = () => {
@@ -2262,8 +2286,123 @@
         musicCtx.onstatechange = syncMusicUI;
         musicBus = musicCtx.createGain();
         musicBus.gain.value = musicVolume;
-        musicBus.connect(musicCtx.destination);
+        musicAnalyser = musicCtx.createAnalyser();
+        musicAnalyser.fftSize = 256;
+        musicAnalyser.smoothingTimeConstant = 0.82;
+        musicTimeData = new Uint8Array(musicAnalyser.fftSize);
+        musicFreqData = new Uint8Array(musicAnalyser.frequencyBinCount);
+        musicBus.connect(musicAnalyser);
+        musicAnalyser.connect(musicCtx.destination);
       }
+    };
+
+    // Frequency-separated pixel-bar EQ (vertical bars) inside the SOUND // DECK popover.
+    const eqCanvas = document.getElementById('music-eq-canvas');
+    const eqCtx = eqCanvas ? eqCanvas.getContext('2d') : null;
+    const EQ_BARS = 24;
+    let eqRaf = 0;
+    let eqTheme = null;
+    const eqLevels = new Array(EQ_BARS).fill(0);
+    const eqPeaks = new Array(EQ_BARS).fill(0);
+    const refreshEqTheme = () => {
+      try {
+        const cs = getComputedStyle(root);
+        const pick = (name, fallback) => (cs.getPropertyValue(name) || '').trim() || fallback;
+        eqTheme = {
+          low: pick('--lime-ink', '#d7ff55'),
+          mid: pick('--cyan', '#6ee7ff'),
+          high: pick('--violet', '#9b8cff'),
+          cap: pick('--red', '#ff7585'),
+          dim: pick('--ink-faint', '#7e87a6')
+        };
+      } catch (error) {
+        eqTheme = { low: '#d7ff55', mid: '#6ee7ff', high: '#9b8cff', cap: '#ff7585', dim: '#7e87a6' };
+      }
+    };
+    refreshEqTheme();
+    try {
+      new MutationObserver(() => { refreshEqTheme(); syncEqLoop(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    } catch (error) {}
+    const paintEqFrame = (now) => {
+      eqRaf = 0;
+      if (!eqCtx || !eqCanvas) return;
+      if (document.hidden) return;
+      if (!eqTheme) refreshEqTheme();
+      const w = eqCanvas.width;
+      const h = eqCanvas.height;
+      const live = Boolean(musicWanted && musicVoice && musicCtx && musicCtx.state === 'running' && musicAnalyser && musicFreqData);
+      if (live) musicAnalyser.getByteFrequencyData(musicFreqData);
+      eqCtx.clearRect(0, 0, w, h);
+      // Pixel-art vertical spectrum: low band on the left, high band on the right,
+      // bars grow upward along the Y axis.
+      const barW = 5;
+      const gap = (w - EQ_BARS * barW) / (EQ_BARS - 1);
+      const segH = 3;
+      const segGap = 2;
+      const segStep = segH + segGap;
+      const maxSegs = Math.max(3, Math.floor((h - 6) / segStep));
+      const baseY = h - 2;
+      for (let i = 0; i < EQ_BARS; i += 1) {
+        let target = 0;
+        if (live) {
+          // Log-spaced bins so bass gets room and highs don't collapse.
+          const frac = EQ_BARS === 1 ? 0 : i / (EQ_BARS - 1);
+          const bin = Math.min(musicFreqData.length - 1, Math.floor(Math.pow(frac, 1.6) * (musicFreqData.length * 0.72)) + 1);
+          target = Math.pow(musicFreqData[bin] / 255, 1.15);
+        } else if (!reduceMotion && musicWanted) {
+          // Gentle idle sway when paused.
+          const sway = Math.sin(now / 900 + i * 0.55) * 0.5 + Math.sin(now / 520 - i * 0.3) * 0.5;
+          target = 0.12 + 0.08 * (0.5 + sway * 0.5) + (i % 4 === 0 ? 0.05 : 0);
+        }
+        // Fast attack, slow release for a lively but readable meter.
+        const prev = eqLevels[i] || 0;
+        const next = target > prev ? target : prev + (target - prev) * 0.18;
+        eqLevels[i] = next;
+        if (next >= (eqPeaks[i] || 0)) eqPeaks[i] = next;
+        else eqPeaks[i] = Math.max(next, (eqPeaks[i] || 0) - 0.012);
+        const segs = Math.round(next * maxSegs);
+        const x = Math.round(i * (barW + gap));
+        for (let s = 0; s < maxSegs; s += 1) {
+          const on = s < segs;
+          const y = Math.round(baseY - (s + 1) * segStep + segGap);
+          if (!on) {
+            // Faint pixel grid so empty bars still read as pixel art.
+            eqCtx.globalAlpha = 0.16;
+            eqCtx.fillStyle = eqTheme.dim;
+            eqCtx.fillRect(x, y, barW, 2);
+            continue;
+          }
+          const fracH = s / Math.max(1, maxSegs - 1);
+          if (fracH > 0.78) { eqCtx.fillStyle = eqTheme.high; eqCtx.globalAlpha = 0.95; }
+          else if (fracH > 0.45) { eqCtx.fillStyle = eqTheme.mid; eqCtx.globalAlpha = 0.9; }
+          else { eqCtx.fillStyle = eqTheme.low; eqCtx.globalAlpha = 0.85; }
+          eqCtx.fillRect(x, y, barW, segH);
+        }
+        // Falling peak cap, pixel style.
+        const peakSeg = Math.round((eqPeaks[i] || 0) * maxSegs);
+        if (peakSeg > 0) {
+          const py = Math.round(baseY - (peakSeg + 1) * segStep + segGap) - 3;
+          eqCtx.globalAlpha = 0.9;
+          eqCtx.fillStyle = peakSeg >= maxSegs - 1 ? eqTheme.cap : eqTheme.low;
+          eqCtx.fillRect(x, Math.max(0, py), barW, 2);
+        }
+      }
+      eqCtx.globalAlpha = 1;
+      if (!reduceMotion) {
+        const open = musicPopover && musicPopover.classList.contains('is-open');
+        if (open) eqRaf = requestAnimationFrame(paintEqFrame);
+      }
+    };
+    const syncEqLoop = () => {
+      if (!eqCtx || reduceMotion) {
+        if (eqRaf) cancelAnimationFrame(eqRaf);
+        eqRaf = 0;
+        if (eqCtx && eqCanvas) paintEqFrame(performance.now());
+        return;
+      }
+      const open = musicPopover && musicPopover.classList.contains('is-open');
+      if (open && !eqRaf) eqRaf = requestAnimationFrame(paintEqFrame);
+      else if (!open && eqRaf) { cancelAnimationFrame(eqRaf); eqRaf = 0; }
     };
 
     const applyVolume = (nextVolume) => {
@@ -2397,6 +2536,7 @@
       musicToggle.setAttribute('aria-expanded', String(open));
       if (open) closeMenu();
       if (musicWanted && (!musicVoice || (musicCtx && musicCtx.state !== 'running'))) playSelectedTrack();
+      syncEqLoop();
     });
 
     musicPlayBtn.addEventListener('click', () => {
@@ -2461,6 +2601,7 @@
     renderTrackList();
     syncVolumeUI();
     syncMusicUI();
+    syncEqLoop();
     if (musicWanted) playSelectedTrack();
 
     const revealItems = [...document.querySelectorAll('.reveal')];

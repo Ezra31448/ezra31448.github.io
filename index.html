@@ -2247,11 +2247,13 @@
       musicMuteBtn.setAttribute('aria-label', muted ? 'Unmute music' : 'Mute music');
     };
 
+    const isAudioRunning = () => Boolean(musicWanted && (musicVoice || pendingTrackId) && musicCtx && musicCtx.state === 'running');
     const syncMusicUI = () => {
       const isPlaying = Boolean(musicWanted && musicVoice && musicCtx && musicCtx.state === 'running');
       root.dataset.music = !musicWanted ? 'off' : isPlaying ? 'playing' : 'idle';
-      musicPlayBtn.dataset.playing = String(isPlaying);
-      musicPlayBtn.setAttribute('aria-label', musicWanted ? 'Pause music' : 'Play music');
+      const btnPlaying = isAudioRunning();
+      musicPlayBtn.dataset.playing = String(btnPlaying);
+      musicPlayBtn.setAttribute('aria-label', btnPlaying ? 'Pause music' : 'Play music');
     };
 
     const ensureAudioContext = () => {
@@ -2309,6 +2311,11 @@
       const voice = musicVoice;
       musicVoice = null;
       if (!voice || !musicCtx) return;
+      if (musicCtx.state !== 'running') {
+        try { voice.source.stop(); } catch (error) {}
+        try { voice.source.disconnect(); voice.gain.disconnect(); } catch (error) {}
+        return;
+      }
       const now = musicCtx.currentTime;
       voice.gain.gain.cancelScheduledValues(now);
       voice.gain.gain.setValueAtTime(voice.gain.gain.value, now);
@@ -2319,7 +2326,7 @@
       }, Math.round(fadeSec * 1000) + 80);
     };
 
-    // Browsers only allow audio after a gesture, so playback starts from the first click or key press.
+    // Attempt autoplay immediately on load and pre-decode the track; if blocked by Autoplay Policy, unlock synchronously on first gesture.
     const playSelectedTrack = async () => {
       const track = getSelectedTrack();
       if (!musicWanted) { syncMusicUI(); return; }
@@ -2329,14 +2336,14 @@
         return;
       }
       if (pendingTrackId === track.id) {
-        if (musicCtx && musicCtx.state !== 'running') await musicCtx.resume().catch(() => {});
+        if (musicCtx && musicCtx.state !== 'running') musicCtx.resume().catch(() => {});
         return;
       }
       const token = ++playToken;
       pendingTrackId = track.id;
       try {
         ensureAudioContext();
-        if (musicCtx.state !== 'running') await musicCtx.resume();
+        if (musicCtx.state !== 'running') musicCtx.resume().catch(() => {});
         const entry = await loadTrackBuffer(track);
         if (token !== playToken || !musicWanted || selectedTrackId !== track.id) return;
         stopVoice(0.22);
@@ -2346,12 +2353,13 @@
         source.loop = true; // Single-track loop only; never advances to another track.
         source.loopStart = entry.loopStart;
         source.loopEnd = entry.loopEnd;
-        gain.gain.value = 0;
+        gain.gain.setValueAtTime(0, musicCtx.currentTime);
         source.connect(gain);
         gain.connect(musicBus);
-        source.start();
+        source.start(0);
         gain.gain.setTargetAtTime(1, musicCtx.currentTime, 0.35);
         musicVoice = { trackId: track.id, source, gain };
+        if (musicCtx.state !== 'running') musicCtx.resume().catch(() => {});
       } catch (error) {
         if (token === playToken && musicWanted) {
           musicWanted = false;
@@ -2392,13 +2400,19 @@
     });
 
     musicPlayBtn.addEventListener('click', () => {
-      musicWanted = !musicWanted;
-      safeSetStorage('music', musicWanted ? 'on' : 'off');
-      playToken += 1;
-      pendingTrackId = null;
-      syncMusicUI();
-      if (musicWanted) playSelectedTrack();
-      else stopVoice();
+      if (isAudioRunning()) {
+        musicWanted = false;
+        safeSetStorage('music', 'off');
+        playToken += 1;
+        pendingTrackId = null;
+        stopVoice();
+        syncMusicUI();
+      } else {
+        musicWanted = true;
+        safeSetStorage('music', 'on');
+        syncMusicUI();
+        playSelectedTrack();
+      }
     });
 
     musicMuteBtn.addEventListener('click', () => {
@@ -2436,6 +2450,8 @@
       playSelectedTrack();
     };
     document.addEventListener('pointerdown', unlockMusic, { passive: true });
+    document.addEventListener('pointerup', unlockMusic, { passive: true });
+    document.addEventListener('touchend', unlockMusic, { passive: true });
     document.addEventListener('keydown', unlockMusic);
     document.addEventListener('click', unlockMusic);
     window.addEventListener('pageshow', (event) => { if (event.persisted && musicWanted) playSelectedTrack(); });
@@ -2445,6 +2461,7 @@
     renderTrackList();
     syncVolumeUI();
     syncMusicUI();
+    if (musicWanted) playSelectedTrack();
 
     const revealItems = [...document.querySelectorAll('.reveal')];
     if (reduceMotion || !('IntersectionObserver' in window)) revealItems.forEach((item) => item.classList.add('is-visible'));

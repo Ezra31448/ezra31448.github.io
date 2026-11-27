@@ -21,6 +21,7 @@ When adding a new track (for example, after rendering an `.mp3` in `tools/`):
    - For bespoke pixel cover art, add a custom `track.art === '<key>'` branch inside `buildCoverArtSvg(track)`; otherwise the deterministic voxel generator creates an on-theme cover from `track.id`.
 3. **Register the track in `MUSIC_TRACKS`** inside `index.html`:
    ```js
-   { id: '<slug>', num: '03', title: 'Track Title', meta: 'STYLE · 80 BPM', src: 'music-<slug>.mp3', cover: '', art: '<optional>' }
+   { album: '<album-id>', id: '<slug>', num: '03', title: 'Track Title', meta: 'STYLE · 80 BPM', src: 'music-<slug>.mp3', cover: '', art: '<optional>' }
    ```
    Keep `meta` concise in uppercase monospace format (`GENRE · XX BPM`).
+4. **Albums are list sections only**: every track's `album` must match an `id` in `MUSIC_ALBUMS` (`prelude` = the first three tracks, `night-build` = the 12-track late-night tech-noir set); a track with no matching album is not listed. `num` restarts at `01` inside each album, and the deck shows `<ALBUM> · <num>`. To add an album, add one `{ id, title, note }` row to `MUSIC_ALBUMS`. Albums never change playback: still one track on loop.

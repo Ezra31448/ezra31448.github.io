@@ -95,6 +95,9 @@
       var saved = null;
       try { saved = localStorage.getItem('theme'); } catch (e) {}
       document.documentElement.dataset.theme = saved === 'light' ? 'light' : 'dark';
+      var music = null;
+      try { music = localStorage.getItem('music'); } catch (e) {}
+      document.documentElement.dataset.music = music === 'off' || (!music && navigator.connection && navigator.connection.saveData) ? 'off' : 'idle';
       document.documentElement.classList.add('js');
       window.setTimeout(function () {
         if (!document.documentElement.classList.contains('js-ready')) document.documentElement.classList.add('reveal-fallback');
@@ -288,19 +291,29 @@
     .nav-links a::after { content: ""; position: absolute; left: 11px; right: 11px; bottom: 4px; height: 1.5px; background: var(--lime-ink); transform: scaleX(0); transform-origin: left; transition: transform .18s var(--ease); }
     .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
     .nav-links a:hover::after, .nav-links a.is-active::after { transform: scaleX(1); }
-    .theme-toggle, .menu-toggle {
+    .theme-toggle, .menu-toggle, .music-toggle {
       display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
       width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 3px;
       background: var(--bg-raised); color: var(--ink-soft);
       box-shadow: var(--shadow-voxel), inset 0 1px 0 rgba(255, 255, 255, .08);
       transition: transform .12s var(--ease), box-shadow .12s var(--ease), border-color .15s ease, background .15s ease, color .15s ease;
     }
-    .theme-toggle:hover, .menu-toggle:hover { transform: translate(-1px, -1px); border-color: var(--line-strong); color: var(--ink); }
-    .theme-toggle:active, .menu-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--voxel-depth); }
-    .theme-toggle .px-icon, .menu-toggle .px-icon { width: 16px; height: 16px; }
+    .theme-toggle:hover, .menu-toggle:hover, .music-toggle:hover { transform: translate(-1px, -1px); border-color: var(--line-strong); color: var(--ink); }
+    .theme-toggle:active, .menu-toggle:active, .music-toggle:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--voxel-depth); }
+    .theme-toggle .px-icon, .menu-toggle .px-icon, .music-toggle .px-icon { width: 16px; height: 16px; }
     html[data-theme="dark"] .icon-sun, html[data-theme="light"] .icon-moon { display: none; }
     .menu-toggle { display: none; }
     .menu-toggle[aria-expanded="true"] { background: var(--lime); color: var(--lime-on); border-color: var(--line-strong); }
+    html:not(.js) .music-toggle { display: none; }
+    .music-toggle .icon-music, .music-toggle .icon-music-off, .music-eq { display: none; }
+    html[data-music="off"] .music-toggle .icon-music-off, html[data-music="idle"] .music-toggle .icon-music { display: inline-block; }
+    html[data-music="idle"] .music-toggle, html[data-music="playing"] .music-toggle { color: var(--lime-ink); }
+    html[data-music="playing"] .music-eq { display: inline-flex; }
+    .music-eq { align-items: flex-end; gap: 2px; width: 16px; height: 16px; padding-bottom: 1px; }
+    .music-eq i { width: 3px; height: 4px; background: currentColor; animation: musicEq .72s steps(1, end) infinite; }
+    .music-eq i:nth-child(2) { animation-delay: -.24s; }
+    .music-eq i:nth-child(3) { animation-delay: -.48s; }
+    @keyframes musicEq { 0% { height: 4px; } 25% { height: 12px; } 50% { height: 6px; } 75% { height: 14px; } }
 
     .section { position: relative; padding: clamp(88px, 10vw, 144px) 0; }
     .hero { min-height: min(880px, 100svh); display: flex; align-items: center; padding: 132px 0 72px; }
@@ -676,9 +689,10 @@
       .nav-shell { min-height: 54px; padding-left: 10px; }
       .nav-links { top: 74px; right: 14px; width: min(320px, calc(100vw - 28px)); margin-left: 0; padding: 12px; }
       .nav-controls { margin-left: auto; gap: 8px; }
-      .brand { font-size: 13px; }
+      .brand { min-width: 0; font-size: 13px; }
+      .brand > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .brand-mark { height: 32px; padding: 0 8px; font-size: 11px; }
-      .theme-toggle, .menu-toggle { width: 34px; height: 34px; }
+      .theme-toggle, .menu-toggle, .music-toggle { width: 34px; height: 34px; }
       h1 { font-size: clamp(36px, 10.5vw, 56px); }
       h2 { font-size: clamp(28px, 8.6vw, 44px); }
       .hero { padding-top: 108px; }
@@ -706,6 +720,11 @@
       html.motion-ready .process-wrap.is-motion-visible .process-line::before { transform: scaleY(1); }
       .experience-item { grid-template-columns: 1fr; gap: 8px; }
       .footer-row { flex-direction: column; }
+    }
+    @media (max-width: 389px) {
+      .nav-shell { gap: 10px; padding-left: 6px; padding-right: 6px; }
+      .nav-controls { gap: 6px; }
+      .brand { gap: 6px; }
     }
     @media print {
       @page { margin: 14mm; }
@@ -787,6 +806,8 @@
     <symbol id="px-email" viewBox="0 0 32 32"><path fill="currentColor" d="M30.47 9.145h-1.52v1.53h1.52v1.52h-1.52v1.52h1.52v1.53h-1.52v1.52h1.52v1.52h-1.52v1.53h1.52v1.52h-1.52v1.53h1.52v1.52H32V7.625h-1.53zm-3.04 13.72H25.9v1.52h-1.52v-1.52h-1.52v1.52h-1.53v-1.52h-1.52v1.52h-1.53v-1.52h-1.52v1.52h-1.52v-1.52h-1.53v1.52h-1.52v-1.52h-1.53v1.52H9.14v-1.52H7.62v1.52H6.09v-1.52H4.57v1.52H1.52v1.52h28.95v-1.52h-3.04zm-1.53-12.19h-3.04v1.52h-1.53v3.05h1.53v1.52h3.04v-1.52h1.53v-3.05H25.9zm-21.33 9.14h9.14v1.52H4.57Zm0-3.05h6.09v1.52H4.57Zm0-7.62h1.52v-1.52h1.53v1.52h1.52v-1.52h1.52v1.52h1.53v-1.52h1.52v1.52h1.53v-1.52h1.52v1.52h1.52v-1.52h1.53v1.52h1.52v-1.52h1.53v1.52h1.52v-1.52h1.52v1.52h1.53v-1.52h3.04v-1.53H1.52v1.53h3.05z"/><path fill="currentColor" d="M3.05 22.865v-1.53H1.52v-1.52h1.53v-1.53H1.52v-1.52h1.53v-1.52H1.52v-1.53h1.53v-1.52H1.52v-1.52h1.53v-1.53H1.52v-1.52H0v16.76h1.52v-1.52z"/></symbol>
     <symbol id="px-linkedin" viewBox="0 0 32 32"><path fill="currentColor" d="M30.47 3.05H32v25.9h-1.53Zm-1.52 25.9h1.52v1.53h-1.52Zm0-27.43h1.52v1.53h-1.52Zm-1.53 3.05h1.53v22.86h-1.53ZM3.04 30.48h25.91V32H3.04Zm1.53-3.05h22.85v1.52H4.57Zm18.28-12.19h-1.52v-1.53h-3.05v1.53h-1.52v-1.53h-3.05v9.15h3.05v-4.57h1.52v-1.53h1.53v1.53h1.52v4.57h3.05v-6.1h-1.53zM7.61 13.71h3.05v9.15H7.61Zm0-4.57h3.05v3.05H7.61ZM4.57 3.05h22.85v1.52H4.57ZM3.04 0h25.91v1.52H3.04Zm0 4.57h1.53v22.86H3.04ZM1.52 28.95h1.52v1.53H1.52Zm0-27.43h1.52v1.53H1.52ZM0 3.05h1.52v25.9H0Z"/></symbol>
     <symbol id="px-clip" viewBox="0 0 32 32"><path fill="currentColor" d="M28.185 8.38h1.53v6.09h-1.53Zm-1.52 6.09h1.52v3.05h-1.52Zm0-7.61h1.52v1.52h-1.52Zm-1.52 10.66h1.52v1.53h-1.52Zm0-12.19h1.52v1.53h-1.52Zm-1.53 13.72h1.53v1.52h-1.53Zm0-9.15h1.53v4.57h-1.53Zm-4.57-6.09h6.1v1.52h-6.1Zm3.05 16.76h1.52v1.52h-1.52Zm0-6.1h1.52V16h-1.52Zm-3.05-6.09h4.57V9.9h-4.57Zm1.52 13.71h1.53v1.53h-1.53Zm0-6.09h1.53v1.52h-1.53Zm-1.52 7.62h1.52v1.52h-1.52Zm0-6.1h1.52v1.53h-1.52Zm-1.52 7.62h1.52v1.53h-1.52Zm0-6.09h1.52v1.52h-1.52Zm0-9.15h1.52v1.53h-1.52Zm-1.53 10.67h1.53v1.52h-1.53Zm0-9.14h1.53v1.52h-1.53Zm0-6.1h3.05v1.53h-3.05Zm-1.52 16.76h1.52v1.53h-1.52Zm0-9.14h1.52v1.52h-1.52Zm0-6.09h1.52v1.52h-1.52Zm-1.53 16.76h1.53v1.52h-1.53Zm0-9.15h1.53V16h-1.53Zm0-6.09h1.53V9.9h-1.53Zm-1.52 16.76h1.52v1.53h-1.52Zm0-9.14h1.52v1.52h-1.52Zm0-6.1h1.52v1.53h-1.52Zm-1.52 7.62h1.52v1.53h-1.52Zm0-6.09h1.52v1.52h-1.52Zm-1.53 1.52h1.53v1.52h-1.53Zm-1.52 1.52h1.52V16h-1.52Zm-1.52 12.2h6.09v1.52h-6.09Zm0-10.67h1.52v1.52h-1.52Zm-1.53 9.14h1.53v1.53h-1.53Zm0-7.62h1.53v1.53h-1.53Zm-1.52 1.53h1.52v6.09h-1.52Z"/></symbol>
+    <symbol id="px-music" viewBox="0 0 32 32"><path fill="currentColor" d="M7.619 4.571h21.333v4.571h-21.333zM7.619 9.143h3.048v15.238h-3.048zM25.905 9.143h3.048v15.238h-3.048zM4.571 21.333h7.619v3.048h-7.619zM22.857 21.333h7.619v3.048h-7.619zM3.048 22.857h9.143v1.524h-9.143zM21.333 22.857h9.143v1.524h-9.143zM1.524 24.381h7.619v1.524h-7.619zM19.810 24.381h7.619v1.524h-7.619zM1.524 25.905h6.095v1.524h-6.095zM19.810 25.905h6.095v1.524h-6.095z"/></symbol>
+    <symbol id="px-music-off" viewBox="0 0 32 32"><path fill="currentColor" d="M15.238 4.571h1.524v22.857h-1.524zM13.714 6.095h3.048v19.810h-3.048zM12.190 7.619h4.571v16.762h-4.571zM10.667 9.143h6.095v13.714h-6.095zM18.286 9.143h1.524v4.571h-1.524zM28.952 9.143h1.524v4.571h-1.524zM9.143 10.667h7.619v10.667h-7.619zM19.810 10.667h1.524v4.571h-1.524zM27.429 10.667h3.048v3.048h-3.048zM3.048 12.190h13.714v7.619h-13.714zM21.333 12.190h1.524v9.143h-1.524zM25.905 12.190h4.571v1.524h-4.571zM22.857 13.714h6.095v1.524h-6.095zM22.857 15.238h4.571v4.571h-4.571zM19.810 18.286h9.143v1.524h-9.143zM18.286 19.810h4.571v1.524h-4.571zM25.905 19.810h4.571v1.524h-4.571zM18.286 21.333h3.048v1.524h-3.048zM27.429 21.333h3.048v1.524h-3.048zM18.286 22.857h1.524v1.524h-1.524zM28.952 22.857h1.524v1.524h-1.524z"/></symbol>
   </svg>
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -804,6 +825,11 @@
         <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme">
           <svg class="px-icon icon-sun" aria-hidden="true"><use href="#px-sun" /></svg>
           <svg class="px-icon icon-moon" aria-hidden="true"><use href="#px-moon" /></svg>
+        </button>
+        <button class="music-toggle" id="music-toggle" type="button" aria-label="Background music" aria-pressed="true">
+          <svg class="px-icon icon-music" aria-hidden="true"><use href="#px-music" /></svg>
+          <svg class="px-icon icon-music-off" aria-hidden="true"><use href="#px-music-off" /></svg>
+          <span class="music-eq" aria-hidden="true"><i></i><i></i><i></i></span>
         </button>
         <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
           <svg class="px-icon" aria-hidden="true"><use href="#px-menu" /></svg>
@@ -1421,6 +1447,66 @@
     const syncTheme = () => { const dark = root.dataset.theme === 'dark'; themeToggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme'); if (themeColor) themeColor.setAttribute('content', dark ? '#080b14' : '#f5f4ef'); };
     themeToggle.addEventListener('click', () => { const next = root.dataset.theme === 'dark' ? 'light' : 'dark'; root.dataset.theme = next; try { localStorage.setItem('theme', next); } catch (error) {} syncTheme(); });
     syncTheme();
+
+    const musicToggle = document.getElementById('music-toggle');
+    const musicSrc = 'music-lofi-noir.mp3';
+    const musicLevel = .6;
+    let musicWanted = root.dataset.music !== 'off';
+    let musicCtx = null, musicBus = null, musicVoice = null, musicBuffer = null, musicLoad = null, musicPending = false;
+    const syncMusic = () => { root.dataset.music = !musicWanted ? 'off' : musicVoice && musicCtx.state === 'running' ? 'playing' : 'idle'; musicToggle.setAttribute('aria-pressed', String(musicWanted)); };
+    const stopMusic = () => {
+      const voice = musicVoice;
+      musicVoice = null;
+      if (!voice) return;
+      const now = musicCtx.currentTime;
+      voice.gain.gain.cancelScheduledValues(now);
+      voice.gain.gain.setValueAtTime(voice.gain.gain.value, now);
+      voice.gain.gain.linearRampToValueAtTime(0, now + .5);
+      setTimeout(() => voice.source.stop(), 600);
+    };
+    // Browsers only allow audio after a gesture, so playback starts from the first click or key press.
+    const playMusic = async () => {
+      if (musicPending) return;
+      if (musicVoice) { musicCtx.resume().catch(() => {}); return; }
+      musicPending = true;
+      try {
+        if (!musicCtx) { musicCtx = new (window.AudioContext || window.webkitAudioContext)(); musicCtx.onstatechange = syncMusic; musicBus = musicCtx.createGain(); musicBus.gain.value = musicLevel; musicBus.connect(musicCtx.destination); }
+        if (musicCtx.state !== 'running') await musicCtx.resume();
+        if (!musicBuffer) {
+          if (!musicLoad) musicLoad = fetch(musicSrc).then((response) => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.arrayBuffer(); }).then((data) => new Promise((resolve, reject) => musicCtx.decodeAudioData(data, resolve, reject)));
+          try { musicBuffer = await musicLoad; } catch (error) { musicLoad = null; throw error; }
+        }
+        if (!musicWanted) return;
+        // Some decoders keep the encoder's silent padding; loop only the audible part.
+        const data = musicBuffer.getChannelData(0);
+        const edge = (from, step) => { for (let i = from; i >= 0 && i < data.length; i += step) if (Math.abs(data[i]) > 1e-3) return i; return from; };
+        const source = musicCtx.createBufferSource();
+        const gain = musicCtx.createGain();
+        source.buffer = musicBuffer;
+        source.loop = true;
+        source.loopStart = edge(0, 1) / musicBuffer.sampleRate;
+        source.loopEnd = (edge(data.length - 1, -1) + 1) / musicBuffer.sampleRate;
+        gain.gain.value = 0;
+        source.connect(gain);
+        gain.connect(musicBus);
+        source.start();
+        gain.gain.setTargetAtTime(1, musicCtx.currentTime, .5);
+        musicVoice = { source, gain };
+      } catch (error) {
+        if (musicWanted) { musicWanted = false; console.warn('Background music unavailable:', error); }
+      } finally {
+        musicPending = false;
+        syncMusic();
+      }
+    };
+    musicToggle.addEventListener('click', () => { musicWanted = !musicWanted; try { localStorage.setItem('music', musicWanted ? 'on' : 'off'); } catch (error) {} syncMusic(); if (musicWanted) playMusic(); else stopMusic(); });
+    const unlockMusic = (event) => { if (musicWanted && !(event.target instanceof Element && event.target.closest('#music-toggle'))) playMusic(); };
+    document.addEventListener('pointerdown', unlockMusic, { passive: true });
+    document.addEventListener('keydown', unlockMusic);
+    document.addEventListener('click', unlockMusic);
+    window.addEventListener('pageshow', (event) => { if (event.persisted && musicWanted) playMusic(); });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden && musicWanted && musicVoice) playMusic(); });
+    syncMusic();
 
     const revealItems = [...document.querySelectorAll('.reveal')];
     if (reduceMotion || !('IntersectionObserver' in window)) revealItems.forEach((item) => item.classList.add('is-visible'));

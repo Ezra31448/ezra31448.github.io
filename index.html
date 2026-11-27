@@ -776,6 +776,9 @@
     .contact-copy h2 { max-width: 760px; }
     .contact-copy p { max-width: 560px; color: var(--ink-soft); }
     .contact-actions { display: grid; align-content: end; justify-items: stretch; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--bg-raised); }
+    .cat-chase { position: relative; height: 108px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: linear-gradient(180deg, rgba(110,231,255,.06), transparent 55%), var(--panel-solid); }
+    .cat-chase canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; }
+    .cat-chase-caption { position: absolute; right: 8px; bottom: 6px; color: var(--ink-faint); font: 400 10px/1 var(--font-mono); letter-spacing: .08em; pointer-events: none; }
     .contact-actions-label { padding: 2px 4px 6px; color: var(--ink-faint); font: 400 12px/1.25 var(--font-mono); letter-spacing: .06em; }
     .contact-action-item {
       appearance: none; -webkit-appearance: none;
@@ -1206,6 +1209,7 @@
         <div class="contact-box reveal">
           <div class="contact-copy"><span class="eyebrow"><svg class="px-icon" aria-hidden="true"><use href="#px-email" /></svg><span class="decode-text">05 / Say hello</span></span><h2 class="typewriter-heading" data-typewriter id="contact-title">If you’re building something, let’s make it harder to break.</h2><p>For QA Engineer, QA Automation Engineer, Software Tester, or product quality conversations, send me a note. I’m based in Bangkok, Thailand.</p></div>
           <div class="contact-actions">
+            <div class="cat-chase" aria-hidden="true"><canvas id="cat-chase-canvas" width="168" height="54"></canvas><span class="cat-chase-caption">CAT.EXE // BUG HUNT</span></div>
             <span class="contact-actions-label">OPEN TO A GOOD CONVERSATION</span>
             <a class="contact-action-item contact-action-item--primary" href="mailto:ezrapiya.th@gmail.com" data-email="ezrapiya.th@gmail.com"><span class="contact-action-main"><svg class="px-icon" aria-hidden="true"><use href="#px-email" /></svg><span>Email Ezra</span></span><strong>↗</strong></a>
             <a class="contact-action-item" href="https://www.linkedin.com/in/ezra-piyachanokwong/" target="_blank" rel="me noopener noreferrer"><span class="contact-action-main"><svg class="px-icon" aria-hidden="true"><use href="#px-linkedin" /></svg><span>LinkedIn</span></span><strong>↗</strong></a>
@@ -2753,6 +2757,595 @@
         card.addEventListener('pointerleave', () => { card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg'); });
       });
     }
+
+    const initCatChase = () => {
+      const canvas = document.getElementById('cat-chase-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      const captionEl = document.querySelector('.cat-chase-caption');
+      ctx.imageSmoothingEnabled = false;
+      const W = canvas.width, H = canvas.height;
+      const GROUND = 44;
+      const T = 14; // cat's slow-fast energy wave repeats every T seconds
+      const dust = [];
+      let raf = 0, running = true, lastFrame = 0, simT = 2.0, sleepK = 0;
+      const zzz = [];
+      let zzzTimer = 0, dreamT = 0, dreamPopped = false;
+      const cat = { x: 118, vx: 0, facing: 1, headK: 1, bodyK: 1, stride: 0, crouch: 0, windup: -1, pounce: -1, caught: false, cool: 1.5, turn: 0, blink: 0.12, wantSleep: false };
+      const bug = { x: 120, y: 24, px: 120, py: 24, vx: -12, vy: 0, cruise: 16, dartT: 0, dartCd: 1.2, escCd: 0, stun: 0, jinked: false, exit: 0 };
+      const FRAME_MS = 1000 / 12;
+
+      const px = (x, y, w, h, c) => { ctx.fillStyle = c; ctx.fillRect(Math.round(x), Math.round(y), w, h); };
+
+      const drawGround = (t) => {
+        px(0, GROUND, W, 1, 'rgba(148,163,208,.35)');
+        px(0, GROUND + 1, W, 1, 'rgba(148,163,208,.12)');
+        for (let i = 0; i < 7; i += 1) {
+          const gx = ((i * 29 + 6) % W);
+          const sway = Math.round(Math.sin(t * 1.4 + i * 2.1));
+          px(gx, GROUND - 3, 1, 3, 'rgba(148,163,208,.28)');
+          px(gx + sway, GROUND - 4, 1, 1, 'rgba(215,255,85,.35)');
+        }
+        // pixel stars
+        for (let i = 0; i < 10; i += 1) {
+          const sx = (i * 37 + 11) % W;
+          const sy = (i * 13 + 4) % 22;
+          const tw = (Math.sin(t * 2 + i * 1.7) + 1) / 2;
+          if (tw > 0.55) px(sx, sy, 1, 1, 'rgba(242,245,252,.5)');
+        }
+      };
+
+      // Black cat, side view facing right (caller mirrors for left). ~22x15 px.
+      // crouch: 0..2.5 stalk depth, pounceK: 0..1 leap height, blink: seconds left, turnK: seconds left
+      const drawCat = (x, yBase, legFrame, crouch, pounceK, blink, turnK, windup, headMode) => {
+        const wiggle = windup >= 0 ? (Math.floor(simT * 9) % 2) : 0;
+        x += wiggle;
+        const y = yBase + Math.round(crouch) - Math.round(Math.sin(pounceK * Math.PI) * 11);
+        const BODY = '#0b0f1e', EDGE = '#6b7699', DARK = '#05070f', EYE = '#ffd23f';
+        // tail (animated)
+        const wag = turnK > 0 ? 1 : Math.round(Math.sin(legFrame * 1.2) * 1);
+        px(x - 5, y - 8 + wag, 5, 2, BODY);
+        px(x - 6, y - 10 + wag, 2, 3, BODY);
+        px(x - 6, y - 10 + wag, 2, 1, EDGE);
+        // body (squash slightly while turning)
+        const squash = turnK > 0 ? 1 : 0;
+        px(x, y - 8 + squash, 13, 6 - squash, BODY);
+        px(x, y - 8 + squash, 13, 1, EDGE);
+        px(x + 2, y - 3, 9, 1, DARK);
+        // head: full profile (0), front 3/4 view mid-swivel (1),
+        // or looking back over the shoulder while the body catches up (2)
+        if (headMode === 1) {
+          px(x + 12, y - 11, 7, 7, BODY);
+          px(x + 12, y - 11, 7, 1, EDGE);
+          px(x + 12, y - 13, 2, 3, BODY);
+          px(x + 17, y - 13, 2, 3, BODY);
+          px(x + 12, y - 13, 2, 1, EDGE);
+          px(x + 17, y - 13, 2, 1, EDGE);
+          if (blink > 0) {
+            px(x + 13, y - 9, 2, 1, EDGE);
+            px(x + 16, y - 9, 2, 1, EDGE);
+          } else {
+            px(x + 13, y - 9, 2, 2, EYE);
+            px(x + 16, y - 9, 2, 2, EYE);
+            px(x + 14, y - 9, 1, 1, '#0b0f1e');
+            px(x + 16, y - 9, 1, 1, '#0b0f1e');
+          }
+          px(x + 15, y - 6, 1, 1, '#ff8fa3');
+        } else {
+          const fx = headMode === 2 ? 0 : 3; // eyes+nose on the front side, or the back-over-shoulder side
+          px(x + 12, y - 11, 7, 7, BODY);
+          px(x + 12, y - 11, 7, 1, EDGE);
+          px(x + 12, y - 13, 2, 3, BODY);
+          px(x + 16, y - 13, 2, 3, BODY);
+          px(x + 12, y - 13, 2, 1, EDGE);
+          px(x + 16, y - 13, 2, 1, EDGE);
+          px(x + 12, y - 12, 1, 1, '#ff8fa3');
+          // eyes (yellow, occasional blink)
+          if (blink > 0) {
+            px(x + 12 + fx, y - 9, 2, 1, EDGE);
+          } else {
+            px(x + 12 + fx, y - 9, 2, 2, EYE);
+            px(x + 13 + fx, y - 9, 1, 1, '#0b0f1e');
+          }
+          px(x + 11 + fx, y - 6, 1, 1, '#ff8fa3');
+        }
+        // legs: stride-driven 2-frame cycle, extended mid-leap, tucked while turning
+        if (pounceK > 0.12) {
+          px(x + 1, y - 2, 2, 4, BODY);
+          px(x + 5, y - 2, 2, 5, BODY);
+          px(x + 10, y - 2, 2, 2, BODY);
+          px(x + 14, y - 2, 2, 4, BODY);
+        } else if (turnK > 0 || windup >= 0) {
+          px(x + 3, y - 2, 3, 2, BODY);
+          px(x + 8, y - 2, 3, 2, BODY);
+        } else if (legFrame % 2 === 0) {
+          px(x + 2, y - 2, 2, 3, BODY);
+          px(x + 6, y - 2, 2, 2, BODY);
+          px(x + 9, y - 2, 2, 3, BODY);
+        } else {
+          px(x + 2, y - 2, 2, 2, BODY);
+          px(x + 5, y - 2, 2, 3, BODY);
+          px(x + 9, y - 2, 2, 2, BODY);
+          px(x + 11, y - 2, 2, 3, BODY);
+        }
+      };
+
+      const drawBug = (x, y, wing) => {
+        // tiny beetle / firefly with glow
+        px(Math.round(x) - 1, Math.round(y) - 1, 5, 5, 'rgba(215,255,85,.18)');
+        px(Math.round(x), Math.round(y), 3, 2, '#1a2440');
+        if (wing) { px(Math.round(x) - 1, Math.round(y) - 1, 2, 1, '#6ee7ff'); px(Math.round(x) + 2, Math.round(y) - 1, 2, 1, '#6ee7ff'); }
+        else { px(Math.round(x) - 1, Math.round(y) + 1, 2, 1, '#6ee7ff'); px(Math.round(x) + 2, Math.round(y) + 1, 2, 1, '#6ee7ff'); }
+        px(Math.round(x) + 1, Math.round(y), 1, 1, '#d7ff55');
+      };
+
+      // Firefly brain: lazy wander, surprise darts, escape bursts.
+      // Every burst eases back to cruise speed on its own — continuous forever, no cuts.
+      // Lights on: it spirals up and away (exit 0 -> 1); lights off: it flutters back in.
+      const stepBug = (dt, wantSleep) => {
+        bug.px = bug.x; bug.py = bug.y;
+        if (wantSleep) {
+          bug.vy -= 55 * dt;
+          bug.vx *= Math.max(0, 1 - 1.5 * dt);
+          bug.exit = Math.min(1, bug.exit + dt * 1.1);
+          if (bug.exit >= 1) return; // fully gone: freeze off-screen until wake
+          bug.x += bug.vx * dt; bug.y += bug.vy * dt;
+          if (bug.x < 8) { bug.x = 8; bug.vx = Math.abs(bug.vx) * 0.5; }
+          if (bug.x > W - 8) { bug.x = W - 8; bug.vx = -Math.abs(bug.vx) * 0.5; }
+          return;
+        }
+        bug.exit = Math.max(0, bug.exit - dt * 2.5);
+        // slow-fast cruising mood underneath everything
+        bug.cruise = 15 + 7 * Math.sin(simT * 0.45) + 4 * Math.sin(simT * 1.13 + 1.7);
+        if (bug.dartCd > 0) bug.dartCd -= dt;
+        if (bug.dartT > 0) {
+          bug.dartT -= dt; // mid-dart: ballistic, no steering
+        } else if (bug.dartCd <= 0 && bug.stun <= 0) {
+          // surprise dart: pick a wild new heading at high speed...
+          const ang = Math.random() * Math.PI * 2;
+          const sp = 52 + Math.random() * 20;
+          bug.vx = Math.cos(ang) * sp;
+          bug.vy = Math.sin(ang) * sp * 0.6;
+          bug.dartT = 0.35 + Math.random() * 0.35;
+          bug.dartCd = 1.6 + Math.random() * 2.6;
+        } else if (bug.stun <= 0) {
+          // ...otherwise drift toward a weaving cruise heading (speed eases back down)
+          const wa = simT * 0.7 + Math.sin(simT * 1.7) * 0.9 + Math.sin(simT * 0.53 + 1.3) * 1.4;
+          const k = Math.min(1, dt * 2.2);
+          bug.vx += (Math.cos(wa) * bug.cruise - bug.vx) * k;
+          bug.vy += (Math.sin(wa) * bug.cruise * 0.7 - bug.vy) * k;
+        }
+        // escape burst the moment the cat crouches to pounce — then it eases off again
+        if (bug.escCd > 0) bug.escCd -= dt;
+        if (cat.windup >= 0 && bug.escCd <= 0 && bug.stun <= 0) {
+          const away = bug.x >= cat.x ? 1 : -1;
+          bug.vx = away * (46 + Math.random() * 18);
+          bug.vy = -(14 + Math.random() * 14);
+          bug.dartT = 0;
+          bug.escCd = 2.2;
+        }
+        // jink sideways once per leap so most pounces near-miss
+        if (cat.pounce >= 0 && !bug.jinked && cat.pounce > 0.1) {
+          bug.jinked = true;
+          if (bug.stun <= 0) bug.vx += (Math.random() < 0.5 ? -1 : 1) * 30;
+        }
+        if (bug.stun > 0) {
+          bug.stun -= dt;
+          bug.vx *= Math.max(0, 1 - 3 * dt);
+          bug.vy *= Math.max(0, 1 - 3 * dt);
+        }
+        // soft walls pull it back before the hard edge
+        if (bug.x < 16) bug.vx += (16 - bug.x) * 30 * dt;
+        if (bug.x > W - 16) bug.vx -= (bug.x - (W - 16)) * 30 * dt;
+        if (bug.y < 10) bug.vy += (10 - bug.y) * 30 * dt;
+        if (bug.y > 36) bug.vy -= (bug.y - 36) * 30 * dt;
+        const sp = Math.hypot(bug.vx, bug.vy);
+        if (sp > 80) { bug.vx *= 80 / sp; bug.vy *= 80 / sp; }
+        bug.x += bug.vx * dt;
+        bug.y += bug.vy * dt;
+        if (bug.x < 8) { bug.x = 8; bug.vx = Math.abs(bug.vx) * 0.5; }
+        if (bug.x > W - 8) { bug.x = W - 8; bug.vx = -Math.abs(bug.vx) * 0.5; }
+        if (bug.y < 7) { bug.y = 7; bug.vy = Math.abs(bug.vy) * 0.5; }
+        if (bug.y > 38) { bug.y = 38; bug.vy = -Math.abs(bug.vy) * 0.5; }
+      };
+
+      // One fixed step of the endless chase: the cat pursues the bug with
+      // eased steering, so stalk / sprint / turn / pounce all blend into each other.
+      // dream-cloud anchor: hovers just ahead of the sleeping cat's head
+      const cloudCX = () => Math.max(22, Math.min(W - 22, cat.x + (Math.sign(cat.bodyK) || cat.facing) * 8));
+
+      const step = (dt) => {
+        simT += dt;
+        const wantSleep = root.dataset.theme === 'light';
+        if (wantSleep !== cat.wantSleep) {
+          cat.wantSleep = wantSleep;
+          if (captionEl) captionEl.textContent = wantSleep ? 'CAT.EXE // NAP TIME' : 'CAT.EXE // BUG HUNT';
+          if (wantSleep) { cat.windup = -1; cat.pounce = -1; }
+          else {
+            // lights off: the firefly flutters back in from above
+            bug.x = 30 + Math.random() * (W - 60); bug.y = 9; bug.px = bug.x; bug.py = bug.y;
+            bug.vx = (Math.random() - 0.5) * 20; bug.vy = 6;
+            bug.exit = 1; bug.dartCd = 2; bug.escCd = 1; bug.stun = 0; bug.jinked = false;
+            zzz.length = 0; dreamT = 0; dreamPopped = false;
+          }
+        }
+        sleepK += Math.max(-dt * 1.4, Math.min(dt * 1.4, (wantSleep ? 1 : 0) - sleepK));
+        stepBug(dt, wantSleep);
+        const bx = bug.x, by = bug.y;
+        const xOld = cat.x;
+        const dx = bx - cat.x;
+        const adx = Math.abs(dx);
+        const setFacing = (f) => {
+          if (f !== cat.facing) {
+            cat.facing = f;
+            cat.turn = 0.22;
+            if (dust.length < 26) dust.push({ x: cat.x, y: GROUND - 1, life: 1, vx: -f * 9 });
+          }
+        };
+        if (cat.turn > 0) cat.turn -= dt;
+        if (cat.cool > 0) cat.cool -= dt;
+        // slow-fast tempo wave, periodic like everything else
+        const energy = 0.55 + 0.45 * Math.sin(((simT % T) / T) * Math.PI * 2 + 0.7);
+        const maxSp = 20 + 46 * energy;
+        // creep low & slow when close under a low bug, sprint when it's far
+        const nearLow = by > 27 && adx < 30;
+        const stalkK = nearLow ? 0.32 : 1;
+        if (cat.windup >= 0) {
+          // WIND-UP: slide to a stop facing travel direction, then face the bug,
+          // sink into a deep crouch and wiggle, then launch
+          cat.windup += dt;
+          const brake = 220;
+          cat.vx += Math.max(-brake * dt, Math.min(brake * dt, 0 - cat.vx));
+          // same footing rule while sliding into the crouch
+          const wbSign = Math.sign(cat.bodyK) || cat.facing;
+          if (cat.bodyK * cat.facing < 0.3 && Math.sign(cat.vx) !== wbSign) cat.vx = 0;
+          cat.x += cat.vx * dt;
+          if (Math.abs(cat.vx) >= 6) setFacing(cat.vx > 0 ? 1 : -1);
+          else setFacing(dx >= 0 ? 1 : -1);
+          if (cat.windup > 0.42) {
+            cat.windup = -1;
+            cat.pounce = 0;
+            cat.caught = false;
+            bug.jinked = false;
+            cat.cool = 3.2;
+            cat.vx = cat.facing * 34; // forward lunge only, never backward
+          }
+        } else if (cat.pounce >= 0) {
+          // LEAP: ballistic, keep forward momentum, no steering mid-air
+          cat.pounce += dt;
+          cat.x += cat.vx * dt;
+          if (!cat.caught && cat.pounce > 0.22) {
+            cat.caught = true;
+            const d = Math.hypot(bug.x - (cat.x + cat.facing * 10), bug.y - (GROUND - 11));
+            if (d < 9 && bug.stun <= 0) {
+              // caught mid-air: stun the firefly and burst lime sparkles
+              bug.stun = 0.9;
+              for (let s = 0; s < 6; s += 1) {
+                dust.push({ x: bug.x + (Math.random() * 6 - 3), y: bug.y + (Math.random() * 4 - 2), life: 1, vx: (Math.random() - 0.5) * 24, vy: -8 - Math.random() * 16, g: 30, c: '#d7ff55' });
+              }
+            }
+          }
+          if (cat.pounce > 0.55) { cat.pounce = -1; cat.vx *= 0.4; }
+        } else {
+          // stand-off point eases into the cat itself when the bug is close overhead,
+          // so the cat holds and stares instead of lunging through/past it
+          const stand = Math.max(-9, Math.min(9, dx));
+          let wantVx = (bx - stand - cat.x) * 3.0;
+          wantVx = Math.max(-maxSp * stalkK, Math.min(maxSp * stalkK, wantVx));
+          if (wantSleep) wantVx = 0; // nap time: brake to a stop, no more chasing
+          // decide the turn before the legs move: if the chase demands the other
+          // way while nearly stopped, face it first so the plant below can hold
+          if (Math.abs(cat.vx) < 6 && Math.abs(wantVx) > 8 && Math.sign(wantVx) !== cat.facing) {
+            setFacing(wantVx > 0 ? 1 : -1);
+          }
+          // brake hard when reversing so the turn reads as a skid, not a moonwalk
+          const reversing = Math.sign(wantVx) !== Math.sign(cat.vx) && Math.abs(cat.vx) > 8;
+          const accel = reversing ? 220 : 90;
+          const dv = wantVx - cat.vx;
+          cat.vx += Math.max(-accel * dt, Math.min(accel * dt, dv));
+          // never stride against the drawn body: plant the feet until it swings around
+          const bSign = Math.sign(cat.bodyK) || cat.facing;
+          if (cat.bodyK * cat.facing < 0.3 && Math.sign(cat.vx) !== bSign) cat.vx = 0;
+          cat.x += cat.vx * dt;
+          // crouch down first, then spring: enter wind-up when the bug hangs low & close
+          if (!wantSleep && cat.cool <= 0 && by > 29 && adx < 16 && Math.abs(cat.vx) < 34) {
+            cat.windup = 0;
+            cat.vx = Math.max(-20, Math.min(20, cat.vx)); // short slide into the crouch, no long skid
+          }
+        }
+        if (cat.x < 8) { cat.x = 8; cat.vx = Math.max(0, cat.vx); }
+        if (cat.x > W - 10) { cat.x = W - 10; cat.vx = Math.min(0, cat.vx); }
+        cat.stride += Math.abs(cat.vx) * dt;
+        const crouchTarget = (cat.windup >= 0 ? 3 : nearLow ? 2.5 : 0) + sleepK * 3;
+        cat.crouch += (crouchTarget - cat.crouch) * Math.min(1, dt * 6);
+        // face travel direction while moving (never walk backward); only face the
+        // bug once truly slow AND settled, so turns and landings never flip mid-motion.
+        // frozen once drowsy: the cat just watches the firefly leave, then nods off.
+        if (sleepK < 0.5) {
+          if (Math.abs(cat.vx) >= 6) setFacing(cat.vx > 0 ? 1 : -1);
+          else if (Math.abs(cat.x - xOld) < 0.5) {
+            if (dx > 2) setFacing(1);
+            else if (dx < -2) setFacing(-1);
+          }
+        }
+        // head whips around first, body lumbers after — two eased springs at
+        // different rates is what makes the turn feel physical instead of digital.
+        // Planting for a pounce swings the body around extra fast.
+        const hRate = 12 + Math.abs(cat.vx) * 0.4;
+        const bRate = 6 + Math.abs(cat.vx) * 0.35 + (cat.windup >= 0 ? 6 : 0);
+        const easeK = (k, target, rate) => {
+          const dd = target - k;
+          const mx = rate * dt;
+          return Math.abs(dd) <= mx ? target : k + Math.sign(dd) * mx;
+        };
+        cat.headK = easeK(cat.headK, cat.facing, hRate);
+        cat.bodyK = easeK(cat.bodyK, cat.facing, bRate);
+        // dreaming: Zzz floats up and a thought-cloud cycles three wishes
+        // (wet-food pouch / head pats / cuddling the orange friend)
+        if (wantSleep && sleepK > 0.8) {
+          zzzTimer -= dt;
+          if (zzzTimer <= 0 && zzz.length < 4) {
+            zzz.push({ x: cat.x + cat.facing * 14 + (Math.random() * 4 - 2), y: GROUND - 12, life: 2.2 });
+            zzzTimer = 1.15;
+          }
+          dreamT += dt;
+          const phase = dreamT % 9;
+          if (phase > 7.5 && !dreamPopped) {
+            dreamPopped = true;
+            for (let s = 0; s < 6; s += 1) {
+              dust.push({ x: cloudCX() + (Math.random() * 16 - 8), y: 11 + (Math.random() * 8 - 4), life: 1, vx: (Math.random() - 0.5) * 18, vy: -6 - Math.random() * 12, g: 24, c: '#f2f5fc' });
+            }
+          }
+          if (phase < 1) dreamPopped = false;
+        }
+        for (let i = zzz.length - 1; i >= 0; i -= 1) {
+          const z = zzz[i];
+          z.y -= 6 * dt; z.x += Math.sin(simT * 3 + i) * 6 * dt; z.life -= dt;
+          if (z.life <= 0) zzz.splice(i, 1);
+        }
+        // occasional blink
+        cat.blink -= dt;
+        if (cat.blink < -3.5) cat.blink = 0.12;
+        // dust drifts and fades (sparks also fall with gravity)
+        for (let i = dust.length - 1; i >= 0; i -= 1) {
+          const d = dust[i];
+          d.x += (d.vx === undefined ? -5 : d.vx) * dt;
+          if (d.vy !== undefined) { d.y += d.vy * dt; d.vy += (d.g || 0) * dt; }
+          d.life -= dt * 2.2;
+          if (d.life <= 0) dust.splice(i, 1);
+        }
+        if (Math.abs(cat.vx) > 26 && dust.length < 26 && Math.random() < dt * 10) {
+          dust.push({ x: cat.x - cat.facing * 5, y: GROUND - 1, life: 1, vx: -cat.facing * 12 });
+        }
+      };
+
+      // curled-up loaf for nap time: chin down, tail wrapped, breathing slow
+      const drawSleeping = (x, y) => {
+        const BODY = '#0b0f1e', EDGE = '#6b7699';
+        const br = Math.round((Math.sin(simT * Math.PI * 2 / 2.6) + 1) / 2); // slow breath 0..1
+        // tail curled around the loaf
+        px(x - 3, y - 4, 2, 4, BODY);
+        px(x - 3, y - 4, 2, 1, EDGE);
+        px(x - 3, y - 1, 7, 1, BODY);
+        px(x + 3, y - 2, 1, 1, BODY);
+        // loaf body (top row rises with the breath)
+        px(x, y - 5, 16, 5, BODY);
+        px(x, y - 5, 16, 1, EDGE);
+        if (br) px(x + 2, y - 6, 12, 1, BODY);
+        // tucked front paws
+        px(x + 12, y - 2, 3, 2, '#05070f');
+        // head resting low, chin near the ground
+        px(x + 11, y - 5, 7, 5, BODY);
+        px(x + 11, y - 5, 7, 1, EDGE);
+        px(x + 11, y - 7, 2, 2, BODY);
+        px(x + 16, y - 6, 3, 1, BODY);
+        px(x + 14, y - 3, 2, 1, EDGE);
+        px(x + 16, y - 2, 1, 1, '#ff8fa3');
+      };
+
+      const drawZ = (x, y, c, a) => {
+        ctx.globalAlpha = Math.max(0, Math.min(1, a));
+        px(x, y, 3, 1, c);
+        px(x + 2, y + 1, 1, 1, c);
+        px(x + 1, y + 2, 1, 1, c);
+        px(x, y + 3, 1, 1, c);
+        px(x, y + 4, 3, 1, c);
+        ctx.globalAlpha = 1;
+      };
+
+      const drawHeart = (x, y, c) => {
+        px(x + 1, y, 2, 1, c); px(x + 4, y, 2, 1, c);
+        px(x, y + 1, 7, 1, c);
+        px(x, y + 2, 7, 1, c);
+        px(x + 1, y + 3, 5, 1, c);
+        px(x + 2, y + 4, 3, 1, c);
+      };
+
+      const drawCloud = (ccx, cy) => {
+        const OUT = '#7c8ab0', FILL = 'rgba(223,230,245,.95)';
+        const x = Math.round(ccx - 18), y = Math.round(cy - 9);
+        px(x + 4, y, 28, 1, OUT); px(x + 2, y + 1, 32, 1, OUT);
+        for (let r = 2; r < 15; r += 1) px(x, y + r, 36, 1, OUT);
+        px(x + 2, y + 15, 32, 1, OUT); px(x + 4, y + 16, 28, 1, OUT);
+        px(x + 4, y + 1, 28, 1, FILL);
+        for (let r = 2; r < 15; r += 1) px(x + 1, y + r, 34, 1, FILL);
+        px(x + 4, y + 15, 28, 1, FILL);
+      };
+
+      // dream 1: a pouch of wet food with a fish emblem
+      const drawDreamPouch = (ccx, cy) => {
+        const x = Math.round(ccx - 5), y = Math.round(cy - 5);
+        const P = '#f27d9c', PD = '#b14a68';
+        px(x + 1, y, 8, 1, PD);
+        px(x, y + 1, 10, 1, P);
+        px(x, y + 2, 10, 9, P);
+        px(x, y + 2, 1, 9, PD); px(x + 9, y + 2, 1, 9, PD);
+        px(x, y + 11, 10, 1, PD);
+        px(x + 2, y + 5, 4, 2, '#f2f5fc');
+        px(x + 6, y + 5, 2, 1, '#f2f5fc');
+        px(x + 7, y + 6, 1, 1, '#f2f5fc');
+        px(x + 3, y + 5, 1, 1, PD);
+        drawHeart(x - 6, y + 6, '#e14a5f');
+      };
+
+      // dream 2: a kind hand with head pats and love
+      const drawDreamPet = (ccx, cy) => {
+        const x = Math.round(ccx), y = Math.round(cy);
+        const SK = '#e8b98a', SKD = '#b07a4e';
+        px(x - 3, y - 7, 6, 3, SK);
+        px(x - 3, y - 7, 6, 1, SKD);
+        px(x - 3, y - 4, 1, 3, SK);
+        px(x - 1, y - 4, 1, 2, SK);
+        px(x + 1, y - 4, 1, 3, SK);
+        px(x + 3, y - 4, 1, 2, SKD);
+        px(x - 6, y - 5, 1, 4, '#7c8ab0');
+        px(x + 5, y - 5, 1, 4, '#7c8ab0');
+        drawHeart(x - 8, y + 1, '#e14a5f');
+        drawHeart(x + 2, y + 2, '#e14a5f');
+      };
+
+      // dream 3: cuddling cheek-to-cheek with the orange friend
+      const drawDreamCuddle = (ccx, cy) => {
+        const x = Math.round(ccx), y = Math.round(cy);
+        px(x - 9, y - 3, 7, 6, '#0b0f1e');
+        px(x - 9, y - 3, 7, 1, '#6b7699');
+        px(x - 9, y - 5, 2, 2, '#0b0f1e');
+        px(x - 4, y - 5, 2, 2, '#0b0f1e');
+        px(x - 7, y - 1, 2, 1, '#6b7699');
+        px(x + 1, y - 3, 7, 6, '#e8a04c');
+        px(x + 1, y - 3, 7, 1, '#8a5a2b');
+        px(x + 1, y - 5, 2, 2, '#e8a04c');
+        px(x + 6, y - 5, 2, 2, '#e8a04c');
+        px(x + 3, y - 1, 2, 1, '#8a5a2b');
+        drawHeart(x - 3, y - 9, '#e14a5f');
+      };
+
+      const draw = () => {
+        ctx.clearRect(0, 0, W, H);
+        drawGround(simT);
+        const light = root.dataset.theme === 'light';
+        const bx = bug.x, by = bug.y;
+        const bvx = (bug.x - bug.px) * 12;
+        const cx = cat.x;
+        if (bug.exit < 1) {
+          // firefly trail streams behind its motion (fades as it flutters away)
+          ctx.globalAlpha = Math.max(0, 1 - bug.exit);
+          px(bx - Math.sign(bvx || 1) * 4, by, 2, 1, 'rgba(215,255,85,.4)');
+          drawBug(bx, by, Math.floor(simT * 12) % 2 === 0);
+          ctx.globalAlpha = 1;
+        }
+        // the drawn body lags behind the head: head swivels first, body squashes,
+        // hops and swings around after — mirrored only when fully committed.
+        // fast asleep: a breathing loaf exactly where the hunt ended.
+        const bodySign = Math.sign(cat.bodyK) || cat.facing;
+        if (sleepK > 0.5) {
+          ctx.save();
+          ctx.translate(Math.round(cx), 0);
+          ctx.scale(bodySign, 1);
+          drawSleeping(0, GROUND);
+          ctx.restore();
+        } else {
+          const pounceK = cat.pounce >= 0 ? cat.pounce / 0.55 : 0;
+          const legFrame = Math.floor(cat.stride / 3);
+          const squashX = 0.7 + 0.3 * Math.min(1, Math.abs(cat.bodyK) * 2);
+          const headSign = Math.abs(cat.headK) < 0.45 ? 0 : Math.sign(cat.headK);
+          const headMode = headSign === 0 ? 1 : (headSign === bodySign ? 0 : 2);
+          const hop = cat.turn > 0 ? -Math.round(Math.sin((1 - cat.turn / 0.22) * Math.PI)) : 0;
+          ctx.save();
+          ctx.translate(Math.round(cx), 0);
+          ctx.scale(bodySign * squashX, 1);
+          drawCat(0, GROUND + hop, legFrame, cat.crouch, pounceK, cat.blink, cat.turn, cat.windup, headMode);
+          ctx.restore();
+          // pounce "!" mark pops at the top of the leap
+          if (pounceK > 0.3 && pounceK < 0.9) {
+            const mx = cx + cat.facing * 16;
+            px(mx, GROUND - 27, 2, 5, '#d7ff55');
+            px(mx, GROUND - 20, 2, 2, '#d7ff55');
+          }
+        }
+        for (let i = dust.length - 1; i >= 0; i -= 1) {
+          const d = dust[i];
+          ctx.globalAlpha = Math.max(0, d.life) * 0.7;
+          px(d.x, d.y - (1 - d.life) * 3, 2, 1, d.c || '#8a93b8');
+        }
+        ctx.globalAlpha = 1;
+        // nap-time dreams: rising Zzz plus a thought-cloud cycling three wishes
+        const inkZ = light ? '#3b5000' : '#d7ff55';
+        for (const z of zzz) {
+          drawZ(z.x, z.y, inkZ, (z.life / 2.2) * 0.9);
+        }
+        if (light && sleepK > 0.8) {
+          const phase = dreamT % 9;
+          if (phase > 0.4 && phase < 7.6) {
+            const ccx = cloudCX();
+            drawCloud(ccx, 11);
+            const idx = Math.floor(dreamT / 9) % 3;
+            if (idx === 0) drawDreamPouch(ccx, 11);
+            else if (idx === 1) drawDreamPet(ccx, 11);
+            else drawDreamCuddle(ccx, 11);
+            // feeder bubbles drifting from head up to the cloud
+            const hx = cx + bodySign * 14, hy = GROUND - 12;
+            for (let i = 0; i < 3; i += 1) {
+              const ph = (simT * 0.5 + i / 3) % 1;
+              const qx = hx + (ccx - hx) * ph;
+              const qy = hy + (11 - hy) * ph - Math.sin(ph * Math.PI) * 4;
+              const s = ph < 0.5 ? 1 : 2;
+              px(qx - s / 2, qy - s / 2, s, s, '#7c8ab0');
+            }
+          }
+        }
+      };
+
+      const drawStatic = () => {
+        ctx.clearRect(0, 0, W, H);
+        simT = 2.0;
+        if (root.dataset.theme === 'light') {
+          // still frame for nap time: loaf, one Z, mid-dream
+          sleepK = 1;
+          cat.x = 32; cat.vx = 0; cat.facing = 1; cat.headK = 1; cat.bodyK = 1; cat.crouch = 0; cat.windup = -1; cat.pounce = -1;
+          bug.exit = 1; bug.x = 62; bug.y = 26; bug.px = 62; bug.py = 26;
+          dreamT = 4; dreamPopped = false;
+          zzz.length = 0;
+          zzz.push({ x: 46, y: 26, life: 1.5 });
+          draw();
+        } else {
+          sleepK = 0;
+          bug.exit = 0;
+          bug.x = 62; bug.y = 26; bug.px = 62; bug.py = 26; bug.vx = 0; bug.vy = 0; bug.stun = 0;
+          cat.x = 32; cat.vx = 0; cat.facing = 1; cat.headK = 1; cat.bodyK = 1; cat.crouch = 2; cat.windup = -1; cat.pounce = -1;
+          drawGround(simT);
+          drawBug(62, 26, true);
+          drawCat(cat.x, GROUND, 0, 2, 0, 0, 0, -1, 0);
+        }
+      };
+
+      const loop = (now) => {
+        raf = 0;
+        if (!running || document.hidden) return;
+        if (now - lastFrame >= FRAME_MS) { lastFrame = now; step(FRAME_MS / 1000); draw(); }
+        raf = requestAnimationFrame(loop);
+      };
+      const start = () => { if (!raf && running && !document.hidden) raf = requestAnimationFrame(loop); };
+      const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
+
+      if (captionEl) captionEl.textContent = root.dataset.theme === 'light' ? 'CAT.EXE // NAP TIME' : 'CAT.EXE // BUG HUNT';
+      sleepK = root.dataset.theme === 'light' ? 1 : 0;
+      if (reduceMotion || saveData) { drawStatic(); return; }
+      drawStatic();
+      start();
+      document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          running = entries[0].isIntersecting;
+          if (running) start(); else stop();
+        }, { threshold: 0 }).observe(canvas);
+      }
+      if (reduceMotionQuery && reduceMotionQuery.addEventListener) {
+        reduceMotionQuery.addEventListener('change', (e) => { if (e.matches) { stop(); drawStatic(); } else start(); });
+      }
+    };
+    initCatChase();
 
     const copyButton = document.getElementById('copy-email');
     const toast = document.getElementById('toast');

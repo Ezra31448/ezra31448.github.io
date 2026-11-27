@@ -2304,10 +2304,15 @@
     const eqCanvas = document.getElementById('music-eq-canvas');
     const eqCtx = eqCanvas ? eqCanvas.getContext('2d') : null;
     const EQ_BARS = 24;
+    const EQ_RISE_MS = 800;
+    let eqRising = false;
+    let eqRiseUntil = 0;
     let eqRaf = 0;
     let eqTheme = null;
     const eqLevels = new Array(EQ_BARS).fill(0);
     const eqPeaks = new Array(EQ_BARS).fill(0);
+    let eqWasLive = false;
+    let eqFalling = false;
     const refreshEqTheme = () => {
       try {
         const cs = getComputedStyle(root);
@@ -2348,6 +2353,11 @@
       const h = eqCanvas.height;
       const live = Boolean(musicWanted && musicVoice && musicCtx && musicCtx.state === 'running' && musicAnalyser && musicFreqData);
       if (live) musicAnalyser.getByteFrequencyData(musicFreqData);
+      // When playback stops, bars fall gradually; when it starts, they rise
+      // gradually with a short fade-in envelope instead of snapping up.
+      if (eqWasLive && !live) { eqFalling = true; eqRising = false; }
+      else if (!eqWasLive && live) { eqRising = true; eqFalling = false; eqRiseUntil = now + EQ_RISE_MS; }
+      eqWasLive = live;
       eqCtx.clearRect(0, 0, w, h);
       // Pixel-art vertical spectrum: low band on the left, high band on the right,
       // bars grow upward along the Y axis.
@@ -2358,6 +2368,7 @@
       const segStep = segH + segGap;
       const maxSegs = Math.max(3, Math.floor((h - 6) / segStep));
       const baseY = h - 2;
+      let frameMax = 0;
       for (let i = 0; i < EQ_BARS; i += 1) {
         let target = 0;
         if (live) {
@@ -2365,17 +2376,35 @@
           const frac = EQ_BARS === 1 ? 0 : i / (EQ_BARS - 1);
           const bin = Math.min(musicFreqData.length - 1, Math.floor(Math.pow(frac, 1.6) * (musicFreqData.length * 0.72)) + 1);
           target = Math.pow(musicFreqData[bin] / 255, 1.15);
+        } else if (eqFalling) {
+          target = 0;
         } else if (!reduceMotion && musicWanted) {
           // Gentle idle sway when paused.
           const sway = Math.sin(now / 900 + i * 0.55) * 0.5 + Math.sin(now / 520 - i * 0.3) * 0.5;
           target = 0.12 + 0.08 * (0.5 + sway * 0.5) + (i % 4 === 0 ? 0.05 : 0);
         }
-        // Fast attack, slow release for a lively but readable meter.
+        if (eqRising && !reduceMotion) {
+          if (now >= eqRiseUntil) eqRising = false;
+          else {
+            const t = Math.max(0, Math.min(1, (now - (eqRiseUntil - EQ_RISE_MS)) / EQ_RISE_MS));
+            target *= t * t * (3 - 2 * t);
+          }
+        }
+        // Fast attack, slow fall: linear decay after pause so every bar drops
+        // top-down at the same speed (~1s), snappy release while playing.
         const prev = eqLevels[i] || 0;
-        const next = target > prev ? target : prev + (target - prev) * 0.18;
+        let next;
+        if (reduceMotion) {
+          next = target;
+        } else if (eqFalling) {
+          next = Math.max(0, prev - 0.03);
+        } else {
+          next = target > prev ? target : prev + (target - prev) * 0.18;
+        }
         eqLevels[i] = next;
+        frameMax = Math.max(frameMax, next);
         if (next >= (eqPeaks[i] || 0)) eqPeaks[i] = next;
-        else eqPeaks[i] = Math.max(next, (eqPeaks[i] || 0) - 0.012);
+        else eqPeaks[i] = Math.max(next, (eqPeaks[i] || 0) - (eqFalling ? 0.035 : 0.012));
         const segs = Math.round(next * maxSegs);
         const x = Math.round(i * (barW + gap));
         for (let s = 0; s < maxSegs; s += 1) {
@@ -2404,6 +2433,11 @@
         }
       }
       eqCtx.globalAlpha = 1;
+      if (eqFalling && frameMax < 0.02) {
+        eqFalling = false;
+        eqLevels.fill(0);
+        eqPeaks.fill(0);
+      }
       if (!reduceMotion) {
         const open = musicPopover && musicPopover.classList.contains('is-open');
         if (open) eqRaf = requestAnimationFrame(paintEqFrame);
